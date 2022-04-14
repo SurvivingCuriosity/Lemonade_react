@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import lemon from '../../images/lemon.svg'
 export function FixedTopNav(){
-    const tamanoImagen = '50';
+    const tamanoImagen = '35';
     return (
         <div className="fixed-top-nav">
             <div>
