@@ -13,8 +13,8 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 function App() {
   return (
     <Router>
-      <FixedTopNav />
       <div className="footerStickTop">
+      <FixedTopNav />
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/ArtistMatchFinder" element={<ArtistMatchFinderPage />} />

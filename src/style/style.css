@@ -78,7 +78,7 @@
     background-color: var(--colorTextoColor);
     color: var(--fondo);
   }
-  h1.titulo-tool{
+  h1.tool-titulo{
     font-size: 3em;
     color: var(--colorTextoColor);
   }
@@ -200,8 +200,12 @@
     align-content: center;
     justify-content: flex-start;
     padding-top: 5em;
-    gap: 1em;
     align-items: center;
+  }
+  .tool-container{
+    gap: 1em;
+    display: flex;
+    flex-flow: column nowrap;
   }
   .footerStickTop{
     min-height: calc(100vh - 120px);
@@ -314,6 +318,9 @@
         border: 1px solid var(--colorTextoColor);
         align-self: center;
     }
+    .busqueda-boton-buscar{
+      padding: 0.2em 0.9em;
+    }
     .boton2{
         transition: all 0.3s;
         background-color: var(--fondo);
@@ -346,10 +353,11 @@
         content: "Usando otra herramienta";
     }
     input[type=search]:not(disabled){
-        border: 1px solid var(--colorTextoColor);
-        color: var(--colorTexto);
-        background-color: var(--fondo);
-        cursor: text!important;
+      border: 1px solid var(--colorTextoColor);
+      color: var(--colorTexto);
+      background-color: var(--fondo);
+      cursor: text !important;
+      padding: 0.6em;
     }
     input[type=search]:not(disabled):before{
         content: "Usando otra herramienta";
@@ -379,6 +387,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        gap: 1em;
     }
     .linea-flex-between{
         display: flex;
@@ -452,13 +461,28 @@
 
   
   /*FIN CLASES APOYO */
-  /* TARJETAS */
-  .containerTarjetaBuscar{
+  /* BUSQUEDA */
+  .busqueda-container{
+    padding: 1em;
+    background-color: var(--fondo3);
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+  }
+  .busqueda-lista{
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
     width: 100%;
+    padding: 1em;
+    background-color: var(--fondo);
+    opacity: 0.7;
+    border-radius: 10px;
+    min-height: 40vh;
   }
+  /* FIN BUSQUEDA */
+  /* TARJETAS */
+
   .tarjeta{
     padding:1em;
     display: flex;

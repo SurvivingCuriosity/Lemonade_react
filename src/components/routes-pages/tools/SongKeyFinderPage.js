@@ -1,10 +1,10 @@
 import React from "react";
+import {SongKeyFinder} from '../../lemonade-tools/SongKeyFinder'
 
 export function SongKeyFinderPage(){
     return(
         <div className="toolPage">
-         <h1 className="titulo-tool">Song key finder</h1>
-            <p className="toolpage-description">Lorem ipsum albadjbasjdfopwiemcpoiwempowie</p>
+            <SongKeyFinder />
         </div>
     )
 }

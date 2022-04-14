@@ -1,10 +1,10 @@
 import React from "react";
+import {ArtistMatchFinder} from '../../lemonade-tools/ArtistMatchFinder'
 
 export function ArtistMatchFinderPage(){
     return(
         <div className="toolPage">
-            <h1 className="titulo-tool">Artist match finder</h1>
-            <p className="toolpage-description">Lorem ipsum albadjbasjdfopwiemcpoiwempowie</p>
+            <ArtistMatchFinder />
         </div>
     )
 }
