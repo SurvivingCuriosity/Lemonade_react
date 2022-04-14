@@ -2,7 +2,7 @@ import React from 'react'
 
 export function TopNav(){
     return (
-        <div id="fixedTopNav">
+        <div className="fixed-top-nav">
             <div>
                 <a id="btnLoginOut" className="boton" href="index.php?ctl=login">Iniciar Sesión</a>
                 <button id="theme-switcher" className="boton">Cambiar tema</button>

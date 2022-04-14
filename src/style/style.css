@@ -121,7 +121,8 @@
     height: 100vh;
     z-index: 4;
   }
-  header nav{
+  .header-main-nav ul{
+    list-style-type: none;
     flex-flow: column nowrap;
     display: flex;
     align-items: center;
@@ -130,19 +131,18 @@
     width: 100%;
     flex-flow: row nowrap;
     justify-content: space-evenly;
-    font-size: 1.25em;
   }
   header a{
     font-size: 1.75em;
     transition: all 0.15s;
   }
-  header nav a:hover{
+  .header-main-nav a:hover{
     color:var(--colorTextoColor);
     font-weight: bold;
     cursor: pointer;
     transform: scale(1.05);
   }
-  header nav a{
+  .header-main-nav a{
     display: flex;
     flex-flow: row nowrap;
   }
@@ -212,26 +212,27 @@
   }
   /* FIN PAGINAS HERRAMIENTAS */
   /* FIXED NAVS */
-  #fixedBottomNav, #fixedTopNav{
+.fixed-bottom-nav, .fixed-top-nav{
     width: -moz-available;
     width: calc(100% - 2em);
     display: flex;
-    flex-flow: row nowrap;
     margin: 1em;
     align-items: center;
     justify-content: space-between;
     gap: 1em;
   }
-  #fixedBottomNav{
+.fixed-bottom-nav{
     position: fixed;
     bottom: 0;
     z-index: 3;
+    flex-flow: row-reverse nowrap;
   }
-  #fixedTopNav{
+ .fixed-top-nav{
     position: absolute;
     z-index: 5;
+    flex-flow: row nowrap;
   }
-  #fixedBottomNav ul{
+.fixed-bottom-nav ul{
     border: 1px solid var(--colorTextoColor);
     display: flex;
     flex-flow: row nowrap;
@@ -240,14 +241,14 @@
     background-color: var(--fondo);
     border-radius: 10px;
   }
-  #fixedBottomNav ul li:not(:last-child){
+.fixed-bottom-nav ul li:not(:last-child){
     border-right: 1px solid var(--colorTextoColor);
   }
-  #fixedBottomNav ul li a{
+.fixed-bottom-nav ul li a{
     padding: 1em;
     display: block;
   }
-  #fixedBottomNav ul li{
+.fixed-bottom-nav ul li{
     width: 100%;
     text-align: center;
   }
@@ -269,17 +270,19 @@
   .svgInstagramCirculo{
     fill: var(--colorIconos);
   }
-  #toolsNav{
+  .header-bottom-nav{
     font-size: 0.6em;
     width: 90%;
+    position: absolute;
+    bottom: 10em;
   }
-  #toolsNav ul{
+  .header-bottom-nav ul{
     display: flex;
-    flex-flow: column wrap;
-    gap: 2em;
-    align-items: center;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-evenly;
   }
-  #toolsNav ul a{
+  .header-bottom-nav ul a{
     color: var(--blanco);
   }
   /* FIN FIXED NAVS */
@@ -625,7 +628,7 @@
     .container{
         width: 95vw;
     }
-    header nav{
+    .header-main-nav ul{
         flex-flow: column nowrap;
     }
     input[type="search"], input[type="text"], input[type="password"], input[type="email"]{
@@ -647,7 +650,7 @@
     .container{
         width: 90vw;
     }
-    header nav{
+    .header-main-nav ul{
         flex-flow: column nowrap;
         font-size: 1em;
     }
@@ -660,7 +663,7 @@
     .flechaBottom{
         visibility: hidden;
     }
-    #fixedBottomNav ul{
+  .fixed-bottom-nav ul{
     }
     .containerTarjetaBuscar{
         width: 70%;
@@ -688,9 +691,11 @@
         gap: 1em;
         align-items: baseline;
     }
-    header nav{
-        font-size: 1em;
-        gap: 1em;
+    .header-main-nav ul{
+      font-size: 0.75em;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 80vw;
     }
     header .container_centro{
         width: 50%;
@@ -704,9 +709,9 @@
     .flechaBottom{
         visibility: hidden;
     }
-    #fixedBottomNav{
+  .fixed-bottom-nav{
     }
-    #fixedBottomNav ul{
+  .fixed-bottom-nav ul{
         width: 70%;
     }
     .containerTarjetaBuscar{
@@ -742,7 +747,7 @@
     header .container_centro{
         width: 50%;
     }
-    header nav{
+    .header-main-nav ul{
         flex-flow: row nowrap;
         gap: 1em;
         font-size: 0.8em;
@@ -756,9 +761,9 @@
     .flechaBottom{
         visibility: hidden;
     }
-    #fixedBottomNav{
+  .fixed-bottom-nav{
     }
-    #fixedBottomNav ul{
+  .fixed-bottom-nav ul{
         width: 50%;
     }
     .containerTarjetaBuscar{
@@ -793,7 +798,7 @@
     header .container_centro{
         width: 50%;
     }
-    header nav{
+    .header-main-nav ul{
         flex-flow: row nowrap;
     }
     #tools .container {
@@ -805,9 +810,9 @@
     .flechaBottom{
         visibility: hidden;
     }
-    #fixedBottomNav{
+  .fixed-bottom-nav{
     }
-    #fixedBottomNav ul{
+  .fixed-bottom-nav ul{
         width: 50%;
         margin: auto;
     }
@@ -845,7 +850,7 @@
     header .container_centro{
         width: 50%;
     }
-    header nav{
+    .header-main-nav ul{
         flex-flow: row nowrap;
     }
     #tools .container {
@@ -857,9 +862,9 @@
     .flechaBottom{
         visibility: hidden;
     }
-    #fixedBottomNav{
+  .fixed-bottom-nav{
     }
-    #fixedBottomNav ul{
+  .fixed-bottom-nav ul{
         width: 50%;
     }
     .containerTarjetaBuscar{

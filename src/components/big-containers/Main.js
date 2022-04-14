@@ -1,6 +1,5 @@
 import React from 'react'
-import {Comenzar} from '../static-sections/Comenzar'
-import {Tutorial} from '../static-sections/Tutorial'
+import {Comunidad} from '../static-sections/Comunidad'
 import {Contacto} from '../static-sections/Contacto'
 
 import { BottomNav } from '../navs/BottomNav'
@@ -8,10 +7,8 @@ import { BottomNav } from '../navs/BottomNav'
 export function Main(){
     return (
         <main>
-            <Comenzar />
-            <Tutorial />
+            <Comunidad />
             <Contacto />
-            <BottomNav />
         </main>
     )
 }

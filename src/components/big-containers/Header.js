@@ -1,5 +1,7 @@
 import React from 'react'
-import { ToolsNav } from '../navs/ToolsNav'
+import {Link} from 'react-router-dom'
+import { HeaderMainNav } from '../navs/HeaderMainNav'
+import { HeaderBottomNav } from '../navs/HeaderBottomNav'
 
 export function Header(){
     return (
@@ -9,13 +11,9 @@ export function Header(){
                     <h1 className="titulo">Lemonade</h1>
                 </div>
                 <p>Por productores, para productores...</p>
-                <nav>
-                    <a href="#empezar">Empezar</a>
-                    <a href="#tutorial">Tutorial</a>
-                    <a href="#contacto">Contacto</a>
-                </nav>
 
-                <ToolsNav />
+                <HeaderMainNav />
+                <HeaderBottomNav />
             </div>
         </header>
     )
