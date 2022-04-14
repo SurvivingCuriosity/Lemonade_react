@@ -1,9 +1,9 @@
 import React from 'react'
-import {Comenzar} from './Main/Comenzar'
-import {Tutorial} from './Main/Tutorial'
-import {Contacto} from './Main/Contacto'
-import Busqueda from './Busqueda/Busqueda'
-import { BottomNav } from './BottomNav'
+import {Comenzar} from '../static-sections/Comenzar'
+import {Tutorial} from '../static-sections/Tutorial'
+import {Contacto} from '../static-sections/Contacto'
+
+import { BottomNav } from '../navs/BottomNav'
 
 export function Main(){
     return (

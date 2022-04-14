@@ -58,7 +58,7 @@
   background: var(--color);
   }
   body{
-    background-color: var(--colorFondo);
+    background-color: var(--fondo2);
     color: var(--colorTexto);
     position: absolute;
     top: 0;
@@ -71,6 +71,10 @@
   /* ELEMENTOS SUELTOS */
   
   h1{
+    font-size: 10vw;
+    color: var(--color);
+  }
+  .titulo{
     font-size: 10vw;
     background-color: var(--colorTextoColor);
     color: var(--fondo);
@@ -162,7 +166,7 @@
     position: relative;
   }
   #empezar div{
-    width: 33%;
+    width: 55%;
     margin-bottom: 3em;
   }
   .container{
@@ -187,13 +191,26 @@
     display: flex;
     flex-flow: row wrap;
     gap: 2em;
-    padding: 2em;
+    padding: 1em;
     align-items: center;
     justify-content: space-around;
     position: relative;
     z-index: 4;
+    height: 120px;
   }
   /* FIN HEADER MAIN FOOTER */
+  /* PAGINAS HERRAMIENTAS */
+  .toolPage{
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    justify-content: center;
+  }
+  .footerStickTop{
+    min-height: calc(100vh - 120px);
+  }
+  /* FIN PAGINAS HERRAMIENTAS */
   /* FIXED NAVS */
   #fixedBottomNav, #fixedTopNav{
     width: -moz-available;
@@ -251,6 +268,19 @@
   }
   .svgInstagramCirculo{
     fill: var(--colorIconos);
+  }
+  #toolsNav{
+    font-size: 0.6em;
+    width: 90%;
+  }
+  #toolsNav ul{
+    display: flex;
+    flex-flow: column wrap;
+    gap: 2em;
+    align-items: center;
+  }
+  #toolsNav ul a{
+    color: var(--blanco);
   }
   /* FIN FIXED NAVS */
   /* CLASES APOYO */
@@ -583,13 +613,13 @@
   /* MEDIA QUERIES */
   /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
-    h1:after{
+    .titulo:after{
         content:" >600"
     }
     html{
         font-size: 0.75em;
     }
-    h1{
+    .titulo{
         font-size: 10vw;
     }
     .container{
@@ -605,13 +635,13 @@
   
   /* Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 600px) {
-    h1:after{
+    .titulo:after{
         content:" 600"
     }
     html{
         font-size: 0.8em;
     }
-    h1{
+    .titulo{
         font-size: 8vw;
     }
     .container{
@@ -639,13 +669,13 @@
   
   /* Medium devices (landscape tablets, 768px and up) */
   @media only screen and (min-width: 768px) {
-    h1:after{
+    .titulo:after{
         content:" 768"
     }
     html{
         font-size: 0.9em;
     }
-    h1{
+    .titulo{
         font-size: 7vw;
     }
     .container{
@@ -686,13 +716,13 @@
   
   /* Large devices (laptops/desktops, 992px and up) */
   @media only screen and (min-width: 992px) {
-    h1:after{
+    .titulo:after{
         content:" 992"
     }
     html{
         font-size: 1em;
     }
-    h1{
+    .titulo{
         font-size: 7vw;
     }
     .container{
@@ -738,13 +768,13 @@
   
   /* Extra large devices (large laptops and desktops, 1200px and up) */
   @media only screen and (min-width: 1200px) {
-    h1:after{
+    .titulo:after{
         content:" 1200"
     }
     html{
         font-size: 1em;
     }
-    h1{
+    .titulo{
         font-size: 5vw;
     }
     .container{
@@ -790,13 +820,13 @@
   } 
   
   @media only screen and (min-width: 1400px) {
-    h1:after{
+    .titulo:after{
         content:" 1400"
     }
     html{
         font-size: 1em;
     }
-    h1{
+    .titulo{
         font-size: 5vw;
     }
     .container{
