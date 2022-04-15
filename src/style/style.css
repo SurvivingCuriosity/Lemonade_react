@@ -478,7 +478,6 @@
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
-    max-width: 320px;
   }
   .busqueda-lista{
     display: flex;
@@ -544,6 +543,11 @@
     display: flex;
     flex-flow: row nowrap;
     gap: 1em;
+  }
+  .--tarjeta-right{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
   }
   
   .enlaceLeftTarjeta{

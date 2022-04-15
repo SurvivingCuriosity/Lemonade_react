@@ -47,3 +47,15 @@ export const buscarArtista = async (text, token) => {
 
     return response;
 };
+
+export const getAudioFeatures = async (id, token) => {
+    const response = axios(`https://api.spotify.com/v1/audio-features/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+token
+        },
+        method: 'GET'
+    })
+    return response;
+};

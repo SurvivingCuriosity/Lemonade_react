@@ -5,6 +5,7 @@ import Tarjeta from "./Busqueda/Tarjeta";
 import { getToken } from "../../API_calls/apiCalls";
 import { buscarArtista } from "../../API_calls/apiCalls";
 import { buscarCancion } from "../../API_calls/apiCalls";
+import { getAudioFeatures } from "../../API_calls/apiCalls";
 
 export function Busqueda(props){
     const {clickable, tipo, titulo} = props;
@@ -17,9 +18,21 @@ export function Busqueda(props){
     const [msgClass, setMsgClass] = React.useState("");
     const [resultado, setResultado] = React.useState([]);
 
+    let agregaDatos = async (lista, token) => {
+        lista.map((item)=>{
+            getAudioFeatures(item.id,token).then((res2)=>{
+                item.bpm = res2.data.tempo;
+                item.key = res2.data.key;
+                item.mode = res2.data.mode;
+            })
+            setResultado(lista);
+        })
+    }
+
     let handleSubmit = async (e) => {
         e.preventDefault();
-        if(text==""){
+        setText("");
+        if(text===""){
             //text input vacio
             setMsgClass("error");
             setMsg("No has introducido texto");
@@ -27,14 +40,13 @@ export function Busqueda(props){
             return;
         }else{
             //text input con texto
-            if(text==lastText){
+            if(text === lastText){
                 return;
-                //es el mismo texto que en la ultima busqueda
             }else{
                 try {
                     setLastText(text);
                     getToken().then((token)=>{
-                        let _token=token.data.access_token;
+                        let _token = token.data.access_token;
                         switch(tipo){
                             case "cancion":
                                 buscarCancion(text,_token)
@@ -47,8 +59,10 @@ export function Busqueda(props){
                                         }else{
                                             setMsg("Resultados obtenidos");
                                             setMsgClass("success");
-                                            setResultado(res.data.tracks.items)
+
+                                            agregaDatos(res.data.tracks.items,_token);
                                         }
+                                        // setResultado(res.data.tracks.items)
                                     })
                             break;
                             case "artista":
@@ -76,9 +90,9 @@ export function Busqueda(props){
         }
     };
 
-    React.useEffect(()=>{
-        console.log('resultado cambia');
-    },[resultado])
+    // React.useEffect(()=>{
+    //     console.log('resultado cambia');
+    // },[resultado])
 
 
     return(
@@ -107,7 +121,7 @@ export function Busqueda(props){
                                         songKey={item.key}
                                         songMode={item.mode}
                                         songBPM={item.bpm}
-                                        imgCancion={item.album.images[0].url}
+                                        imgCancion={(item.album.images[0]) ? (item.album.images[0].url) : null}
                                         nombreCancion={item.name}
                                         duracionCancion={item.duration_ms}
                                         link={item.external_urls.spotify}
@@ -118,7 +132,7 @@ export function Busqueda(props){
                                     <Tarjeta 
                                         key={item.id}
                                         clickable={clickable}
-                                        imgArtista={item.images[0].url}
+                                        imgArtista={(item.images[0]) ? (item.images[0].url) : null}
                                         nombreArtista={item.name}
                                         seguidoresArtista={item.followers.total}
                                         link={item.external_urls.spotify}
