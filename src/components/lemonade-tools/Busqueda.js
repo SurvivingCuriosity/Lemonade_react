@@ -7,31 +7,72 @@ import { buscarArtista } from "../../API_calls/apiCalls";
 import { buscarCancion } from "../../API_calls/apiCalls";
 
 export function Busqueda(props){
-    const {clickable, tipo} = props;
+    const {clickable, tipo, titulo} = props;
 
     const [text, setText] = React.useState("");
+    const [lastText, setLastText] = React.useState("");
+
+
+    const [msg, setMsg] = React.useState("Aquí aparecerán los resultados");
+    const [msgClass, setMsgClass] = React.useState("");
     const [resultado, setResultado] = React.useState([]);
 
     let handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('handlesubmit');
-        try {
-            getToken().then((token)=>{
-                switch(tipo){
-                    case "cancion":
-                        buscarCancion(text,token.data.access_token).then((res)=>{
-                            setResultado(res.data.tracks.items)
-                        })
-                    break;
-                    case "artista":
-                        buscarArtista(text,token.data.access_token).then((res)=>{
-                            setResultado(res.data.artists.items);
-                        })
-                    break;
+        if(text==""){
+            //text input vacio
+            setMsgClass("error");
+            setMsg("No has introducido texto");
+            setResultado([]);
+            return;
+        }else{
+            //text input con texto
+            if(text==lastText){
+                return;
+                //es el mismo texto que en la ultima busqueda
+            }else{
+                try {
+                    setLastText(text);
+                    getToken().then((token)=>{
+                        let _token=token.data.access_token;
+                        switch(tipo){
+                            case "cancion":
+                                buscarCancion(text,_token)
+                                    .then((res)=>{
+                                        if((res.data.tracks.items).length==0){
+                                            //busqueda bien pero no resultado
+                                            setMsg("No hay resultados para tu búsqueda");
+                                            setMsgClass("error");
+                                            setResultado([]);
+                                        }else{
+                                            setMsg("Resultados obtenidos");
+                                            setMsgClass("success");
+                                            setResultado(res.data.tracks.items)
+                                        }
+                                    })
+                            break;
+                            case "artista":
+                                buscarArtista(text,_token)
+                                    .then((res)=>{
+                                        if((res.data.artists.items).length==0){
+                                            //busqueda bien pero no resultado
+                                            setMsg("No hay resultados para tu búsqueda");
+                                            setMsgClass("error");
+                                            setResultado([]);
+                                        }else{
+                                            setMsg("Resultados obtenidos");
+                                            setMsgClass("success");
+                                            setResultado(res.data.artists.items)
+                                        }
+                                    })
+                            break;
+                        }
+                    })
+        
+                } catch (err) {
+                  console.log(err);
                 }
-            })
-        } catch (err) {
-          console.log(err);
+            }
         }
     };
 
@@ -42,7 +83,7 @@ export function Busqueda(props){
 
     return(
         <div className="busqueda-container">
-
+            <h2 className="busqueda-titulo">{titulo}</h2>
             <form onSubmit={handleSubmit} className="linea-flex-start">
                 <input
                     type="search"
@@ -54,9 +95,9 @@ export function Busqueda(props){
             </form>
 
             <ul className="busqueda-lista">
+                <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
                 {
                     resultado.map((item) => {
-                        // console.log(resultado);
                         switch(props.tipo){
                             case "cancion":
                                 return (
@@ -84,7 +125,6 @@ export function Busqueda(props){
                                     />
                                 );
                         }
-
                     })
                 }
             </ul>

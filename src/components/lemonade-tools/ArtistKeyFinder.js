@@ -11,6 +11,8 @@ export function ArtistKeyFinder(){
             
             <Busqueda 
                 tipo="artista"
+                titulo=""
+                clickable={false}
             />
         </div>
     )

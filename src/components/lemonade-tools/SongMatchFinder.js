@@ -12,10 +12,12 @@ export function SongMatchFinder(){
                 <Busqueda 
                     tipo="cancion"
                     clickable={true}
+                    titulo="1. Elige una canción"
                 />
                 <Busqueda 
                     tipo="artista"
                     clickable={true}
+                    titulo="2. Elige un artista"
                 />
             </div>
         </div>
