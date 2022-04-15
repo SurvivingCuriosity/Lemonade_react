@@ -207,6 +207,13 @@
     display: flex;
     flex-flow: column nowrap;
   }
+  .tool-wrapper{
+    margin: auto;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    justify-content: center;
+  }
   .footerStickTop{
     min-height: calc(100vh - 120px);
   }
@@ -468,6 +475,7 @@
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
+    max-width: 320px;
   }
   .busqueda-lista{
     display: flex;
@@ -492,14 +500,8 @@
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px black;
     font-size: 0.8em;
-    background-color: (rgba(0,0,0,0.5));
-    background-image: url("https://picsum.photos/400");
-    background-repeat: no-repeat;
-    background-position-x: 0;
-    background-position-y: 16;
-    background-blend-mode: multiply;
   }
-  .tarjeta:hover{
+  .clickable:hover{
     background-color: var(--fondo3);
     box-shadow: 0px 0px 10px 0px var(--fondo3);
     cursor:pointer;
