@@ -3,7 +3,10 @@ import { Busqueda } from "./Busqueda";
 
 export function SongMatchFinder(){
     let titulo = "Song Match Finder"
-    let descripcion = "Lorem ipsum"
+    let descripcion = "Obten una lista de canciones de un artista elegido, compatibles con la cancion introducida"
+
+
+    
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>

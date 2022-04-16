@@ -61,7 +61,6 @@ export default function (props){
         function getStringNota(notaInt) {
             switch (notaInt) {
                 case 0:
-                    console.log('devuelvo C');
                     return "C";
                 case 1:
                     return "C#";
@@ -92,7 +91,6 @@ export default function (props){
         function getStringEscala(escalaInt) {
             switch (escalaInt) {
                 case 0:
-                    console.log('devuelvo menor');
                     return "menor"
                 case 1:
                     return "mayor"

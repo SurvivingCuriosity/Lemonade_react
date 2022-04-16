@@ -199,13 +199,14 @@
     flex-flow: column wrap;
     align-content: center;
     justify-content: flex-start;
-    padding-top: 5em;
     align-items: center;
+    padding: 5em 1em 1em 0em;
   }
   .tool-container{
     gap: 1em;
     display: flex;
     flex-flow: column nowrap;
+    width: 95vw;
   }
   .tool-wrapper{
     margin: auto;
