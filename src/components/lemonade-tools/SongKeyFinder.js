@@ -15,7 +15,7 @@ export function SongKeyFinder(){
             <Busqueda 
                 tipo="cancion"
                 clickable={false}
-                titulo="Busca una cancion"
+                titulo="Elige una cancion"
             />
 
 

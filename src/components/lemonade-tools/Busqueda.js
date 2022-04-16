@@ -1,6 +1,7 @@
 import React from "react";
 
-import Tarjeta from "./Busqueda/Tarjeta";
+import TarjetaCancion from "./Busqueda/TarjetaCancion";
+import TarjetaArtista from "./Busqueda/TarjetaArtista";
 
 import { getToken } from "../../API_calls/apiCalls";
 import { buscarArtista } from "../../API_calls/apiCalls";
@@ -115,7 +116,7 @@ export function Busqueda(props){
                         switch(props.tipo){
                             case "cancion":
                                 return (
-                                    <Tarjeta 
+                                    <TarjetaCancion 
                                         key={item.id}
                                         clickable={clickable}
                                         songKey={item.key}
@@ -129,7 +130,7 @@ export function Busqueda(props){
                                 );
                             case "artista":
                                 return (
-                                    <Tarjeta 
+                                    <TarjetaArtista
                                         key={item.id}
                                         clickable={clickable}
                                         imgArtista={(item.images[0]) ? (item.images[0].url) : null}

@@ -1,46 +1,40 @@
 import React from "react";
-import icon_artist from '../../../images/tarjeta/icon_artist.svg'
-import icon_followers from '../../../images/tarjeta/icon_followers.svg'
 import icon_song from '../../../images/tarjeta/icon_song.svg'
+import icon_artist from '../../../images/tarjeta/icon_artist.svg'
 import icon_time from '../../../images/tarjeta/icon_time.svg'
 
 
 export default function (props){
     let tamanoImagen = '50'
     let tamanoIcono = '15'
-    
     let {
-        nombreArtista,
         nombreCancion,
         duracionCancion,
-        seguidoresArtista,
         songBPM,
         songKey,
         songMode,
-        imgArtista,
         imgCancion,
         clickable,
         link
     }=props;
     
-
+    //si no llega imagen, usamos la de por defecto
     if(imgCancion===null){
         imgCancion=icon_artist
     }
-    if(imgArtista===null){
-        imgArtista=icon_artist
-    }
+    //formateo
+    songKey = getStringNota(songKey);
+    songMode = getStringEscala(songMode);
+    duracionCancion = milisegundosATiempo(duracionCancion);
 
     return(
+        //si es clickable, le anado la clase clickable (efectos para el hover)
         <div className={`tarjeta ${clickable ? "clickable" : ""}`}>
             <div className="--tarjeta-left">
                 {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
-                {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
                     {(nombreCancion) && <p className="--tarjeta-dato1"><img src={icon_song} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion)}</p>}
-                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
-                    {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} style={{width: tamanoIcono + 'px'}}/>{milisegundosATiempo(duracionCancion)}</p>}
-                    {(seguidoresArtista) && <p className="--tarjeta-dato1"><img src={icon_followers} style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
+                    {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} style={{width: tamanoIcono + 'px'}}/>{duracionCancion}</p>}
                 </div>
 
             </div>
@@ -49,22 +43,25 @@ export default function (props){
                 <a href={link}>Ver en Spotify</a>
                 <div>
                     {(songBPM) && <p>{Math.round(songBPM)}</p>}
-                    {(songKey) && <p className="linea-flex-start">{`${getStringNota(songKey)} ${getStringEscala(songMode)}`}</p>}
+                    {(songKey) && <p className="linea-flex-start">{`${songKey} ${songMode}`}</p>}
                 </div>
             </div>
         </div>
     )
 
-        // FUNCIONES DE FORMATEO DE INFORMACION
+//==========FUNCIONES DE FORMATEO DE INFORMACION
+        //1231159->3:40
         function milisegundosATiempo(ms) {
-            var minutes = Math.floor(ms / 60000);
-            var seconds = ((ms % 60000) / 1000).toFixed(0);
+            let minutes = Math.floor(ms / 60000);
+            let seconds = ((ms % 60000) / 1000).toFixed(0);
             return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
         }
-    
+
+        //0->C, 1->C#
         function getStringNota(notaInt) {
             switch (notaInt) {
                 case 0:
+                    console.log('devuelvo C');
                     return "C";
                 case 1:
                     return "C#";
@@ -91,9 +88,11 @@ export default function (props){
             }
         }
 
+        //0-> menor
         function getStringEscala(escalaInt) {
             switch (escalaInt) {
                 case 0:
+                    console.log('devuelvo menor');
                     return "menor"
                 case 1:
                     return "mayor"
@@ -102,6 +101,7 @@ export default function (props){
             }
         }
 
+        //Esto es un nombre largo -> Esto es...
         function truncaNombreLargo(cadena){
             if (cadena.length > 15) {
                 cadena = cadena.substring(0, 15) + "...";
@@ -109,6 +109,7 @@ export default function (props){
             return cadena;
         }
 
+        //1000000 -> 1.000.000
         function numberWithCommas(x) {
             let parts = x.toString().split(".");
             parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
