@@ -9,15 +9,21 @@ import { buscarCancion } from "../../API_calls/apiCalls";
 import { getAudioFeatures } from "../../API_calls/apiCalls";
 
 export function Busqueda(props){
-    const {clickable, tipo, titulo} = props;
+    const {isClickable, tipo, titulo, parentCallback} = props;
 
+//texto buscado por el usuario y el ultimo texto valido
     const [text, setText] = React.useState("");
     const [lastText, setLastText] = React.useState("");
 
-
+//mensajes de error y la clase (mostrar errores en rojo, warnings etc)
     const [msg, setMsg] = React.useState("Aquí aparecerán los resultados");
     const [msgClass, setMsgClass] = React.useState("");
+
+//array de resultados obtenidos tras la busqueda
     const [resultado, setResultado] = React.useState([]);
+
+//un json que representa la eleccion del usuario
+    const [seleccion, setSeleccion] = React.useState({});
 
     let agregaDatos = async (lista, token) => {
         lista.map((item)=>{
@@ -26,8 +32,12 @@ export function Busqueda(props){
                 item.key = res2.data.key;
                 item.mode = res2.data.mode;
             })
-            setResultado(lista);
+            //anado tiempo de espera para que se muestre el bpm y la escala
+            window.setTimeout(()=>{
+                setResultado(lista);
+            },1000)
         })
+        return lista;
     }
 
     let handleSubmit = async (e) => {
@@ -42,6 +52,7 @@ export function Busqueda(props){
         }else{
             //text input con texto
             if(text === lastText){
+                setLastText("");
                 return;
             }else{
                 try {
@@ -91,9 +102,9 @@ export function Busqueda(props){
         }
     };
 
-    // React.useEffect(()=>{
-    //     console.log('resultado cambia');
-    // },[resultado])
+    React.useEffect(()=>{
+        console.log('resultado cambia');
+    },[resultado])
 
 
     return(
@@ -118,25 +129,18 @@ export function Busqueda(props){
                                 return (
                                     <TarjetaCancion 
                                         key={item.id}
-                                        clickable={clickable}
-                                        songKey={item.key}
-                                        songMode={item.mode}
-                                        songBPM={item.bpm}
-                                        imgCancion={(item.album.images[0]) ? (item.album.images[0].url) : null}
-                                        nombreCancion={item.name}
-                                        duracionCancion={item.duration_ms}
-                                        link={item.external_urls.spotify}
+                                        isClickable={isClickable}
+                                        selectionCallback={handleEleccion}
+                                        jsonData={item}
                                     />
                                 );
                             case "artista":
                                 return (
                                     <TarjetaArtista
                                         key={item.id}
-                                        clickable={clickable}
-                                        imgArtista={(item.images[0]) ? (item.images[0].url) : null}
-                                        nombreArtista={item.name}
-                                        seguidoresArtista={item.followers.total}
-                                        link={item.external_urls.spotify}
+                                        isClickable={isClickable}
+                                        selectionCallback={handleEleccion}
+                                        jsonData={item}
                                     />
                                 );
                         }
@@ -145,4 +149,9 @@ export function Busqueda(props){
             </ul>
         </div>
     )
+    //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
+    function handleEleccion(userSelection){
+        setResultado([userSelection]);
+        parentCallback(userSelection);
+    }
 }

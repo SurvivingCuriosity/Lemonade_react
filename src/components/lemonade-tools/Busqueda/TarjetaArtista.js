@@ -9,15 +9,23 @@ export default function (props){
     let tamanoIcono = '15'
     
     let {
-        nombreArtista,
-        seguidoresArtista,
-        imgArtista,
         clickable,
-        link
+        selectionCallback,
+        jsonData
     }=props;
+
+    let imgArtista=(jsonData.images[0]) ? (jsonData.images[0].url) : null
+    let nombreArtista=jsonData.name
+    let seguidoresArtista=jsonData.followers.total
+    let link=jsonData.external_urls.spotify
     
+//cuando usuario hace click sobre una tarjeta se llama al callback del padre pasandole el json
+    function handleClick(){
+        selectionCallback(jsonData);
+    }
+
     return(
-        <div className={`tarjeta ${clickable ? "clickable" : ""}`}>
+        <div className={`tarjeta ${clickable ? "clickable" : ""}`} onClick={clickable ? handleClick : undefined }>
             <div className="--tarjeta-left">
                 {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
@@ -33,7 +41,8 @@ export default function (props){
         </div>
     )
 
-    
+        
+
         function truncaNombreLargo(cadena){
             if (cadena.length > 15) {
                 cadena = cadena.substring(0, 15) + "...";

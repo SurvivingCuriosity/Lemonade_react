@@ -3,12 +3,19 @@ import Select from 'react-select'
 
 
 export function KeyScaleSelect(props){
-
-    const [keySelected,setKeySelected]= React.useState("");
-    const [keyLabelSelected,setKeyLabelSelected]= React.useState("");
-    const [scaleSelected,setScaleSelected] = React.useState("");
-
     const {titulo} = props;
+
+//nota seleccionada y su label keySelected=0 keySelectedLabel="C"
+    const [keySelected,setKeySelected]= React.useState(-1);
+    const [keySelectedLabel,setKeySelectedLabel]= React.useState("");
+
+//escala seleccionada y su label scaleSelected=0 scaleSelected="menor"
+    const [scaleSelected,setScaleSelected] = React.useState(-1);
+    const [scaleSelectedLabel,setScaleSelectedLabel] = React.useState("");
+
+//objeto que representa la nota y la escala
+    const [seleccionFinal, setSeleccionFinal] = React.useState(props.seleccion);
+
 
     const optionsKey = [
         {
@@ -74,18 +81,7 @@ export function KeyScaleSelect(props){
         }
     ];
 
-    const handleChangeKey = (e) =>{
-        setKeySelected(e.value)
-        setKeyLabelSelected(e.label)
-    }
-    const handleChangeScale = (e) =>{
-        setScaleSelected(e.value)
-    }
-
     const customStyles = {
-        container: (provided) => ({
-            ...provided,
-        }),
         option: (provided) => ({
           ...provided,
           borderBottom: '1px solid var(--colorTextoColor)',
@@ -96,7 +92,8 @@ export function KeyScaleSelect(props){
           ...provided,
           marginTop: "5%",
           color: 'var(--colorTextoColor)',
-          backgroundColor: 'var(--fondo)'
+          backgroundColor: 'var(--fondo)',
+          border:'1px solid var(--color)'
         }),
         menu: (provided) => ({
             ...provided,
@@ -108,32 +105,66 @@ export function KeyScaleSelect(props){
         placeholder:(provided) => ({
             ...provided,
             color: 'var(--colorTextoColor)',
-        })
+        }),
+        // multiValue:(provided) => ({
+        //     ...provided,
+        //     color: 'var(--colorTextoColor)',
+        //     backgroundColor: 'var(--fondo2)'
+        // }),
+        // multiValueLabel:(provided) => ({
+        //     ...provided,
+        //     color: 'var(--colorTextoColor)',
+        // }),
+        singleValue:(provided) => ({
+            ...provided,
+            color: 'var(--colorTextoColor)',
+        }),
     }
+
+    const handleChangeKey = (e) =>{
+        setKeySelected(e.value)
+        setKeySelectedLabel(e.label)
+    }
+    const handleChangeScale = (e) =>{
+        setScaleSelected(e.value)
+        setScaleSelectedLabel(e.label)
+    }
+
+    React.useEffect(()=>{
+        //si se han seleccionado nota y escala le paso los datos al padre
+        if(keySelected>-1 && scaleSelected>-1){
+            props.parentCallback({
+                nota : keySelected,
+                escala: scaleSelected,
+                notaLabel: keySelectedLabel,
+                escalaLabel: scaleSelectedLabel,
+            });
+        }
+    },[keySelected,scaleSelected])
     
     return(
         <div className="busqueda-container">
             <h2 className="busqueda-titulo">{titulo}</h2>
             <div className="linea-flex-center">
                 <Select
-                    isMulti
-                    placeholder={"Introduce nota(s)"}
-                    isSearchable={false}
-                    value={keySelected}
-                    options={optionsKey}
+                    isSearchable={false} //no se puede buscar
+                    options={optionsKey} //contiene pares value:label para rellenar las opciones
+                    menuShouldScrollIntoView //cuando se abren las opciones hace scroll hacia abajo
+                    placeholder={keySelected>-1 ? keySelectedLabel : "Introduce nota"}
                     styles = {customStyles}
                     onChange={handleChangeKey}
                 />
                 <Select
-                    isMulti
-                    placeholder={"Introduce escala(s)"}
                     isSearchable={false}
-                    value={scaleSelected}
                     options={optionsScale}
+                    menuShouldScrollIntoView
+                    placeholder={(scaleSelected>-1) ? scaleSelectedLabel : "Introduce escala"}
                     styles = {customStyles}
                     onChange={handleChangeScale}
                 />
             </div>
         </div>
     )
+    
+
 }

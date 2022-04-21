@@ -5,11 +5,28 @@ import { KeyScaleSelect } from "./KeyScaleSelect";
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
-
-    const [seleccionArtista, setSeleccionArtista] = React.useState([]);
-    const [seleccionNota, setSeleccionNota] = React.useState([]);
-
     
+    const [textoInformativo, setTextoInformativo] = React.useState("");
+    
+    const [seleccionArtista, setSeleccionArtista] = React.useState({});
+    const [objetoNotaEscala, setObjetoNotaEscala] = React.useState({});
+
+    //haySeleccion es un booleano que indica si el usuario ha elegido artista y nota
+    //se utiliza para habilitar o deshabilitar el boton final de buscar
+    const [haySeleccion, setHaySeleccion] = React.useState(false);
+
+    //esta funcion se ejecuta cada vez que seleccionArtista o objetoNotaEscala cambian su valor
+    React.useEffect(()=>{
+        //compruebo que tienen valor preguntando por una propiedad que contienen
+        if(seleccionArtista.id && objetoNotaEscala.nota){
+            setHaySeleccion(true);
+            console.log('esta');
+            setTextoInformativo(`Buscando canciones de ${seleccionArtista.name} en ${objetoNotaEscala.notaLabel} ${objetoNotaEscala.escalaLabel}`)
+        }else{
+            setHaySeleccion(false);
+        }
+        
+    },[seleccionArtista,objetoNotaEscala])
 
     return(
         <div className="tool-container">
@@ -20,11 +37,23 @@ export function ArtistKeyFinder(){
                 tipo="artista"
                 titulo="1. Elige un artista"
                 clickable={true}
+                callbackEleccion={userSelectsArtist}
             />
             <KeyScaleSelect 
-                clickable={false}
                 titulo="2. Elige una nota y escala"
+                seleccion={objetoNotaEscala}
+                callbackEleccion = {userSelectsScale}
             />
+            <p>{textoInformativo}</p>
         </div>
     )
+
+    //funcion que se ejecuta cuando el usuario rellena los <ReactSelect /> del componente <KeyScaleSelect />
+    function userSelectsScale(objNotaEscala){
+        setObjetoNotaEscala(objNotaEscala);
+    }
+    //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
+    function userSelectsArtist(artistSelected){
+        setSeleccionArtista(artistSelected);
+    }
 }

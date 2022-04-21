@@ -5,19 +5,24 @@ import icon_time from '../../../images/tarjeta/icon_time.svg'
 
 
 export default function (props){
-    let tamanoImagen = '50'
-    let tamanoIcono = '15'
-    let {
-        nombreCancion,
-        duracionCancion,
-        songBPM,
-        songKey,
-        songMode,
-        imgCancion,
+    const tamanoImagen = '50'
+    const tamanoIcono = '15'
+
+    const {
         clickable,
-        link
+        selectionCallback,
+        jsonData
     }=props;
-    
+
+    //extraigo los datos que quiero mostrar del json
+    let songKey=jsonData.key
+    let songMode=jsonData.mode
+    let songBPM=jsonData.bpm
+    let imgCancion=(jsonData.album.images[0]) ? (jsonData.album.images[0].url) : null
+    let nombreCancion=jsonData.name
+    let duracionCancion=jsonData.duration_ms
+    let link=jsonData.external_urls.spotify
+
     //si no llega imagen, usamos la de por defecto
     if(imgCancion===null){
         imgCancion=icon_artist
@@ -29,7 +34,7 @@ export default function (props){
 
     return(
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta ${clickable ? "clickable" : ""}`}>
+        <div className={`tarjeta ${clickable ? "clickable" : ""}`} onClick={clickable ? selectionCallback.bind(jsonData) : undefined }>
             <div className="--tarjeta-left">
                 {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
