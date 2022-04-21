@@ -18,7 +18,9 @@ export function ArtistKeyFinder(){
     //esta funcion se ejecuta cada vez que seleccionArtista o objetoNotaEscala cambian su valor
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
-        if(seleccionArtista.id && objetoNotaEscala.nota){
+        if(seleccionArtista.id && objetoNotaEscala.nota>-1){
+            console.log(seleccionArtista.id);
+            console.log(objetoNotaEscala.nota);
             setHaySeleccion(true);
             console.log('esta');
             setTextoInformativo(`Buscando canciones de ${seleccionArtista.name} en ${objetoNotaEscala.notaLabel} ${objetoNotaEscala.escalaLabel}`)
@@ -36,13 +38,13 @@ export function ArtistKeyFinder(){
             <Busqueda 
                 tipo="artista"
                 titulo="1. Elige un artista"
-                clickable={true}
-                callbackEleccion={userSelectsArtist}
+                isClickable={true}
+                parentCallback={userSelectsArtist}
             />
             <KeyScaleSelect 
                 titulo="2. Elige una nota y escala"
                 seleccion={objetoNotaEscala}
-                callbackEleccion = {userSelectsScale}
+                parentCallback = {userSelectsScale}
             />
             <p>{textoInformativo}</p>
         </div>
@@ -50,10 +52,12 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta cuando el usuario rellena los <ReactSelect /> del componente <KeyScaleSelect />
     function userSelectsScale(objNotaEscala){
+        console.log(objNotaEscala);
         setObjetoNotaEscala(objNotaEscala);
     }
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
+        console.log(artistSelected);
         setSeleccionArtista(artistSelected);
     }
 }

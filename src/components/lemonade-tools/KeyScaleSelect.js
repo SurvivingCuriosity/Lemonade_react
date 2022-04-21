@@ -12,9 +12,9 @@ export function KeyScaleSelect(props){
 //escala seleccionada y su label scaleSelected=0 scaleSelected="menor"
     const [scaleSelected,setScaleSelected] = React.useState(-1);
     const [scaleSelectedLabel,setScaleSelectedLabel] = React.useState("");
-
+    
 //objeto que representa la nota y la escala
-    const [seleccionFinal, setSeleccionFinal] = React.useState(props.seleccion);
+    const [seleccion, setSeleccion] = React.useState(props.seleccion);
 
 
     const optionsKey = [
@@ -122,10 +122,12 @@ export function KeyScaleSelect(props){
     }
 
     const handleChangeKey = (e) =>{
+        console.log('key cambia a '+e.value);
         setKeySelected(e.value)
         setKeySelectedLabel(e.label)
     }
     const handleChangeScale = (e) =>{
+        console.log('scale cambia a '+e.value);
         setScaleSelected(e.value)
         setScaleSelectedLabel(e.label)
     }
@@ -133,6 +135,8 @@ export function KeyScaleSelect(props){
     React.useEffect(()=>{
         //si se han seleccionado nota y escala le paso los datos al padre
         if(keySelected>-1 && scaleSelected>-1){
+            console.log("Key final: "+keySelected);
+            console.log('Scale final:'+scaleSelected);
             props.parentCallback({
                 nota : keySelected,
                 escala: scaleSelected,
@@ -153,6 +157,7 @@ export function KeyScaleSelect(props){
                     placeholder={keySelected>-1 ? keySelectedLabel : "Introduce nota"}
                     styles = {customStyles}
                     onChange={handleChangeKey}
+                    setValue={-1}
                 />
                 <Select
                     isSearchable={false}
@@ -161,6 +166,7 @@ export function KeyScaleSelect(props){
                     placeholder={(scaleSelected>-1) ? scaleSelectedLabel : "Introduce escala"}
                     styles = {customStyles}
                     onChange={handleChangeScale}
+                    setValue={-1}
                 />
             </div>
         </div>

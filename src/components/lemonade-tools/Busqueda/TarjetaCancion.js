@@ -9,7 +9,7 @@ export default function (props){
     const tamanoIcono = '15'
 
     const {
-        clickable,
+        isClickable,
         selectionCallback,
         jsonData
     }=props;
@@ -34,7 +34,7 @@ export default function (props){
 
     return(
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta ${clickable ? "clickable" : ""}`} onClick={clickable ? selectionCallback.bind(jsonData) : undefined }>
+        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? selectionCallback.bind(jsonData) : undefined }>
             <div className="--tarjeta-left">
                 {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">

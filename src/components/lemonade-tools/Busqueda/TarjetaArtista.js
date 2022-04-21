@@ -9,7 +9,7 @@ export default function (props){
     let tamanoIcono = '15'
     
     let {
-        clickable,
+        isClickable,
         selectionCallback,
         jsonData
     }=props;
@@ -25,7 +25,7 @@ export default function (props){
     }
 
     return(
-        <div className={`tarjeta ${clickable ? "clickable" : ""}`} onClick={clickable ? handleClick : undefined }>
+        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleClick : undefined }>
             <div className="--tarjeta-left">
                 {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
