@@ -59,3 +59,17 @@ export const getAudioFeatures = async (id, token) => {
     })
     return response;
 };
+
+export const getArtistTopTracks = async (token) => {
+
+    const response = axios(`https://api.spotify.com/v1/artists/4q3ewBCX7sLwd24euuV69X/albums/`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+token
+        },
+        method: 'GET'
+    })
+    console.log(response);
+    return response;
+};

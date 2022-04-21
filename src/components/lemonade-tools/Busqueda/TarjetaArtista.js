@@ -23,6 +23,9 @@ export default function (props){
     function handleClick(){
         selectionCallback(jsonData);
     }
+    React.useEffect(()=>{
+        
+    },[])
 
     return(
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleClick : undefined }>

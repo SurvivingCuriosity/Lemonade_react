@@ -28,9 +28,9 @@ export default function (props){
         imgCancion=icon_artist
     }
     //formateo
-    songKey = getStringNota(songKey);
-    songMode = getStringEscala(songMode);
-    duracionCancion = milisegundosATiempo(duracionCancion);
+    songKey = getStringFromNota(songKey);
+    songMode = getStringFromEscala(songMode);
+    duracionCancion = milisegundosAString(duracionCancion);
 
     return(
         //si es clickable, le anado la clase clickable (efectos para el hover)
@@ -56,14 +56,14 @@ export default function (props){
 
 //==========FUNCIONES DE FORMATEO DE INFORMACION
         //1231159->3:40
-        function milisegundosATiempo(ms) {
+        function milisegundosAString(ms) {
             let minutes = Math.floor(ms / 60000);
             let seconds = ((ms % 60000) / 1000).toFixed(0);
             return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
         }
 
         //0->C, 1->C#
-        function getStringNota(notaInt) {
+        function getStringFromNota(notaInt) {
             switch (notaInt) {
                 case 0:
                     return "C";
@@ -93,7 +93,7 @@ export default function (props){
         }
 
         //0-> menor
-        function getStringEscala(escalaInt) {
+        function getStringFromEscala(escalaInt) {
             switch (escalaInt) {
                 case 0:
                     return "menor"

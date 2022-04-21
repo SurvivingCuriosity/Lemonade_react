@@ -9,15 +9,23 @@ import { buscarCancion } from "../../API_calls/apiCalls";
 import { getAudioFeatures } from "../../API_calls/apiCalls";
 
 export function Busqueda(props){
-    const {isClickable, tipo, titulo, parentCallback} = props;
+    const MENSAJE_INIT="Aquí aparecerán los resultados "
+    const MENSAJE_NO_TEXTO="No has introducido texto."
+    const MENSAJE_SELECCION="Has elegido: "
+    const MENSAJE_NO_RESULTADOS="No hay resultados para tu búsqueda."
+    const MENSAJE_RESULTADOS="Resultados obtenidos: "
+
+    const {tipo, titulo, parentCallback, parentClickable} = props;
 
 //texto buscado por el usuario y el ultimo texto valido
     const [text, setText] = React.useState("");
     const [lastText, setLastText] = React.useState("");
 
 //mensajes de error y la clase (mostrar errores en rojo, warnings etc)
-    const [msg, setMsg] = React.useState("Aquí aparecerán los resultados");
+    const [msg, setMsg] = React.useState(MENSAJE_INIT);
     const [msgClass, setMsgClass] = React.useState("");
+    
+    const [isClickable, setIsClickable] = React.useState(true);
 
 //array de resultados obtenidos tras la busqueda
     const [resultado, setResultado] = React.useState([]);
@@ -42,12 +50,11 @@ export function Busqueda(props){
 
     let handleSubmit = async (e) => {
         e.preventDefault();
-        setText("");
+        
         if(text===""){
             //text input vacio
             setMsgClass("error");
-            setMsg("No has introducido texto");
-            setResultado([]);
+            setMsg(MENSAJE_NO_TEXTO);
             return;
         }else{
             //text input con texto
@@ -56,20 +63,19 @@ export function Busqueda(props){
                 return;
             }else{
                 try {
-                    setLastText(text);
                     getToken().then((token)=>{
                         let _token = token.data.access_token;
+                        setLastText(text);
                         switch(tipo){
                             case "cancion":
                                 buscarCancion(text,_token)
                                     .then((res)=>{
                                         if((res.data.tracks.items).length==0){
                                             //busqueda bien pero no resultado
-                                            setMsg("No hay resultados para tu búsqueda");
+                                            setMsg(MENSAJE_NO_RESULTADOS);
                                             setMsgClass("error");
-                                            setResultado([]);
                                         }else{
-                                            setMsg("Resultados obtenidos");
+                                            setMsg(MENSAJE_RESULTADOS);
                                             setMsgClass("success");
 
                                             agregaDatos(res.data.tracks.items,_token);
@@ -84,7 +90,6 @@ export function Busqueda(props){
                                             //busqueda bien pero no resultado
                                             setMsg("No hay resultados para tu búsqueda");
                                             setMsgClass("error");
-                                            setResultado([]);
                                         }else{
                                             setMsg("Resultados obtenidos");
                                             setMsgClass("success");
@@ -102,8 +107,23 @@ export function Busqueda(props){
         }
     };
 
+//se ejecuta cada vez que la lista de resultados cambia 
     React.useEffect(()=>{
-        console.log('resultado cambia');
+        //parentClickable es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
+        if(parentClickable==false){
+            setIsClickable(false);
+        }else{
+            if(resultado.length==1){
+                //Ha elegido
+                setMsgClass("success");
+                setMsg(MENSAJE_SELECCION);
+                setIsClickable(false);
+            }else{
+                //No ha elegido
+                setIsClickable(true);
+            }
+        }
+        
     },[resultado])
 
 
@@ -123,7 +143,9 @@ export function Busqueda(props){
             <ul className="busqueda-lista">
                 <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
                 {
+                    
                     resultado.map((item) => {
+                        
                         switch(props.tipo){
                             case "cancion":
                                 return (
@@ -151,6 +173,7 @@ export function Busqueda(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
+        
         setResultado([userSelection]);
         parentCallback(userSelection);
     }

@@ -1,15 +1,22 @@
 import React from "react";
 import { Busqueda } from "./Busqueda";
 import { KeyScaleSelect } from "./KeyScaleSelect";
+import { CustomButton } from "../custom-components/CustomButton";
+
+import { getToken } from "../../API_calls/apiCalls";
+import { getArtistTopTracks } from "../../API_calls/apiCalls";
 
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
     
-    const [textoInformativo, setTextoInformativo] = React.useState("");
+    const [textoInformativo, setTextoInformativo] = React.useState("Rellena los campos para activar el botón");
     
     const [seleccionArtista, setSeleccionArtista] = React.useState({});
     const [objetoNotaEscala, setObjetoNotaEscala] = React.useState({});
+    
+    //determina si las tarjeta es clickable (una vez q eliges deja de ser clickable y cambia textoInformativo)
+    const [isClickable, setIsClickable] = React.useState(true);
 
     //haySeleccion es un booleano que indica si el usuario ha elegido artista y nota
     //se utiliza para habilitar o deshabilitar el boton final de buscar
@@ -19,17 +26,39 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(seleccionArtista.id && objetoNotaEscala.nota>-1){
-            console.log(seleccionArtista.id);
-            console.log(objetoNotaEscala.nota);
             setHaySeleccion(true);
-            console.log('esta');
             setTextoInformativo(`Buscando canciones de ${seleccionArtista.name} en ${objetoNotaEscala.notaLabel} ${objetoNotaEscala.escalaLabel}`)
+            setIsClickable(false);
         }else{
             setHaySeleccion(false);
         }
-        
     },[seleccionArtista,objetoNotaEscala])
+    
+    let handleClickFinal = (e) =>{
+        e.preventDefault();
+        
+                try {
+                    getToken().then((token)=>{
 
+                        let _token = token.data.access_token;
+                        getArtistTopTracks(_token)
+                            .then((res)=>{
+                                console.log(res);
+                                if((res.data.tracks.items).length==0){
+                                    //busqueda bien pero no resultado
+                                }else{
+
+                                }
+                                // setResultado(res.data.tracks.items)
+                            })
+
+                        
+                    })
+        
+                } catch (err) {
+                  console.log(err);
+                }
+    };
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
@@ -38,7 +67,7 @@ export function ArtistKeyFinder(){
             <Busqueda 
                 tipo="artista"
                 titulo="1. Elige un artista"
-                isClickable={true}
+                isClickable={isClickable}
                 parentCallback={userSelectsArtist}
             />
             <KeyScaleSelect 
@@ -46,18 +75,27 @@ export function ArtistKeyFinder(){
                 seleccion={objetoNotaEscala}
                 parentCallback = {userSelectsScale}
             />
-            <p>{textoInformativo}</p>
+
+            <p className="textoInformativoPrevioBusqueda">{textoInformativo}</p>
+            <CustomButton 
+                texto="Buscar"
+                disabled={!haySeleccion}
+                onClickCallback={handleClickFinal}
+            />
+
         </div>
     )
 
     //funcion que se ejecuta cuando el usuario rellena los <ReactSelect /> del componente <KeyScaleSelect />
     function userSelectsScale(objNotaEscala){
-        console.log(objNotaEscala);
         setObjetoNotaEscala(objNotaEscala);
     }
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
-        console.log(artistSelected);
         setSeleccionArtista(artistSelected);
     }
+
+
+
+    
 }
