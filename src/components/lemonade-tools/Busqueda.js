@@ -131,19 +131,27 @@ export function Busqueda(props){
         <div className="busqueda-container">
             <h2 className="busqueda-titulo">{titulo}</h2>
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                <input
-                    type="search"
-                    value={text}
-                    placeholder={`Introduce ${props.tipo}...`}
-                    onChange={(e) => setText(e.target.value)}
-                />
-                <button type="submit" className="busqueda-boton-buscar boton">Buscar</button>
+                <span className="input_and_button">
+                    <input
+                        type="search"
+                        value={text}
+                        placeholder={`Introduce ${props.tipo}...`}
+                        onChange={(e) => setText(e.target.value)}
+                    />
+                    <button 
+                        type="submit" 
+                        className="busqueda-boton-buscar boton"
+                        disabled={text=="" ? true : false}
+                        
+                        >Buscar
+                    </button>
+                </span>
+
             </form>
 
-            <ul className="busqueda-lista">
                 <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            <ul className="busqueda-lista">
                 {
-                    
                     resultado.map((item) => {
                         
                         switch(props.tipo){

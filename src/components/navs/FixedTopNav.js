@@ -2,14 +2,13 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import lemon from '../../images/lemon.svg'
 export function FixedTopNav(){
-    const tamanoImagen = '35';
+    const tamanoImagen = '25';
     return (
-        <div className="fixed-top-nav">
-            <div>
-                <Link to="/">
-                    <img src={lemon} style={{width: tamanoImagen + 'px'}}/>
-                </Link>
-            </div>
+        <div className="limon_lemonade_enlace">
+            <Link to="/" className="linea-flex-start">
+                <img src={lemon} style={{width: tamanoImagen + 'px'}}/>
+                <h1 className="tituloTopNav">Lemonade</h1>
+            </Link>
         </div>
 
     )

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function ArtistKeyFinder(){
+export function LoginPage(){
     return(
         <div className="toolPage">
             <p>Artist key finder</p>

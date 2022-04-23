@@ -83,8 +83,16 @@ html{
     color: var(--fondo);
   }
   h1.tool-titulo{
+    text-align: center;
     font-size: 3em;
     color: var(--colorTextoColor);
+  }
+  h1.tituloTopNav{
+    color: var(--blanco3);
+    font-size: 1.75em;
+  }
+  .tool-description{
+    text-align: center;
   }
   h2{
     padding: 0.25em;
@@ -206,6 +214,10 @@ html{
 
   /* FIN HEADER MAIN FOOTER */
   /* PAGINAS HERRAMIENTAS */
+  .limon_lemonade_enlace{
+    padding: 1em;
+    width: 100%;
+  }
   .toolPage{
     min-height: calc(100vh - 120px);
     display: flex;
@@ -213,15 +225,15 @@ html{
     align-content: center;
     justify-content: flex-start;
     align-items: center;
-    padding: 5em 1em 1em 0em;
   }
   .tool-container{
-    padding: 1em;
     gap: 1em;
     display: flex;
     flex-flow: column nowrap;
-    width: 95vw;
+    width: 100vw;
+    margin: 3em auto;
   }
+
   .tool-wrapper{
     margin: auto;
     display: flex;
@@ -253,6 +265,8 @@ html{
     position: absolute;
     z-index: 5;
     flex-flow: row nowrap;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    gap: 0.5em;
   }
 .fixed-bottom-nav ul{
     border: 1px solid var(--colorTextoColor);
@@ -342,19 +356,22 @@ html{
         border-radius: 5px;
         border: 1px solid var(--colorTextoColor);
         align-self: center;
+        height: 100%;
     }
     .textoInformativoPrevioBusqueda{
       text-align: center;
       padding: 3em;
+      display: none;
     }
     .botonFinal{
-      background-color: var(--color);
-      color: var(--fondo);
-      padding: 0.75em;
+      background-color: var(--negro2);
+      color: var(--colorTextoColor);
+      padding: 0.75em 1.75em 0.75em 1.75em;
       font-size: 1.75em;
-      border: 2px solid var(--fondo);
-      box-shadow: 10px 5px 5px black;
-      margin-bottom: 2em;
+      border: 2px solid var(--colorTextoColor);
+      box-shadow: 0px 0px 30px 15px var(--fondo2);
+      margin: 0.5em;
+      border-radius: 20px;
     }
     .busqueda-boton-buscar{
       padding: 0.2em 0.9em;
@@ -434,8 +451,14 @@ html{
     }
     .boton:disabled{
       background-color: var(--fondo2);
-      border: 1px solid var(--error);
-      color: var(--error);
+      border: 1px solid var(--blanco3);
+      color: var(--blanco3);
+    }
+    .input_and_button{
+      height: 40px;
+      display: flex;
+      width: 100%;
+      gap: 1em;
     }
     .boton:not(disabled){
 
@@ -455,9 +478,9 @@ html{
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         width: 100%;
-        gap: 1em;
+        gap: 0.5em;
     }
     .linea-flex-between{
         display: flex;
@@ -542,13 +565,13 @@ html{
   .busqueda-lista{
     display: flex;
     flex-flow: column nowrap;
-    gap: 1em;
+    gap: 0.5em;
     width: 100%;
-    padding: 1em;
+    padding: 0.5em;
     background-color: var(--fondo);
     opacity: 0.7;
     border-radius: 10px;
-    min-height: 15vh;
+    min-height: 10vh;
   }
   .busqueda-titulo{
     color: var(--blanco3);
@@ -717,6 +740,7 @@ html{
     input[type="search"], input[type="text"], input[type="password"], input[type="email"]{
         width: 100%;
     }
+
   }
   
   /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -743,10 +767,11 @@ html{
     .flechaBottom{
         visibility: hidden;
     }
-  .fixed-bottom-nav ul{
-    }
     .containerTarjetaBuscar{
         width: 70%;
+    }
+    .tool-container{
+      width: 70vw;
     }
   }
   
@@ -785,8 +810,6 @@ html{
     }
     .flechaBottom{
         visibility: hidden;
-    }
-  .fixed-bottom-nav{
     }
   .fixed-bottom-nav ul{
         width: 70%;
@@ -835,13 +858,14 @@ html{
     .flechaBottom{
         visibility: hidden;
     }
-  .fixed-bottom-nav{
-    }
   .fixed-bottom-nav ul{
         width: 50%;
     }
     .containerTarjetaBuscar{
         width: 80%;
+    }
+    .tool-container{
+      width: 50vw;
     }
   }
   
@@ -892,6 +916,9 @@ html{
         grid-template-columns: 1fr 1fr;
         width: 85%;
     }
+    .tool-container{
+      width: 40vw;
+    }
     
   } 
   
@@ -930,8 +957,7 @@ html{
     .flechaBottom{
         visibility: hidden;
     }
-  .fixed-bottom-nav{
-    }
+
   .fixed-bottom-nav ul{
         width: 50%;
     }

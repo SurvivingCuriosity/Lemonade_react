@@ -69,26 +69,28 @@ export function ArtistKeyFinder(){
                 seleccion={objetoNotaEscala}
                 parentCallback = {userSelectsScale}
             />
+            <div className="busqueda-container">
+                <CustomButton 
+                    textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
+                    disabled={!haySeleccion}
+                    onClickCallback={handleClickFinal}
+                />
+            </div>
 
-            <p className="textoInformativoPrevioBusqueda">{textoInformativo}</p>
-
-            <CustomButton 
-                texto="Buscar"
-                disabled={!haySeleccion}
-                onClickCallback={handleClickFinal}
-            />
-            <ul className="busqueda-lista">
+            
                 {
                     resultadoFinal && resultadoFinal.map((item) => {
                         return (
-                            <TarjetaCancion 
-                                key={item.id}
-                                jsonData={item}
-                            />
+                            <ul className="busqueda-lista">
+                                <TarjetaCancion 
+                                    key={item.id}
+                                    jsonData={item}
+                                />
+                            </ul>
                         );
                     })
                 }
-            </ul>
+            
 
         </div>
     )

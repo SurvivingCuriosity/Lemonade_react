@@ -10,7 +10,7 @@ export function SongMatchFinder(){
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
-            <h1 className="tool-titulo">En obras</h1>
+            <h2 className="tool-titulo">En obras</h2>
             {/* <p className="tool-description">{descripcion}</p>
             <div className="tool-wrapper">
                 <Busqueda 
