@@ -7,7 +7,8 @@ export function ArtistMatchFinder(){
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
-            <p className="tool-description">{descripcion}</p>
+            <h1 className="tool-titulo">En obras</h1>
+            {/* <p className="tool-description">{descripcion}</p>
 
             <Busqueda 
                 tipo="artista"
@@ -18,7 +19,7 @@ export function ArtistMatchFinder(){
                 tipo="artista"
                 clickable={true}
                 titulo="2. Elige segundo artista"
-            />
+            /> */}
         </div>
 
         

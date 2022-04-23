@@ -10,7 +10,8 @@ export function SongMatchFinder(){
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
-            <p className="tool-description">{descripcion}</p>
+            <h1 className="tool-titulo">En obras</h1>
+            {/* <p className="tool-description">{descripcion}</p>
             <div className="tool-wrapper">
                 <Busqueda 
                     tipo="cancion"
@@ -22,7 +23,7 @@ export function SongMatchFinder(){
                     clickable={true}
                     titulo="2. Elige un artista"
                 />
-            </div>
+            </div> */}
         </div>
     )
 }
