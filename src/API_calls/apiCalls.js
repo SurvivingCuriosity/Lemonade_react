@@ -30,7 +30,6 @@ export const buscarCancion = async (text, token) => {
         },
         method: 'GET'
     })
-    
     return response;
 };
 
@@ -60,9 +59,9 @@ export const getAudioFeatures = async (id, token) => {
     return response;
 };
 
-export const getArtistTopTracks = async (token) => {
+export const getArtistAlbums = async (id, token) => {
 
-    const response = axios(`https://api.spotify.com/v1/artists/4q3ewBCX7sLwd24euuV69X/albums/`, {
+    const response = axios(`https://api.spotify.com/v1/artists/${id}/albums?limit=50`, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -70,6 +69,57 @@ export const getArtistTopTracks = async (token) => {
         },
         method: 'GET'
     })
-    console.log(response);
     return response;
+};
+export const getAlbum = async (id, token) => {
+
+    const response = axios(`https://api.spotify.com/v1/albums/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+token
+        },
+        method: 'GET'
+    })
+    return response;
+};
+export const getTrack = async (id, token) => {
+
+    const response = axios(`https://api.spotify.com/v1/tracks/${id}`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+token
+        },
+        method: 'GET'
+    })
+    return response;
+};
+export const getCancionesDeArtistaEnEscala = async (id, _token, objNotaEscala) => {
+    //obtengo todos los albumes del artista
+    return getArtistAlbums(id,_token)
+    .then((res)=>{
+        let albumes = res.data.items;
+        let arrayTracks=[];
+        albumes.map((album)=>{
+            //obtengo informacion de cada album
+            getAlbum(album.id, _token).then((res2)=>{
+                let idTrack = res2.data.tracks.items[0].id;
+                getTrack(idTrack,_token).then((res3)=>{
+                    let track=res3.data;
+                    getAudioFeatures(track.id, _token).then((e)=>{
+                        track.bpm=e.data.tempo;
+                        track.key=e.data.key;
+                        track.mode=e.data.mode;
+                        if(track.key==objNotaEscala.nota && track.mode==objNotaEscala.escala){
+                            arrayTracks.push(track);
+                        }
+                    })
+                })
+
+            })
+        })
+        return(arrayTracks);
+        
+    })
 };

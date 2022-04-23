@@ -3,7 +3,7 @@
     -webkit-text-stroke: 0.01px;
     font-family: 'Montserrat', sans-serif;
   }
-  html{
+html{
     font-family: 'Montserrat', sans-serif;
     scroll-behavior: smooth;
     font-size: 0.65em;
@@ -203,6 +203,7 @@
     z-index: 4;
     height: 120px;
   }
+
   /* FIN HEADER MAIN FOOTER */
   /* PAGINAS HERRAMIENTAS */
   .toolPage{
@@ -215,6 +216,7 @@
     padding: 5em 1em 1em 0em;
   }
   .tool-container{
+    padding: 1em;
     gap: 1em;
     display: flex;
     flex-flow: column nowrap;

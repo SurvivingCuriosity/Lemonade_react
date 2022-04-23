@@ -2,9 +2,10 @@ import React from "react";
 import { Busqueda } from "./Busqueda";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
-
+import TarjetaArtista from "./Busqueda/TarjetaArtista";
+import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import { getToken } from "../../API_calls/apiCalls";
-import { getArtistTopTracks } from "../../API_calls/apiCalls";
+import { getCancionesDeArtistaEnEscala } from "../../API_calls/apiCalls";
 
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
@@ -21,6 +22,7 @@ export function ArtistKeyFinder(){
     //haySeleccion es un booleano que indica si el usuario ha elegido artista y nota
     //se utiliza para habilitar o deshabilitar el boton final de buscar
     const [haySeleccion, setHaySeleccion] = React.useState(false);
+    const [resultadoFinal, setResultadoFinal] = React.useState([]);
 
     //esta funcion se ejecuta cada vez que seleccionArtista o objetoNotaEscala cambian su valor
     React.useEffect(()=>{
@@ -32,27 +34,19 @@ export function ArtistKeyFinder(){
         }else{
             setHaySeleccion(false);
         }
-    },[seleccionArtista,objetoNotaEscala])
+    },[seleccionArtista,objetoNotaEscala, resultadoFinal])
     
     let handleClickFinal = (e) =>{
         e.preventDefault();
         
                 try {
                     getToken().then((token)=>{
-
                         let _token = token.data.access_token;
-                        getArtistTopTracks(_token)
-                            .then((res)=>{
-                                console.log(res);
-                                if((res.data.tracks.items).length==0){
-                                    //busqueda bien pero no resultado
-                                }else{
-
-                                }
-                                // setResultado(res.data.tracks.items)
-                            })
-
-                        
+                        getCancionesDeArtistaEnEscala(seleccionArtista.id,_token,objetoNotaEscala).then((res)=>{
+                            window.setTimeout(()=>{
+                                setResultadoFinal(res);
+                            },[2000])
+                        })
                     })
         
                 } catch (err) {
@@ -77,11 +71,24 @@ export function ArtistKeyFinder(){
             />
 
             <p className="textoInformativoPrevioBusqueda">{textoInformativo}</p>
+
             <CustomButton 
                 texto="Buscar"
                 disabled={!haySeleccion}
                 onClickCallback={handleClickFinal}
             />
+            <ul className="busqueda-lista">
+                {
+                    resultadoFinal && resultadoFinal.map((item) => {
+                        return (
+                            <TarjetaCancion 
+                                key={item.id}
+                                jsonData={item}
+                            />
+                        );
+                    })
+                }
+            </ul>
 
         </div>
     )

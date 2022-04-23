@@ -77,7 +77,7 @@ export function Busqueda(props){
                                         }else{
                                             setMsg(MENSAJE_RESULTADOS);
                                             setMsgClass("success");
-
+                                            
                                             agregaDatos(res.data.tracks.items,_token);
                                         }
                                         // setResultado(res.data.tracks.items)
@@ -173,7 +173,6 @@ export function Busqueda(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
-        
         setResultado([userSelection]);
         parentCallback(userSelection);
     }

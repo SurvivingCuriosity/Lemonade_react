@@ -13,12 +13,13 @@ export default function (props){
         selectionCallback,
         jsonData
     }=props;
-
+    console.log(jsonData);
     //extraigo los datos que quiero mostrar del json
     let songKey=jsonData.key
     let songMode=jsonData.mode
     let songBPM=jsonData.bpm
-    let imgCancion=(jsonData.album.images[0]) ? (jsonData.album.images[0].url) : null
+    let imgCancion=(jsonData.album.images[0]) ? (jsonData.album.images[0].url) : jsonData.images[0].url
+    let nombreArtista=jsonData.artists[0].name;
     let nombreCancion=jsonData.name
     let duracionCancion=jsonData.duration_ms
     let link=jsonData.external_urls.spotify
@@ -39,6 +40,7 @@ export default function (props){
                 {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
                     {(nombreCancion) && <p className="--tarjeta-dato1"><img src={icon_song} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion)}</p>}
+                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
                     {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} style={{width: tamanoIcono + 'px'}}/>{duracionCancion}</p>}
                 </div>
 
