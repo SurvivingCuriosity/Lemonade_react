@@ -13,7 +13,7 @@ export default function (props){
         selectionCallback,
         jsonData
     }=props;
-    console.log(jsonData);
+
     //extraigo los datos que quiero mostrar del json
     let songKey=jsonData.key
     let songMode=jsonData.mode
@@ -28,7 +28,7 @@ export default function (props){
     if(imgCancion===null){
         imgCancion=icon_artist
     }
-    //formateo
+    //formateo de informacion
     songKey = getStringFromNota(songKey);
     songMode = getStringFromEscala(songMode);
     duracionCancion = milisegundosAString(duracionCancion);
@@ -108,8 +108,8 @@ export default function (props){
 
         //Esto es un nombre largo -> Esto es...
         function truncaNombreLargo(cadena){
-            if (cadena.length > 15) {
-                cadena = cadena.substring(0, 15) + "...";
+            if (cadena.length > 25) {
+                cadena = cadena.substring(0, 25) + "...";
             }
             return cadena;
         }

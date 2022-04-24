@@ -7,15 +7,22 @@ import { getToken } from "../../API_calls/apiCalls";
 import { buscarArtista } from "../../API_calls/apiCalls";
 import { buscarCancion } from "../../API_calls/apiCalls";
 import { getAudioFeatures } from "../../API_calls/apiCalls";
+import { CustomSpinner } from "../custom-components/CustomSpinner";
 
 export function Busqueda(props){
-    const MENSAJE_INIT="Aquí aparecerán los resultados "
+    const MENSAJE_INIT=""
     const MENSAJE_NO_TEXTO="No has introducido texto."
     const MENSAJE_SELECCION="Has elegido: "
     const MENSAJE_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MENSAJE_RESULTADOS="Resultados obtenidos: "
+    const MENSAJE_MOSTRANDO_RESULTADOS="Resultados obtenidos: "
+    const MENSAJE_HAY_RESULTADOS="Preparando resultados: "
+    const MENSAJE_TEXTO_REPETIDO="Acabas de buscar: "
+    const MENSAJE_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
-    const {tipo, titulo, parentCallback, parentClickable, haySeleccion} = props;
+    const {tipo, titulo, parentCallback, isSongKeyFinder, haySeleccion} = props;
+    
+    const [isLoading, setIsLoading] = React.useState(false);
+
 //texto buscado por el usuario y el ultimo texto valido
     const [text, setText] = React.useState("");
     const [lastText, setLastText] = React.useState("");
@@ -41,10 +48,12 @@ export function Busqueda(props){
             })
             //anado tiempo de espera para que se muestre el bpm y la escala
             window.setTimeout(()=>{
+                setIsLoading(false);
                 setResultado(lista);
-            },1000)
+                setMsg(MENSAJE_MOSTRANDO_RESULTADOS);
+                setMsgClass("success");
+            },2000)
         })
-        return lista;
     }
 
     let handleSubmit = async (e) => {
@@ -58,9 +67,14 @@ export function Busqueda(props){
         }else{
             //text input con texto
             if(text === lastText){
+                setMsgClass("error")
+                setMsg(MENSAJE_TEXTO_REPETIDO + text);
                 setLastText("");
                 return;
             }else{
+                setIsLoading(true);
+                setMsg("Buscando");
+                setMsgClass("success");
                 try {
                     getToken().then((token)=>{
                         let _token = token.data.access_token;
@@ -71,15 +85,20 @@ export function Busqueda(props){
                                     .then((res)=>{
                                         if((res.data.tracks.items).length==0){
                                             //busqueda bien pero no resultado
+                                            setIsLoading(false);
                                             setMsg(MENSAJE_NO_RESULTADOS);
                                             setMsgClass("error");
                                         }else{
-                                            setMsg(MENSAJE_RESULTADOS);
+                                            setMsg(MENSAJE_HAY_RESULTADOS);
                                             setMsgClass("success");
                                             
                                             agregaDatos(res.data.tracks.items,_token);
                                         }
                                         // setResultado(res.data.tracks.items)
+                                    }).catch((err)=>{
+                                        setIsLoading(false);
+                                        setMsg(MENSAJE_ERROR_PETICION);
+                                        setMsgClass("error");
                                     })
                             break;
                             case "artista":
@@ -87,13 +106,16 @@ export function Busqueda(props){
                                     .then((res)=>{
                                         if((res.data.artists.items).length==0){
                                             //busqueda bien pero no resultado
-                                            setMsg("No hay resultados para tu búsqueda");
+                                            setIsLoading(false);
+                                            setMsg(MENSAJE_NO_RESULTADOS);
                                             setMsgClass("error");
                                         }else{
-                                            setMsg("Resultados obtenidos");
-                                            setMsgClass("success");
                                             setResultado(res.data.artists.items)
                                         }
+                                    }).catch((err)=>{
+                                        setIsLoading(false);
+                                        setMsg(MENSAJE_ERROR_PETICION);
+                                        setMsgClass("error");
                                     })
                             break;
                         }
@@ -108,23 +130,57 @@ export function Busqueda(props){
 
 //se ejecuta cada vez que la lista de resultados cambia 
     React.useEffect(()=>{
-        //parentClickable es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
-        if(parentClickable==false){
+        //isSongKeyFinder es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
+        if(isSongKeyFinder){
             setIsClickable(false);
         }else{
+            if(resultado.length>1){
+                setIsLoading(false);
+                setMsg("Resultados obtenidos");
+                setMsgClass("success");
+            }
             if(resultado.length==1){
                 //Ha elegido
                 setMsgClass("success");
                 setMsg(MENSAJE_SELECCION);
                 setIsClickable(false);
-            }else{
+            }else if(resultado.length==0){
                 setMsg("");
                 //No ha elegido
                 setIsClickable(true);
             }
         }
-        
     },[resultado])
+
+    const listaResultados = (
+        <ul className="busqueda-lista">
+                                {
+                                    resultado.map((item) => {
+                                        
+                                        switch(props.tipo){
+                                            case "cancion":
+                                                return (
+                                                    <TarjetaCancion 
+                                                        key={item.id}
+                                                        isClickable={isClickable}
+                                                        selectionCallback={handleEleccion}
+                                                        jsonData={item}
+                                                    />
+                                                );
+                                            case "artista":
+                                                return (
+                                                    <TarjetaArtista
+                                                        key={item.id}
+                                                        isClickable={isClickable}
+                                                        selectionCallback={handleEleccion}
+                                                        jsonData={item}
+                                                    />
+                                                );
+                                        }
+                                    })
+                                }
+        </ul>
+    )
 
     return(
         <div className="busqueda-container">
@@ -156,39 +212,11 @@ export function Busqueda(props){
             </form>
 
             <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+
             {/* Si ha resultados renderiza la lista */}
-            {!resultado.length==0 
-                ? 
-                    <ul className="busqueda-lista">
-                        {
-                            resultado.map((item) => {
-                                
-                                switch(props.tipo){
-                                    case "cancion":
-                                        return (
-                                            <TarjetaCancion 
-                                                key={item.id}
-                                                isClickable={isClickable}
-                                                selectionCallback={handleEleccion}
-                                                jsonData={item}
-                                            />
-                                        );
-                                    case "artista":
-                                        return (
-                                            <TarjetaArtista
-                                                key={item.id}
-                                                isClickable={isClickable}
-                                                selectionCallback={handleEleccion}
-                                                jsonData={item}
-                                            />
-                                        );
-                                }
-                            })
-                        }
-                    </ul>
-                : 
-                    ""
-            }
+            {isLoading ? <CustomSpinner /> : ""}
+            {resultado.length>0 ? listaResultados : ""}
+            
             {(!resultado.length==0)
                 ? 
                     <button 

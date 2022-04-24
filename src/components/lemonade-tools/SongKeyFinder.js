@@ -16,7 +16,7 @@ export function SongKeyFinder(){
                 tipo="cancion"
                 isClickable={false}
                 titulo="Elige una cancion"
-                parentClickable={false}
+                isSongKeyFinder={true}
             />
         </div>
     )

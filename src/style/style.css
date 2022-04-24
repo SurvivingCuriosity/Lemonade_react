@@ -233,7 +233,7 @@ html{
     display: flex;
     flex-flow: column nowrap;
     width: 100vw;
-    margin: 3em auto;
+    margin: 1em auto;
   }
   .tool-container-sinTitulos{
     display: flex;
@@ -385,7 +385,7 @@ html{
       border: 2px solid var(--colorTextoColor);
       box-shadow: 0px 0px 30px 15px var(--fondo2);
       margin: 0.5em;
-      border-radius: 20px;
+      border-radius: 10px;
     }
     .busqueda-boton-buscar{
       padding: 0.2em 0.9em;
@@ -403,6 +403,20 @@ html{
         color: var(--error);
         cursor: not-allowed;
         visibility: visible;
+    }
+    @keyframes spinner {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .loading-spinner img{
+      width: 50px;
+      height: 50px;
+      animation: spinner 1s linear infinite;
+      transform-origin: center;
     }
     .boton_redes{
       padding: 0.8em 0.6em;
@@ -480,7 +494,7 @@ html{
       color: var(--blanco3);
     }
     .input_and_button{
-      height: 40px;
+      height: 35px;
       display: flex;
       width: 100%;
       gap: 1em;
