@@ -15,8 +15,7 @@ export function Busqueda(props){
     const MENSAJE_NO_RESULTADOS="No hay resultados para tu búsqueda."
     const MENSAJE_RESULTADOS="Resultados obtenidos: "
 
-    const {tipo, titulo, parentCallback, parentClickable} = props;
-
+    const {tipo, titulo, parentCallback, parentClickable, haySeleccion} = props;
 //texto buscado por el usuario y el ultimo texto valido
     const [text, setText] = React.useState("");
     const [lastText, setLastText] = React.useState("");
@@ -50,7 +49,7 @@ export function Busqueda(props){
 
     let handleSubmit = async (e) => {
         e.preventDefault();
-        
+        setText("");
         if(text===""){
             //text input vacio
             setMsgClass("error");
@@ -119,6 +118,7 @@ export function Busqueda(props){
                 setMsg(MENSAJE_SELECCION);
                 setIsClickable(false);
             }else{
+                setMsg("");
                 //No ha elegido
                 setIsClickable(true);
             }
@@ -126,62 +126,88 @@ export function Busqueda(props){
         
     },[resultado])
 
-
     return(
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">{titulo}</h2>
+            <h2 className="busqueda-titulo" style={(haySeleccion!=undefined && haySeleccion.id && resultado.length==1) ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>{titulo}</h2>
+
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                <span className="input_and_button">
-                    <input
-                        type="search"
-                        value={text}
-                        placeholder={`Introduce ${props.tipo}...`}
-                        onChange={(e) => setText(e.target.value)}
-                    />
-                    <button 
-                        type="submit" 
-                        className="busqueda-boton-buscar boton"
-                        disabled={text=="" ? true : false}
-                        
-                        >Buscar
-                    </button>
-                </span>
+                {(resultado.length==0)
+                ? 
+                    <span className="input_and_button">
+                        <input
+                            type="search"
+                            value={text}
+                            placeholder={`Introduce ${props.tipo}...`}
+                            onChange={(e) => setText(e.target.value)}
+                        />
+                        <button 
+                            type="submit" 
+                            className="busqueda-boton-buscar boton"
+                            disabled={text=="" ? true : false}
+                            
+                            >Buscar
+                        </button>
+                    </span>
+                : 
+                ""
+                }
+                
 
             </form>
 
-                <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
-            <ul className="busqueda-lista">
-                {
-                    resultado.map((item) => {
-                        
-                        switch(props.tipo){
-                            case "cancion":
-                                return (
-                                    <TarjetaCancion 
-                                        key={item.id}
-                                        isClickable={isClickable}
-                                        selectionCallback={handleEleccion}
-                                        jsonData={item}
-                                    />
-                                );
-                            case "artista":
-                                return (
-                                    <TarjetaArtista
-                                        key={item.id}
-                                        isClickable={isClickable}
-                                        selectionCallback={handleEleccion}
-                                        jsonData={item}
-                                    />
-                                );
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            {/* Si ha resultados renderiza la lista */}
+            {!resultado.length==0 
+                ? 
+                    <ul className="busqueda-lista">
+                        {
+                            resultado.map((item) => {
+                                
+                                switch(props.tipo){
+                                    case "cancion":
+                                        return (
+                                            <TarjetaCancion 
+                                                key={item.id}
+                                                isClickable={isClickable}
+                                                selectionCallback={handleEleccion}
+                                                jsonData={item}
+                                            />
+                                        );
+                                    case "artista":
+                                        return (
+                                            <TarjetaArtista
+                                                key={item.id}
+                                                isClickable={isClickable}
+                                                selectionCallback={handleEleccion}
+                                                jsonData={item}
+                                            />
+                                        );
+                                }
+                            })
                         }
-                    })
-                }
-            </ul>
+                    </ul>
+                : 
+                    ""
+            }
+            {(!resultado.length==0)
+                ? 
+                    <button 
+                        className="busqueda-boton-borrar"
+                        onClick={borrarSeleccion}
+                        >Nueva búsqueda
+                    </button>
+                : 
+                    ""
+            }
+            
         </div>
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
         setResultado([userSelection]);
         parentCallback(userSelection);
+    }
+    function borrarSeleccion(){
+        setResultado([]);
     }
 }

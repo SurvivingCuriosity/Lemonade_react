@@ -73,7 +73,9 @@ html{
   }
   
   /* ELEMENTOS SUELTOS */
-  
+  h1,h2,h3,h4,h5,h6{
+    transition: color 1s;
+  }
   h1{
     font-size: 4em;
     color: var(--color);
@@ -233,6 +235,13 @@ html{
     width: 100vw;
     margin: 3em auto;
   }
+  .tool-container-sinTitulos{
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    gap: 1em;
+    justify-content: center;
+  }
 
   .tool-wrapper{
     margin: auto;
@@ -306,6 +315,12 @@ html{
   .svgInstagramCirculo{
     fill: var(--colorIconos);
   } */
+  .logo-limon-header{
+    width: 150px;
+    position: absolute;
+    left: calc(50% - 75px);
+    top: 3em;
+  }
   .header-bottom-nav{
     font-size: 0.6em;
     width: 90%;
@@ -367,7 +382,6 @@ html{
       background-color: var(--negro2);
       color: var(--colorTextoColor);
       padding: 0.75em 1.75em 0.75em 1.75em;
-      font-size: 1.75em;
       border: 2px solid var(--colorTextoColor);
       box-shadow: 0px 0px 30px 15px var(--fondo2);
       margin: 0.5em;
@@ -375,6 +389,12 @@ html{
     }
     .busqueda-boton-buscar{
       padding: 0.2em 0.9em;
+    }
+    .busqueda-boton-borrar{
+      border: none;
+      background-color: rgba(0,0,0,0);
+      color: red;
+      margin-left: auto;
     }
     .boton2{
         transition: all 0.3s;
@@ -443,12 +463,17 @@ html{
         cursor: not-allowed!important;
     }
     input[type=search]:not(disabled){
-      border: 1px solid var(--colorTextoColor);
+      border: 1px solid var(--blanco3);
       color: var(--colorTexto);
       background-color: var(--fondo);
       cursor: text !important;
       padding: 0.6em;
     }
+    select:focus, input:focus{
+      outline: none;
+      border: 1px solid var(--colorTextoColor)!important;
+    }
+
     .boton:disabled{
       background-color: var(--fondo2);
       border: 1px solid var(--blanco3);
@@ -561,6 +586,13 @@ html{
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
+    width: 100%;
+  }
+  .containerSinResultado{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    width: 100%;
   }
   .busqueda-lista{
     display: flex;
@@ -575,8 +607,7 @@ html{
   }
   .busqueda-titulo{
     color: var(--blanco3);
-    font-size: 1.5em;
-    text-align: center;
+    font-size: 1.75em;
   }
   .busqueda-texto-info{
     font-size: 1em;
@@ -725,9 +756,6 @@ html{
   /* MEDIA QUERIES */
   /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
-    h1.titulo-main:after{
-        content:" >600"
-    }
     html{
         font-size: 0.75em;
     }
@@ -740,14 +768,15 @@ html{
     input[type="search"], input[type="text"], input[type="password"], input[type="email"]{
         width: 100%;
     }
-
+    .containerSinResultado{
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1em;
+    }
   }
   
   /* Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 600px) {
-    h1.titulo-main:after{
-        content:" 600"
-    }
     html{
         font-size: 0.8em;
     }
@@ -773,13 +802,21 @@ html{
     .tool-container{
       width: 70vw;
     }
+    .containerSinResultado{
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1em;
+    }
+    .logo-limon-header{
+      width: 150px;
+      position: absolute;
+      left: calc(50% - 75px);
+      top: 3em;
+    }
   }
   
   /* Medium devices (landscape tablets, 768px and up) */
   @media only screen and (min-width: 768px) {
-    h1.titulo-main:after{
-        content:" 768"
-    }
     html{
         font-size: 0.9em;
     }
@@ -797,7 +834,7 @@ html{
       font-size: 0.75em;
       flex-direction: row;
       justify-content: space-between;
-      width: 80vw;
+      width: 70vw;
     }
     header .container_centro{
         width: 50%;
@@ -817,13 +854,15 @@ html{
     .containerTarjetaBuscar{
         width: 80%;
     }
+    .containerSinResultado{
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1em;
+    }
   }
   
   /* Large devices (laptops/desktops, 992px and up) */
   @media only screen and (min-width: 992px) {
-    h1.titulo-main:after{
-        content:" 992"
-    }
     html{
         font-size: 1em;
     }
@@ -848,6 +887,7 @@ html{
         flex-flow: row nowrap;
         gap: 1em;
         font-size: 0.8em;
+        width: 65vw;
     }
     #tools .container {
         min-height: 26vh;
@@ -865,15 +905,17 @@ html{
         width: 80%;
     }
     .tool-container{
-      width: 50vw;
+      width: 90vw;
+    }
+    .containerSinResultado{
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 1em;
     }
   }
   
   /* Extra large devices (large laptops and desktops, 1200px and up) */
   @media only screen and (min-width: 1200px) {
-    h1.titulo-main:after{
-        content:" 1200"
-    }
     html{
         font-size: 1em;
     }
@@ -895,6 +937,7 @@ html{
     }
     .header-main-nav ul{
         flex-flow: row nowrap;
+        width: 50vw;
     }
     #tools .container {
         min-height: 26vh;
@@ -904,8 +947,6 @@ html{
     }
     .flechaBottom{
         visibility: hidden;
-    }
-  .fixed-bottom-nav{
     }
   .fixed-bottom-nav ul{
         width: 50%;
@@ -917,15 +958,12 @@ html{
         width: 85%;
     }
     .tool-container{
-      width: 40vw;
+      width: 90vw;
     }
     
   } 
   
   @media only screen and (min-width: 1400px) {
-    h1.titulo-main:after{
-        content:" 1400"
-    }
     html{
         font-size: 1em;
     }
@@ -947,6 +985,7 @@ html{
     }
     .header-main-nav ul{
         flex-flow: row nowrap;
+        width: 45vw;
     }
     #tools .container {
         min-height: 26vh;
@@ -965,6 +1004,9 @@ html{
         display: grid;
         grid-template-columns: 1fr 1fr;
         width: 80%;
+    }
+    .tool-container{
+      width: 90vw;
     }
   } 
   /* FIN MEDIA QUERIES */

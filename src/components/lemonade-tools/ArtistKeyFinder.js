@@ -55,41 +55,49 @@ export function ArtistKeyFinder(){
     };
     return(
         <div className="tool-container">
-            <h1 className="tool-titulo">{titulo}</h1>
+            <h1 className="tool-titulo" >{titulo}</h1>
             <p className="tool-description">{descripcion}</p>
-            
-            <Busqueda 
-                tipo="artista"
-                titulo="1. Elige un artista"
-                isClickable={isClickable}
-                parentCallback={userSelectsArtist}
-            />
-            <KeyScaleSelect 
-                titulo="2. Elige una nota y escala"
-                seleccion={objetoNotaEscala}
-                parentCallback = {userSelectsScale}
-            />
-            <div className="busqueda-container">
-                <CustomButton 
-                    textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
-                    disabled={!haySeleccion}
-                    onClickCallback={handleClickFinal}
-                />
+            <div className="tool-container-sinTitulos">
+                <div className="containerSinResultado">
+                    <Busqueda 
+                        haySeleccion={seleccionArtista}
+                        tipo="artista"
+                        titulo="1. Elige un artista"
+                        isClickable={isClickable}
+                        parentCallback={userSelectsArtist}
+                    />
+                    <KeyScaleSelect 
+                        haySeleccion={objetoNotaEscala}
+                        titulo="2. Elige una nota y escala"
+                        seleccion={objetoNotaEscala}
+                        parentCallback = {userSelectsScale}
+                    />
+                </div>
+                <div className="busqueda-container">
+                    <h2 className="busqueda-titulo" style={resultadoFinal.length>0 ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>3. Resultados</h2>
+                    <CustomButton 
+                        textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
+                        disabled={!haySeleccion}
+                        onClickCallback={handleClickFinal}
+                    />
+                    {resultadoFinal.length>1 
+                        ? 
+                        <ul className="busqueda-lista">
+                        {resultadoFinal.map((item) => {
+                            return (
+                                    <TarjetaCancion 
+                                        key={item.id}
+                                        jsonData={item}
+                                    />
+                                
+                            );
+                        })}
+                    </ul>
+                        :
+                        ""
+                    }
+                </div>
             </div>
-
-            
-                {
-                    resultadoFinal && resultadoFinal.map((item) => {
-                        return (
-                            <ul className="busqueda-lista">
-                                <TarjetaCancion 
-                                    key={item.id}
-                                    jsonData={item}
-                                />
-                            </ul>
-                        );
-                    })
-                }
             
 
         </div>

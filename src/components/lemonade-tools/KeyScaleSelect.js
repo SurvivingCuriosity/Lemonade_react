@@ -3,7 +3,7 @@ import Select from 'react-select'
 
 
 export function KeyScaleSelect(props){
-    const {titulo} = props;
+    const {titulo, haySeleccion} = props;
 
 //nota seleccionada y su label keySelected=0 keySelectedLabel="C"
     const [keySelected,setKeySelected]= React.useState(-1);
@@ -86,25 +86,28 @@ export function KeyScaleSelect(props){
           ...provided,
           borderBottom: '1px solid var(--colorTextoColor)',
           color: 'var(--colorTextoColor)',
-          backgroundColor: 'var(--fondo)'
+          backgroundColor: 'var(--fondo)',
+          overflowY: 'hidden'
         }),
         control: (provided) => ({
           ...provided,
-          marginTop: "5%",
           color: 'var(--colorTextoColor)',
           backgroundColor: 'var(--fondo)',
-          border:'1px solid var(--color)'
+          border:'1px solid var(--blanco3)',
+          overflowY: 'hidden'
+          
         }),
         menu: (provided) => ({
             ...provided,
             textAlign:'center',
             position:'initial',
-            color: 'var(--colorTextoColor)',
-            backgroundColor: 'var(--fondo)'
+            color: 'var(--blanco3)',
+            backgroundColor: 'var(--fondo)',
+            
         }),
         placeholder:(provided) => ({
             ...provided,
-            color: 'var(--colorTextoColor)',
+            color: 'var(--blanco3)',
         }),
         // multiValue:(provided) => ({
         //     ...provided,
@@ -118,6 +121,8 @@ export function KeyScaleSelect(props){
         singleValue:(provided) => ({
             ...provided,
             color: 'var(--colorTextoColor)',
+            fontSize:'1.15em',
+            padding:'0.25em'
         }),
     }
 
@@ -148,7 +153,7 @@ export function KeyScaleSelect(props){
     
     return(
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">{titulo}</h2>
+            <h2 className="busqueda-titulo" style={haySeleccion.nota>-1 ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>{titulo}</h2>
             <div className="linea-flex-center">
                 <Select
                     isSearchable={false} //no se puede buscar
