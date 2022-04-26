@@ -15,8 +15,6 @@ export function ArtistKeyFinder(){
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
 
-    const [isClickable, setIsClickable] = React.useState(true);
-
     const [seleccionArtista, setSeleccionArtista] = React.useState({});
     const [seleccionNotaEscala, setSeleccionNotaEscala] = React.useState({});
 
@@ -32,15 +30,18 @@ export function ArtistKeyFinder(){
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
             setHaySeleccion(true);
-            setIsClickable(false);
         }else{
             setHaySeleccion(false);
         }
-    },[seleccionArtista,seleccionNotaEscala])
+        if(!seleccionArtista.id){
+            console.log('no hay seleccion');
+        }
+    },[seleccionArtista,seleccionNotaEscala, seleccionArtista])
     
     let handleClickFinal = () =>{
         console.log('Usuario hace click final');
         let arrayResultadosFinales = [];
+
         objetosAudioFeatures.map((obj)=>{
             if(obj.mode == seleccionNotaEscala.escala 
                 && obj.key == seleccionNotaEscala.nota){
@@ -54,6 +55,17 @@ export function ArtistKeyFinder(){
                 })
             }
         })
+
+        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.id)))
+        .map(id => {
+            return arrayResultadosFinales.find(a => (a.id === id))
+        })
+        
+        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
+        .map(name => {
+            return arrayResultadosFinales.find(a => a.name === name)
+        })
+
         if(arrayResultadosFinales.length==0){
             setMsgResultadoClass("error")
             setMsgResultado("No se encontraron coincidencias")
@@ -77,40 +89,42 @@ export function ArtistKeyFinder(){
                         callbackEleccion={userSelectsArtist}
                     />
                     <KeyScaleSelect 
-                        haySeleccion={seleccionNotaEscala}
+                        colorPlaceHolder={seleccionArtista && seleccionArtista.id ? 'var(--colorTextoColor)' : 'var(--blanco3)'}
+                        mensaje={seleccionArtista && seleccionArtista.id ? "" : "Primero elige un artista"}
+                        disabled={seleccionArtista && seleccionArtista.id ? false : true}
                         titulo="2. Elige una nota y escala"
                         seleccion={seleccionNotaEscala}
                         callbackEleccion = {userSelectsScale}
                     />
                 </div>
                 <div className="busqueda-container">
-                    <h2 className="busqueda-titulo" style={resultadoFinal.length>0 ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>3. Resultados</h2>
+                    <h2 className="busqueda-titulo">3. Resultados</h2>
+                    
                     <CustomButton 
                         textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
                         disabled={!haySeleccion}
                         onClickCallback={handleClickFinal}
                     />
+
                     <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+
                     {resultadoFinal.length>0 
                         ? 
-                        <ul className="busqueda-lista">
-                        {resultadoFinal.map((item) => {
-                            return (
-                                    <TarjetaCancion 
-                                        key={item.id}
-                                        jsonData={item}
-                                    />
-                                
-                            );
-                        })}
-                    </ul>
+                            <ul className="busqueda-lista">
+                                {resultadoFinal.map((item) => {
+                                    return (
+                                        <TarjetaCancion 
+                                            key={item.id}
+                                            jsonData={item}
+                                        />
+                                    );
+                                })}
+                            </ul>
                         :
-                        ""
+                            ""
                     }
                 </div>
             </div>
-            
-
         </div>
     )
 
@@ -140,19 +154,23 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
-        console.log('Usuario elige artista');
-        console.log(artistSelected);
-        setSeleccionArtista(artistSelected);
-        try {
-            getAllUniqueArtistSongs(artistSelected.id,finalCallback);
-        } catch (err) {
-          console.log(err);
+        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
+        if(artistSelected.id){
+            console.log('Usuario elige artista');
+            setSeleccionArtista(artistSelected);
+            try {
+                getAllUniqueArtistSongs(artistSelected.id,finalCallback);
+            } catch (err) {
+              console.log(err);
+            }
+        }else{
+            setSeleccionArtista(artistSelected);
         }
 
     }
+
     function finalCallback(res){
-        console.log('tenemos todo POR FIN');
-        console.log(res);
+        console.log('final callback');
         setCancionesArtista(res)
     }
 }

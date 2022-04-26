@@ -114,7 +114,6 @@ export const getMultipleAudioFeatures = async (ids) => {
 //devuelve todos los albumes de un artista
 export const getAllUniqueArtistSongs = async (id, finalCallback) => {
     console.log('getAllUniqueArtistSongs');
-    let cancionesSinRepetir=[];
     getToken().then((resToken)=>{
         let token = resToken.data.access_token;
         axios(`https://api.spotify.com/v1/artists/${id}/albums`, {
@@ -133,6 +132,11 @@ export const getAllUniqueArtistSongs = async (id, finalCallback) => {
             albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.name.toLowerCase())))
             .map(name => {
                 return albumesYSingles.find(a => a.name.toLowerCase() === name.toLowerCase())
+            })
+            //este codigo elimina los valores con id repetido
+            albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.id)))
+            .map(id => {
+                return albumesYSingles.find(a => a.id === id)
             })
             getTracksFromAlbums(albumesYSingles, finalCallback);
         })
@@ -179,6 +183,10 @@ function getAllTracks(func, finalCallback){
         promesa.then((e)=>{
             cancionesTotales.push(e.data);
         })
+    })
+    cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name)))
+    .map(name => {
+        return cancionesTotales.find(a => a.name === name)
     })
     finalCallback(cancionesTotales);
 }

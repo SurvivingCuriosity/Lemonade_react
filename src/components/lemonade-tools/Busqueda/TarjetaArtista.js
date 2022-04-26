@@ -5,7 +5,7 @@ import icon_followers from '../../../images/tarjeta/icon_followers.svg'
 
 
 export default function (props){
-    let tamanoImagen = '50'
+    let tamanoImagen = '55'
     let tamanoIcono = '15'
     
     let {
@@ -14,7 +14,7 @@ export default function (props){
         jsonData
     }=props;
 
-    let imgArtista=(jsonData.images[0]) ? (jsonData.images[0].url) : null
+    let imgArtista=(jsonData.images[0]) ? (jsonData.images[0].url) : icon_artist
     let nombreArtista=jsonData.name
     let seguidoresArtista=jsonData.followers.total
     let link=jsonData.external_urls.spotify
@@ -30,10 +30,10 @@ export default function (props){
     return(
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleClick : undefined }>
             <div className="--tarjeta-left">
-                {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}} />}
+                {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}}/>}
                 <div className="--tarjeta-datos">
                     {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
-                    {(seguidoresArtista) && <p className="--tarjeta-dato1"><img src={icon_followers} style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
+                    {(seguidoresArtista!=1) && <p className="--tarjeta-dato1"><img src={icon_followers} style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
                 </div>
 
             </div>

@@ -93,9 +93,7 @@ html{
     color: var(--blanco3);
     font-size: 1.75em;
   }
-  .tool-description{
-    text-align: center;
-  }
+
   h2{
     padding: 0.25em;
     color: var(--color);
@@ -338,20 +336,15 @@ html{
   }
   /* FIN FIXED NAVS */
   /* CLASES APOYO */
+  .text-center{
+    text-align: center;
+  }
   .enlace{
     text-decoration: underline;
     color: var(--colorEnlaces);
   }
     .negrita{
         font-weight: bold;
-    }
-    .modal{
-        position: fixed;
-        top: 0;
-        width: 100vw;
-        height: 100%;
-        background-color: black;
-        opacity: 0.5;
     }
     .error{
         color: red;
@@ -361,6 +354,9 @@ html{
     }
     .color{
         color:var(--colorTextoColor);
+    }
+    .small-text{
+      font-size: 0.9em;
     }
     .boton {
         font-size: 1.25em;
@@ -510,13 +506,10 @@ html{
       width: 100%;
       gap: 1em;
     }
-    .boton:not(disabled){
-
-    }
-  
     .boton:disabled:hover{
         cursor:not-allowed;
     }
+
     /* .boton:hover{
         transition: all 0.3s;
         transform: scale(1.1);
@@ -694,13 +687,22 @@ html{
     flex-flow: column nowrap;
     justify-content: space-between;
   }
+  .--tarjeta-info-bpm-scale{
+    background-color: var(--colorTextoColor);
+    border-radius: 8px;
+    padding: 0.25em 0.5em;
+    color: var(--fondo);
+    font-weight: 500;
+  }
   
   .enlaceLeftTarjeta{
     display: flex;
     flex-flow: row nowrap;
     gap: 1em;
   }
-  
+  .--tarjeta-dato-nombre{
+    font-weight: 500;
+  }
   .--tarjeta-datos{
     display: flex;
     flex-flow: column nowrap;

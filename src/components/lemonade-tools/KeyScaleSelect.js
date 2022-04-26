@@ -3,7 +3,7 @@ import Select from 'react-select'
 
 
 export function KeyScaleSelect(props){
-    const {titulo, haySeleccion} = props;
+    const {titulo, disabled, mensaje, colorPlaceHolder} = props;
 
 //nota seleccionada y su label keySelected=0 keySelectedLabel="C"
     const [keySelected,setKeySelected]= React.useState(-1);
@@ -107,7 +107,7 @@ export function KeyScaleSelect(props){
         }),
         placeholder:(provided) => ({
             ...provided,
-            color: 'var(--blanco3)',
+            color: colorPlaceHolder,
         }),
         // multiValue:(provided) => ({
         //     ...provided,
@@ -150,25 +150,28 @@ export function KeyScaleSelect(props){
     
     return(
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo" style={haySeleccion.nota>-1 ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>{titulo}</h2>
+            <h2 className="busqueda-titulo">{titulo}</h2>
+            <p className="text-center small-text">{mensaje}</p>
             <div className="linea-flex-center">
                 <Select
+                    isDisabled={disabled}
                     isSearchable={false} //no se puede buscar
                     options={optionsKey} //contiene pares value:label para rellenar las opciones
                     menuShouldScrollIntoView //cuando se abren las opciones hace scroll hacia abajo
-                    placeholder={keySelected>-1 ? keySelectedLabel : "Introduce nota"}
+                    placeholder={(!disabled && keySelected>-1) ? keySelectedLabel : "Nota"}
                     styles = {customStyles}
                     onChange={handleChangeKey}
-                    setValue={-1}
+                    value={2}
                 />
                 <Select
+                    isDisabled={disabled}
                     isSearchable={false}
                     options={optionsScale}
                     menuShouldScrollIntoView
-                    placeholder={(scaleSelected>-1) ? scaleSelectedLabel : "Introduce escala"}
+                    placeholder={(!disabled && scaleSelected>-1) ? scaleSelectedLabel : "Escala"}
                     styles = {customStyles}
                     onChange={handleChangeScale}
-                    setValue={-1}
+                    value={2}
                 />
             </div>
         </div>

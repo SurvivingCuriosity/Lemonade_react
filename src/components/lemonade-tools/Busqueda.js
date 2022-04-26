@@ -28,8 +28,6 @@ export function Busqueda(props){
 //mensajes de error y la clase (mostrar errores en rojo, warnings etc)
     const [msg, setMsg] = React.useState(MSG_INIT);
     const [msgClass, setMsgClass] = React.useState("");
-    
-    const [isClickable, setIsClickable] = React.useState(true);
 
 //array de resultados obtenidos tras la busqueda
     const [listaResultados, setListaResultados] = React.useState([]);
@@ -51,7 +49,7 @@ export function Busqueda(props){
             setMsg(MSG_RESULTADOS_OBTENIDOS);
             setIsLoading(false);
             setListaResultados(lista);
-        },2000);
+        },500);
     }
 
 
@@ -85,29 +83,7 @@ export function Busqueda(props){
 
 //se ejecuta cada vez que la lista de resultados cambia 
     React.useEffect(()=>{
-        //isSongKeyFinder es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
-        if(isSongKeyFinder){
-            setIsClickable(false);
-            if(listaResultados.length==0){
-                setMsgClass("success");
-                setMsg("");
-            }
-            if(listaResultados.length>0){
-                switch (props.tipo) {
-                    case "cancion":
-                        setLinkNext(resultadoBusqueda.tracks.next)
-                        setLinkPrev(resultadoBusqueda.tracks.previous)
-                        break;
-                    case "artista":
-                        setLinkNext(resultadoBusqueda.artists.next)
-                        setLinkPrev(resultadoBusqueda.artists.previous)
-                        break;
-                }
-            }
-            
-        }else{
             if(listaResultados.length>1){
-                setIsClickable(true);
                 setIsLoading(false);
                 setMsg(MSG_RESULTADOS_OBTENIDOS);
                 setMsgClass("success");
@@ -116,15 +92,25 @@ export function Busqueda(props){
                 //Ha elegido
                 setMsgClass("success");
                 setMsg(MSG_SELECCION);
-                setIsClickable(false);
             }
             if(listaResultados.length==0){
-                setMsg("");
-                setIsClickable(false);
+                setMsg(MSG_INIT);
+            }
+        
+        if(listaResultados.length>0){
+            switch (props.tipo) {
+                case "cancion":
+                    setLinkNext(resultadoBusqueda.tracks.next)
+                    setLinkPrev(resultadoBusqueda.tracks.previous)
+                    break;
+                case "artista":
+                    setLinkNext(resultadoBusqueda.artists.next)
+                    setLinkPrev(resultadoBusqueda.artists.previous)
+                    break;
             }
         }
 
-    },[resultadoBusqueda])
+    },[resultadoBusqueda, listaResultados])
 
     const renderListaResultados = (
         <ul className="busqueda-lista">
@@ -137,7 +123,7 @@ export function Busqueda(props){
                     return (
                         <TarjetaCancion 
                             key={item.id}
-                            isClickable={isClickable}
+                            isClickable={(listaResultados.length>1 && !isSongKeyFinder) ? true : false}
                             selectionCallback={handleEleccion}
                             jsonData={item}
                         />
@@ -146,7 +132,7 @@ export function Busqueda(props){
                     return (
                         <TarjetaArtista
                             key={item.id}
-                            isClickable={isClickable}
+                            isClickable={(listaResultados.length>1 && !isSongKeyFinder) ? true : false}
                             selectionCallback={handleEleccion}
                             jsonData={item}
                         />
@@ -213,8 +199,8 @@ export function Busqueda(props){
             <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
 
             {/* Si ha resultados renderiza la lista */}
-            {isLoading ? <CustomSpinner /> : ""}
-            {!isLoading && listaResultados.length>0 ? renderButtonsPrevNext : ""}
+            {isLoading? <CustomSpinner /> : ""}
+            {!isLoading && listaResultados.length>1 ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 ? renderListaResultados : ""}
             
             {((haySeleccion!=undefined && haySeleccion.id && listaResultados.length==1)||(isSongKeyFinder && listaResultados.length>0))
@@ -237,6 +223,7 @@ export function Busqueda(props){
     }
     function borrarSeleccion(){
         setListaResultados([]);
+        callbackEleccion(listaResultados);
     }
 
     //funcion que se ejecuta cuando llegan los resultados
