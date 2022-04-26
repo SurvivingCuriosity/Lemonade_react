@@ -391,10 +391,9 @@ html{
       padding: 0.2em 0.9em;
     }
     .busqueda-boton-borrar{
-      border: none;
-      background-color: rgba(0,0,0,0);
-      color: red;
+      color: var(--colorTextoColor);
       margin-left: auto;
+      font-size: 1em;
     }
     .boton2{
         transition: all 0.3s;
@@ -624,7 +623,8 @@ html{
     font-size: 1.75em;
   }
   .busqueda-texto-info{
-    font-size: 1em;
+    font-size: 1.25em;
+    text-align: center;
   }
   /* FIN BUSQUEDA */
   /* TARJETAS */

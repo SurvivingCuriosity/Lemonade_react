@@ -127,12 +127,10 @@ export function KeyScaleSelect(props){
     }
 
     const handleChangeKey = (e) =>{
-        console.log('key cambia a '+e.value);
         setKeySelected(e.value)
         setKeySelectedLabel(e.label)
     }
     const handleChangeScale = (e) =>{
-        console.log('scale cambia a '+e.value);
         setScaleSelected(e.value)
         setScaleSelectedLabel(e.label)
     }
@@ -140,9 +138,8 @@ export function KeyScaleSelect(props){
     React.useEffect(()=>{
         //si se han seleccionado nota y escala le paso los datos al padre
         if(keySelected>-1 && scaleSelected>-1){
-            console.log("Key final: "+keySelected);
-            console.log('Scale final:'+scaleSelected);
-            props.parentCallback({
+            //paso la seleccion al padre mediante un objeto que contiene los valores y las label
+            props.callbackEleccion({
                 nota : keySelected,
                 escala: scaleSelected,
                 notaLabel: keySelectedLabel,

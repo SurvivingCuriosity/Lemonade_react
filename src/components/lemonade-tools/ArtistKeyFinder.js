@@ -3,45 +3,65 @@ import { Busqueda } from "./Busqueda";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
-import { getArtistAlbums, getToken } from "../../API_calls/apiCalls";
-import { getCancionesDeArtistaEnEscala } from "../../API_calls/apiCalls";
-import { agregaAudioFeaturesAListaCanciones } from "../../API_calls/apiCalls";
+
+import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
+import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
+
 
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
     
-    const [textoInformativo, setTextoInformativo] = React.useState("Rellena los campos para activar el botón");
-    
-    const [seleccionArtista, setSeleccionArtista] = React.useState({});
-    const [objetoNotaEscala, setObjetoNotaEscala] = React.useState({});
-    
-    //determina si las tarjeta es clickable (una vez q eliges deja de ser clickable y cambia textoInformativo)
+    const [msgResultado, setMsgResultado] = React.useState("");
+    const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
+
     const [isClickable, setIsClickable] = React.useState(true);
 
-    //haySeleccion es un booleano que indica si el usuario ha elegido artista y nota
-    //se utiliza para habilitar o deshabilitar el boton final de buscar
-    const [haySeleccion, setHaySeleccion] = React.useState(false);
-    const [resultadoFinal, setResultadoFinal] = React.useState([]);
+    const [seleccionArtista, setSeleccionArtista] = React.useState({});
+    const [seleccionNotaEscala, setSeleccionNotaEscala] = React.useState({});
 
     const [cancionesArtista, setCancionesArtista] = React.useState([]);
+    const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
-    //esta funcion se ejecuta cada vez que seleccionArtista o objetoNotaEscala cambian su valor
+    const [haySeleccion, setHaySeleccion] = React.useState(false);
+    
+    const [resultadoFinal, setResultadoFinal] = React.useState([]);
+
+    
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
-        if(seleccionArtista.id && objetoNotaEscala.nota>-1){
+        if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
             setHaySeleccion(true);
             setIsClickable(false);
         }else{
             setHaySeleccion(false);
         }
-
-    },[seleccionArtista,objetoNotaEscala, resultadoFinal])
+    },[seleccionArtista,seleccionNotaEscala])
     
-    let handleClickFinal = (e) =>{
-        console.log('resFinal');
-        console.log(cancionesArtista);
-        setResultadoFinal(cancionesArtista.filter(cancion => (cancion.key==objetoNotaEscala.nota && cancion.mode==objetoNotaEscala.escala)))
+    let handleClickFinal = () =>{
+        console.log('Usuario hace click final');
+        let arrayResultadosFinales = [];
+        objetosAudioFeatures.map((obj)=>{
+            if(obj.mode == seleccionNotaEscala.escala 
+                && obj.key == seleccionNotaEscala.nota){
+                cancionesArtista.map((cancion)=>{
+                    if(cancion.id == obj.id){
+                        cancion.mode = obj.mode;
+                        cancion.key = obj.key;
+                        cancion.bpm = obj.tempo;
+                        arrayResultadosFinales.push(cancion);
+                    }
+                })
+            }
+        })
+        if(arrayResultadosFinales.length==0){
+            setMsgResultadoClass("error")
+            setMsgResultado("No se encontraron coincidencias")
+        }else{
+            setMsgResultadoClass("success")
+            setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
+        }
+        setResultadoFinal(arrayResultadosFinales);
     };
 
     return(
@@ -54,14 +74,13 @@ export function ArtistKeyFinder(){
                         haySeleccion={seleccionArtista}
                         tipo="artista"
                         titulo="1. Elige un artista"
-                        isClickable={isClickable}
-                        parentCallback={userSelectsArtist}
+                        callbackEleccion={userSelectsArtist}
                     />
                     <KeyScaleSelect 
-                        haySeleccion={objetoNotaEscala}
+                        haySeleccion={seleccionNotaEscala}
                         titulo="2. Elige una nota y escala"
-                        seleccion={objetoNotaEscala}
-                        parentCallback = {userSelectsScale}
+                        seleccion={seleccionNotaEscala}
+                        callbackEleccion = {userSelectsScale}
                     />
                 </div>
                 <div className="busqueda-container">
@@ -71,7 +90,8 @@ export function ArtistKeyFinder(){
                         disabled={!haySeleccion}
                         onClickCallback={handleClickFinal}
                     />
-                    {resultadoFinal.length>1 
+                    <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+                    {resultadoFinal.length>0 
                         ? 
                         <ul className="busqueda-lista">
                         {resultadoFinal.map((item) => {
@@ -96,30 +116,49 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta cuando el usuario rellena los <ReactSelect /> del componente <KeyScaleSelect />
     function userSelectsScale(objNotaEscala){
-        setObjetoNotaEscala(objNotaEscala);
-        setResultadoFinal(cancionesArtista.filter(cancion => (cancion.key==objetoNotaEscala.nota && cancion.mode==objetoNotaEscala.escala)))
-    }
-    //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
-    function userSelectsArtist(artistSelected){
+        console.log('Usuario elige nota y escala');
+        setSeleccionNotaEscala(objNotaEscala);
         try {
-            getToken().then((token)=>{
-                let _token = token.data.access_token;
-                getArtistAlbums(artistSelected.id, _token).then((res)=>{
-                    window.setTimeout(()=>{
-                        getCancionesDeArtistaEnEscala(res).then((res)=>{
-                            setCancionesArtista(res);
+            //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
+            console.log(cancionesArtista);
+            getObjetosAudioFeatures(cancionesArtista).then((res)=>{
+                if(res.length>1){
+                    res.map((promesa)=>{
+                        promesa.then((res)=>{
+                            setObjetosAudioFeatures([...res.data.audio_features]);
                         })
-                    },2000)
-                })
-
+                    })
+                }else{
+                    setObjetosAudioFeatures(res.data.audio_features)
+                }
             })
         } catch (err) {
           console.log(err);
         }
-        setSeleccionArtista(artistSelected);
+        
     }
 
+    //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
+    function userSelectsArtist(artistSelected){
+        console.log('Usuario elige artista');
+        console.log(artistSelected);
+        setSeleccionArtista(artistSelected);
+        try {
+            getAllUniqueArtistSongs(artistSelected.id,finalCallback).then((e)=>console.log(e))
+            getAllUniqueArtistSongs(artistSelected.id, miCallback).then((artistSongs)=>{
+                setCancionesArtista(artistSongs);
+            })
+        } catch (err) {
+          console.log(err);
+        }
 
-
-    
+    }
+    function miCallback(res) {
+        console.log('en callback');
+    }
+    function finalCallback(res){
+        console.log('tenemos todo POR FIN');
+        console.log(res);
+        setCancionesArtista(res)
+    }
 }

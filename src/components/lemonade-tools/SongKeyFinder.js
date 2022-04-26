@@ -6,7 +6,7 @@ export function SongKeyFinder(){
 
     let titulo = "Song Key Finder"
     let descripcion = "Busca una canción para ver su escala y bpm"
-
+    
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
@@ -14,10 +14,13 @@ export function SongKeyFinder(){
 
             <Busqueda 
                 tipo="cancion"
-                isClickable={false}
                 titulo="Elige una cancion"
                 isSongKeyFinder={true}
+                parentCallback = {miCallback}
             />
         </div>
     )
+    function miCallback(params) {
+        
+    }
 }

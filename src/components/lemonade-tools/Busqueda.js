@@ -3,32 +3,30 @@ import React from "react";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import TarjetaArtista from "./Busqueda/TarjetaArtista";
 
-import { getToken } from "../../API_calls/apiCalls";
 import { buscarArtista } from "../../API_calls/apiCalls";
 import { buscarCancion } from "../../API_calls/apiCalls";
 import { getAudioFeatures } from "../../API_calls/apiCalls";
 import { CustomSpinner } from "../custom-components/CustomSpinner";
 
 export function Busqueda(props){
-    const MENSAJE_INIT=""
-    const MENSAJE_NO_TEXTO="No has introducido texto."
-    const MENSAJE_SELECCION="Has elegido: "
-    const MENSAJE_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MENSAJE_MOSTRANDO_RESULTADOS="Resultados obtenidos: "
-    const MENSAJE_HAY_RESULTADOS="Preparando resultados: "
-    const MENSAJE_TEXTO_REPETIDO="Acabas de buscar: "
-    const MENSAJE_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
+    const MSG_INIT=""
+    const MSG_NO_TEXTO="No has introducido texto."
+    const MSG_SELECCION="Has elegido: "
+    const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
+    const MSG_RESULTADOS_OBTENIDOS="Resultados obtenidos: "
+    const MSG_TEXTO_REPETIDO="Acabas de buscar: "
+    const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
+    const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
-    const {tipo, titulo, parentCallback, isSongKeyFinder, haySeleccion} = props;
+    const {tipo, titulo, isSongKeyFinder, haySeleccion, callbackEleccion} = props;
     
     const [isLoading, setIsLoading] = React.useState(false);
 
 //texto buscado por el usuario y el ultimo texto valido
     const [text, setText] = React.useState("");
-    const [lastText, setLastText] = React.useState("");
 
 //mensajes de error y la clase (mostrar errores en rojo, warnings etc)
-    const [msg, setMsg] = React.useState(MENSAJE_INIT);
+    const [msg, setMsg] = React.useState(MSG_INIT);
     const [msgClass, setMsgClass] = React.useState("");
     
     const [isClickable, setIsClickable] = React.useState(true);
@@ -36,25 +34,22 @@ export function Busqueda(props){
 //array de resultados obtenidos tras la busqueda
     const [resultado, setResultado] = React.useState([]);
 
-//un json que representa la eleccion del usuario
-    const [seleccion, setSeleccion] = React.useState({});
-
-    let agregaDatos = async (lista, token) => {
+    let agregaDatos = async (lista) => {
+        console.log('en agrega datos');
         lista.map((item)=>{
-            getAudioFeatures(item.id,token).then((res2)=>{
+            getAudioFeatures(item.id).then((res2)=>{
                 item.bpm = res2.data.tempo;
                 item.key = res2.data.key;
                 item.mode = res2.data.mode;
             })
-            //anado tiempo de espera para que se muestre el bpm y la escala
-            window.setTimeout(()=>{
-                setIsLoading(false);
-                setResultado(lista);
-                setMsg(MENSAJE_MOSTRANDO_RESULTADOS);
-                setMsgClass("success");
-            },2000)
         })
+        window.setTimeout(()=>{
+            setMsg(MSG_RESULTADOS_OBTENIDOS);
+            setIsLoading(false);
+            setResultado(lista);
+        },2000);
     }
+
 
     let handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,69 +57,25 @@ export function Busqueda(props){
         if(text===""){
             //text input vacio
             setMsgClass("error");
-            setMsg(MENSAJE_NO_TEXTO);
+            setMsg(MSG_NO_TEXTO);
             return;
         }else{
-            //text input con texto
-            if(text === lastText){
-                setMsgClass("error")
-                setMsg(MENSAJE_TEXTO_REPETIDO + text);
-                setLastText("");
-                return;
-            }else{
-                setIsLoading(true);
-                setMsg("Buscando");
-                setMsgClass("success");
-                try {
-                    getToken().then((token)=>{
-                        let _token = token.data.access_token;
-                        setLastText(text);
-                        switch(tipo){
-                            case "cancion":
-                                buscarCancion(text,_token)
-                                    .then((res)=>{
-                                        if((res.data.tracks.items).length==0){
-                                            //busqueda bien pero no resultado
-                                            setIsLoading(false);
-                                            setMsg(MENSAJE_NO_RESULTADOS);
-                                            setMsgClass("error");
-                                        }else{
-                                            setMsg(MENSAJE_HAY_RESULTADOS);
-                                            setMsgClass("success");
-                                            
-                                            agregaDatos(res.data.tracks.items,_token);
-                                        }
-                                        // setResultado(res.data.tracks.items)
-                                    }).catch((err)=>{
-                                        setIsLoading(false);
-                                        setMsg(MENSAJE_ERROR_PETICION);
-                                        setMsgClass("error");
-                                    })
-                            break;
-                            case "artista":
-                                buscarArtista(text,_token)
-                                    .then((res)=>{
-                                        if((res.data.artists.items).length==0){
-                                            //busqueda bien pero no resultado
-                                            setIsLoading(false);
-                                            setMsg(MENSAJE_NO_RESULTADOS);
-                                            setMsgClass("error");
-                                        }else{
-                                            setResultado(res.data.artists.items)
-                                        }
-                                    }).catch((err)=>{
-                                        setIsLoading(false);
-                                        setMsg(MENSAJE_ERROR_PETICION);
-                                        setMsgClass("error");
-                                    })
-                            break;
-                        }
-                    })
-        
-                } catch (err) {
-                  console.log(err);
+            setIsLoading(true);
+            setMsg("Buscando");
+            setMsgClass("success");
+            try {
+                switch(tipo){
+                    case "cancion":
+                        buscarCancion(text, miCallback);
+                    break;
+                    case "artista":
+                        buscarArtista(text, miCallback);
+                    break;
                 }
+            } catch (err) {
+                console.log(err);
             }
+            
         }
     };
 
@@ -133,52 +84,57 @@ export function Busqueda(props){
         //isSongKeyFinder es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
         if(isSongKeyFinder){
             setIsClickable(false);
+            if(resultado.length==0){
+                setMsgClass("success");
+                setMsg("");
+            }
         }else{
             if(resultado.length>1){
+                setIsClickable(true);
                 setIsLoading(false);
-                setMsg("Resultados obtenidos");
+                setMsg(MSG_RESULTADOS_OBTENIDOS);
                 setMsgClass("success");
             }
             if(resultado.length==1){
                 //Ha elegido
                 setMsgClass("success");
-                setMsg(MENSAJE_SELECCION);
+                setMsg(MSG_SELECCION);
                 setIsClickable(false);
-            }else if(resultado.length==0){
+            }
+            if(resultado.length==0){
                 setMsg("");
-                //No ha elegido
-                setIsClickable(true);
+                setIsClickable(false);
             }
         }
     },[resultado])
 
     const listaResultados = (
         <ul className="busqueda-lista">
-                                {
-                                    resultado.map((item) => {
-                                        
-                                        switch(props.tipo){
-                                            case "cancion":
-                                                return (
-                                                    <TarjetaCancion 
-                                                        key={item.id}
-                                                        isClickable={isClickable}
-                                                        selectionCallback={handleEleccion}
-                                                        jsonData={item}
-                                                    />
-                                                );
-                                            case "artista":
-                                                return (
-                                                    <TarjetaArtista
-                                                        key={item.id}
-                                                        isClickable={isClickable}
-                                                        selectionCallback={handleEleccion}
-                                                        jsonData={item}
-                                                    />
-                                                );
-                                        }
-                                    })
-                                }
+            {
+            resultado.map((item) => {
+                
+                switch(props.tipo){
+                    case "cancion":
+                        return (
+                            <TarjetaCancion 
+                                key={item.id}
+                                isClickable={isClickable}
+                                selectionCallback={handleEleccion}
+                                jsonData={item}
+                            />
+                        );
+                    case "artista":
+                        return (
+                            <TarjetaArtista
+                                key={item.id}
+                                isClickable={isClickable}
+                                selectionCallback={handleEleccion}
+                                jsonData={item}
+                            />
+                        );
+                }
+            })
+            }
         </ul>
     )
 
@@ -187,7 +143,7 @@ export function Busqueda(props){
             <h2 className="busqueda-titulo" style={(haySeleccion!=undefined && haySeleccion.id && resultado.length==1) ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>{titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                {(resultado.length==0)
+                {(!(haySeleccion!=undefined && haySeleccion.id && resultado.length==1))
                 ? 
                     <span className="input_and_button">
                         <input
@@ -217,10 +173,10 @@ export function Busqueda(props){
             {isLoading ? <CustomSpinner /> : ""}
             {resultado.length>0 ? listaResultados : ""}
             
-            {(!resultado.length==0)
+            {((haySeleccion!=undefined && haySeleccion.id && resultado.length==1)||(isSongKeyFinder && resultado.length>0))
                 ? 
                     <button 
-                        className="busqueda-boton-borrar"
+                        className="busqueda-boton-borrar boton"
                         onClick={borrarSeleccion}
                         >Nueva búsqueda
                     </button>
@@ -233,9 +189,38 @@ export function Busqueda(props){
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
         setResultado([userSelection]);
-        parentCallback(userSelection);
+        callbackEleccion(userSelection);
     }
     function borrarSeleccion(){
         setResultado([]);
     }
+
+    //funcion que se ejecuta cuando llegan los resultados
+    function miCallback(params) {
+        if((params.tracks && params.tracks.total==0) || (params.artists && params.artists.total==0)){
+            //busqueda bien pero no resultado
+            setIsLoading(false);
+            setMsgClass("error");
+            setMsg(MSG_NO_RESULTADOS);
+        }else{
+            setMsgClass("success");
+            setMsg(MSG_PREPARANDO_RESULTADOS);
+        }
+
+
+        switch (tipo) {
+            case "artista":
+                setResultado(params.artists.items)
+                break;
+            case "cancion":
+                if(isSongKeyFinder){
+                    agregaDatos(params.tracks.items);
+                }else{
+                    setResultado(params.tracks.items);
+                }
+                break;
+        }
+        // parentCallback(params);   
+    }
+
 }
