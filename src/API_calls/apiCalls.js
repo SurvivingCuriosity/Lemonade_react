@@ -22,10 +22,10 @@ export const getToken = async () => {
 };
 
 //funcion que devuelve resultados de buscar cancion
-export const buscarCancion = async (text, callback) => {
+export const buscarCancion = async (text, callback, offset=0) => {
     let limite=5;
     getToken().then((e)=>{
-        axios(`https://api.spotify.com/v1/search?type=track&limit=${limite}&q=${text}`, {
+        axios(`https://api.spotify.com/v1/search?type=track&limit=${limite}&q=${text}&offset=${offset}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -34,16 +34,18 @@ export const buscarCancion = async (text, callback) => {
             method: 'GET'
         }).then((res)=>{
             callback(res.data);
+        }).catch((err)=>{
+            callback("error" +err);
         })
     })
-
 };
+
 
 //funcion que devuelve resultados de buscar artista
-export const buscarArtista = async (text, callback) => {
+export const buscarArtista = async (text, callback, offset=0) => {
     let limite=5;
     getToken().then((e)=>{
-        axios(`https://api.spotify.com/v1/search?type=artist&limit=${limite}&q=${text}`, {
+        axios(`https://api.spotify.com/v1/search?type=artist&limit=${limite}&q=${text}&offset=${offset}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -52,9 +54,30 @@ export const buscarArtista = async (text, callback) => {
             method: 'GET'
         }).then((res)=>{
             callback(res.data);
+        }).catch((err)=>{
+            callback("error" +err);
         })
     })
 };
+
+export const getPaginaSiguienteOAnterior = async (url, callback)=>{
+    console.log('en getPaginasiguiente');
+    console.log(url);
+    getToken().then((e)=>{
+        axios(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+e.data.access_token
+            },
+            method: 'GET'
+        }).then((res)=>{
+            callback(res.data);
+        }).catch((err)=>{
+            console.log(err.data);
+        })
+    })
+}
 
 //funcion que dado el id de una cancion, obtiene sus caracteristicas
 export const getAudioFeatures = async (id) => {

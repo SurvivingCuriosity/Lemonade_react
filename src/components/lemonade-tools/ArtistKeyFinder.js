@@ -144,17 +144,11 @@ export function ArtistKeyFinder(){
         console.log(artistSelected);
         setSeleccionArtista(artistSelected);
         try {
-            getAllUniqueArtistSongs(artistSelected.id,finalCallback).then((e)=>console.log(e))
-            getAllUniqueArtistSongs(artistSelected.id, miCallback).then((artistSongs)=>{
-                setCancionesArtista(artistSongs);
-            })
+            getAllUniqueArtistSongs(artistSelected.id,finalCallback);
         } catch (err) {
           console.log(err);
         }
 
-    }
-    function miCallback(res) {
-        console.log('en callback');
     }
     function finalCallback(res){
         console.log('tenemos todo POR FIN');

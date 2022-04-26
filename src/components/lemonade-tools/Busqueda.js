@@ -4,6 +4,7 @@ import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import TarjetaArtista from "./Busqueda/TarjetaArtista";
 
 import { buscarArtista } from "../../API_calls/apiCalls";
+import { getPaginaSiguienteOAnterior } from "../../API_calls/apiCalls";
 import { buscarCancion } from "../../API_calls/apiCalls";
 import { getAudioFeatures } from "../../API_calls/apiCalls";
 import { CustomSpinner } from "../custom-components/CustomSpinner";
@@ -14,7 +15,6 @@ export function Busqueda(props){
     const MSG_SELECCION="Has elegido: "
     const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
     const MSG_RESULTADOS_OBTENIDOS="Resultados obtenidos: "
-    const MSG_TEXTO_REPETIDO="Acabas de buscar: "
     const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
     const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
@@ -32,7 +32,11 @@ export function Busqueda(props){
     const [isClickable, setIsClickable] = React.useState(true);
 
 //array de resultados obtenidos tras la busqueda
-    const [resultado, setResultado] = React.useState([]);
+    const [listaResultados, setListaResultados] = React.useState([]);
+    const [resultadoBusqueda, setResultadoBusqueda] = React.useState({});
+
+    const [linkNext, setLinkNext] = React.useState("");
+    const [linkPrev, setLinkPrev] = React.useState("");
 
     let agregaDatos = async (lista) => {
         console.log('en agrega datos');
@@ -46,7 +50,7 @@ export function Busqueda(props){
         window.setTimeout(()=>{
             setMsg(MSG_RESULTADOS_OBTENIDOS);
             setIsLoading(false);
-            setResultado(lista);
+            setListaResultados(lista);
         },2000);
     }
 
@@ -84,66 +88,105 @@ export function Busqueda(props){
         //isSongKeyFinder es solo para songKeyFinder (es una excepcion: nunca son clickables aunque haya muchos)
         if(isSongKeyFinder){
             setIsClickable(false);
-            if(resultado.length==0){
+            if(listaResultados.length==0){
                 setMsgClass("success");
                 setMsg("");
             }
+            if(listaResultados.length>0){
+                switch (props.tipo) {
+                    case "cancion":
+                        setLinkNext(resultadoBusqueda.tracks.next)
+                        setLinkPrev(resultadoBusqueda.tracks.previous)
+                        break;
+                    case "artista":
+                        setLinkNext(resultadoBusqueda.artists.next)
+                        setLinkPrev(resultadoBusqueda.artists.previous)
+                        break;
+                }
+            }
+            
         }else{
-            if(resultado.length>1){
+            if(listaResultados.length>1){
                 setIsClickable(true);
                 setIsLoading(false);
                 setMsg(MSG_RESULTADOS_OBTENIDOS);
                 setMsgClass("success");
             }
-            if(resultado.length==1){
+            if(listaResultados.length==1){
                 //Ha elegido
                 setMsgClass("success");
                 setMsg(MSG_SELECCION);
                 setIsClickable(false);
             }
-            if(resultado.length==0){
+            if(listaResultados.length==0){
                 setMsg("");
                 setIsClickable(false);
             }
         }
-    },[resultado])
 
-    const listaResultados = (
+    },[resultadoBusqueda])
+
+    const renderListaResultados = (
         <ul className="busqueda-lista">
-            {
-            resultado.map((item) => {
-                
+
+            {/* hay mas resultados */}
+
+            {listaResultados.map((item) => {
                 switch(props.tipo){
-                    case "cancion":
-                        return (
-                            <TarjetaCancion 
-                                key={item.id}
-                                isClickable={isClickable}
-                                selectionCallback={handleEleccion}
-                                jsonData={item}
-                            />
-                        );
-                    case "artista":
-                        return (
-                            <TarjetaArtista
-                                key={item.id}
-                                isClickable={isClickable}
-                                selectionCallback={handleEleccion}
-                                jsonData={item}
-                            />
-                        );
+                case "cancion":
+                    return (
+                        <TarjetaCancion 
+                            key={item.id}
+                            isClickable={isClickable}
+                            selectionCallback={handleEleccion}
+                            jsonData={item}
+                        />
+                    );
+                case "artista":
+                    return (
+                        <TarjetaArtista
+                            key={item.id}
+                            isClickable={isClickable}
+                            selectionCallback={handleEleccion}
+                            jsonData={item}
+                        />
+                    );
                 }
             })
             }
         </ul>
     )
+    const renderButtonsPrevNext=(
+        <div>
+        {linkNext!=null
+        ?
+            <button 
+                className="boton_link botonPaginaSiguiente"
+                onClick={getPaginaSiguiente}
+                >Siguiente página
+            </button>
+        :
+            ""
+        }
+        {linkPrev!=null
+        ?
+            <button 
+                className="boton_link botonPaginaAnterior"
+                onClick={getPaginaAnterior}
+                >Página anterior
+            </button>
+        :
+            ""
+        }
+    </div>
+    )
 
     return(
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo" style={(haySeleccion!=undefined && haySeleccion.id && resultado.length==1) ? {color: 'var(--colorTextoColor)'}: {color: 'var(--blanco3)'}}>{titulo}</h2>
+            <h2 className="busqueda-titulo">{titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                {(!(haySeleccion!=undefined && haySeleccion.id && resultado.length==1))
+                {(!(haySeleccion!=undefined && haySeleccion.id && listaResultados.length==1))
                 ? 
                     <span className="input_and_button">
                         <input
@@ -171,9 +214,10 @@ export function Busqueda(props){
 
             {/* Si ha resultados renderiza la lista */}
             {isLoading ? <CustomSpinner /> : ""}
-            {resultado.length>0 ? listaResultados : ""}
+            {!isLoading && listaResultados.length>0 ? renderButtonsPrevNext : ""}
+            {listaResultados.length>0 ? renderListaResultados : ""}
             
-            {((haySeleccion!=undefined && haySeleccion.id && resultado.length==1)||(isSongKeyFinder && resultado.length>0))
+            {((haySeleccion!=undefined && haySeleccion.id && listaResultados.length==1)||(isSongKeyFinder && listaResultados.length>0))
                 ? 
                     <button 
                         className="busqueda-boton-borrar boton"
@@ -188,39 +232,84 @@ export function Busqueda(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
-        setResultado([userSelection]);
+        setListaResultados([userSelection]);
         callbackEleccion(userSelection);
     }
     function borrarSeleccion(){
-        setResultado([]);
+        setListaResultados([]);
     }
 
     //funcion que se ejecuta cuando llegan los resultados
     function miCallback(params) {
+        setResultadoBusqueda(params);
+        if(!(params.tracks || params.artists)){
+            setMsgClass("error");
+            setMsg(MSG_ERROR_PETICION);
+            setIsLoading(false);
+            return;
+        }
+        //no hay resultados parala busqueda
         if((params.tracks && params.tracks.total==0) || (params.artists && params.artists.total==0)){
-            //busqueda bien pero no resultado
             setIsLoading(false);
             setMsgClass("error");
             setMsg(MSG_NO_RESULTADOS);
+            return;
         }else{
+            //hay resultados
             setMsgClass("success");
             setMsg(MSG_PREPARANDO_RESULTADOS);
+            switch (tipo) {
+                case "artista":
+                    setLinkNext(params.artists.next);
+                    setLinkPrev(params.artists.previous);
+    
+                    setResultadoBusqueda(params);
+                    setListaResultados(params.artists.items)
+                    break;
+                case "cancion":
+                    setLinkNext(params.tracks.next);
+                    setLinkPrev(params.tracks.previous);
+    
+                    if(isSongKeyFinder){
+                        agregaDatos(params.tracks.items);
+                    }else{
+                        setResultadoBusqueda(params);
+                        setListaResultados(params.tracks.items);
+                    }
+                    break;
+                    
+            }
+            
         }
-
-
-        switch (tipo) {
-            case "artista":
-                setResultado(params.artists.items)
-                break;
-            case "cancion":
-                if(isSongKeyFinder){
-                    agregaDatos(params.tracks.items);
-                }else{
-                    setResultado(params.tracks.items);
-                }
-                break;
-        }
+        
+        
+        console.log(linkNext);
+        console.log(linkPrev);
+        
         // parentCallback(params);   
+    }
+
+    function getPaginaSiguiente(){
+        setIsLoading(true);
+        let url="";
+        if(props.tipo=="artista"){
+            url=resultadoBusqueda.artists.next;
+        }else if(props.tipo=="cancion"){
+            url=resultadoBusqueda.tracks.next;
+        }
+
+        getPaginaSiguienteOAnterior(url, miCallback)
+    }
+    function getPaginaAnterior(){
+        setIsLoading(true);
+        let url="";
+        if(props.tipo=="artista"){
+            url=resultadoBusqueda.artists.previous;
+        }else if(props.tipo=="cancion"){
+            url=resultadoBusqueda.tracks.previous;
+        }
+
+        getPaginaSiguienteOAnterior(url, miCallback)
     }
 
 }

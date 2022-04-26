@@ -7,6 +7,7 @@ export function CustomSpinner(props){
     return(
         <div className="loading-spinner">
             <img src={lemon} style={{width: tamanoSpinner + 'px'}}/>
+            <p>Cargando</p>
         </div>
     )
 
