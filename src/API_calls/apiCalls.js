@@ -252,14 +252,12 @@ export const getAlbumTracks = async (id) => {
 };
 
 export const getObjetosAudioFeatures = async (tracks) => {
-    console.log(tracks);
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
     if(numeroDeTracks<100){
         console.log('menos de 100');
         cadenaIDs="";
         tracks.map((track,index)=>{
-            console.log('mapeando');
             cadenaIDs+=track.id;
             if(index!=tracks.length-1){
                 cadenaIDs+=","

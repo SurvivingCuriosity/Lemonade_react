@@ -44,10 +44,16 @@ export function SongMatchFinder(){
         }else{
             setHaySeleccion(false);
         }
+        // console.log(seleccionCancion);
+        // console.log(seleccionArtista);
+        // console.log(cancionesArtista);
+        // console.log(objetosAudioFeatures);
 
-        if(cancionesArtista.length>0){
-            console.log('en effect llegaron canciones');
-            dameObjetosAudioFeatures(cancionesArtista);
+        if(seleccionArtista.id){
+            window.setTimeout(()=>{
+                dameObjetosAudioFeatures(cancionesArtista);
+                console.log('ahora');
+            },1000)
         }
         
     },[seleccionArtista, seleccionCancion, cancionesArtista])
@@ -169,28 +175,27 @@ export function SongMatchFinder(){
     }
     
     function finalCallback(listaCancionesArtista){
-        console.log('final callback');
         setCancionesArtista(listaCancionesArtista);
+        dameObjetosAudioFeatures(listaCancionesArtista);
     }
+
     function dameObjetosAudioFeatures(lista){
         try {
             //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
-            getObjetosAudioFeatures(lista).then((res)=>{
-                if(res.length>1){
-                    res.map((promesa)=>{
-                        promesa.then((res2)=>{
-                            console.log(res2);
-                            setObjetosAudioFeatures([...res2.data.audio_features]);
+            getObjetosAudioFeatures(lista).then((res1)=>{
+                if(res1.length>1){
+                    res1.map((promesa)=>{
+                        promesa.then((res)=>{
+                            setObjetosAudioFeatures([...res.data.audio_features]);
                         })
                     })
                 }else{
-                    console.log('res en final');
-                    console.log(res);
-                    setObjetosAudioFeatures(res.data.audio_features)
+                    setObjetosAudioFeatures(res1.data.audio_features)
                 }
             })
         } catch (err) {
           console.log(err);
         }
     }
+
 }
