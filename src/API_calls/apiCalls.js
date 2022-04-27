@@ -39,7 +39,42 @@ export const buscarCancion = async (text, callback, offset=0) => {
         })
     })
 };
+//funcion que devuelve resultados de buscar cancion
+export const buscarCancionID = async (id, callback) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/tracks/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+res.data.access_token
+            },
+            method: 'GET'
+        }).then((res)=>{
+            callback(res.data);
+        }).catch((err)=>{
+            callback("error");
+        })
+    })
 
+};
+//funcion que devuelve resultados de buscar cancion
+export const buscarArtistaID = async (id, callback) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/artists/${id}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+res.data.access_token
+            },
+            method: 'GET'
+        }).then((res)=>{
+            callback(res.data);
+        }).catch((err)=>{
+            callback("error");
+        })
+    })
+
+};
 
 //funcion que devuelve resultados de buscar artista
 export const buscarArtista = async (text, callback, offset=0) => {
@@ -61,8 +96,6 @@ export const buscarArtista = async (text, callback, offset=0) => {
 };
 
 export const getPaginaSiguienteOAnterior = async (url, callback)=>{
-    console.log('en getPaginasiguiente');
-    console.log(url);
     getToken().then((e)=>{
         axios(url, {
             headers: {
@@ -219,11 +252,14 @@ export const getAlbumTracks = async (id) => {
 };
 
 export const getObjetosAudioFeatures = async (tracks) => {
+    console.log(tracks);
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
     if(numeroDeTracks<100){
+        console.log('menos de 100');
         cadenaIDs="";
         tracks.map((track,index)=>{
+            console.log('mapeando');
             cadenaIDs+=track.id;
             if(index!=tracks.length-1){
                 cadenaIDs+=","

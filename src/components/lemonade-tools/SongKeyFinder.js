@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Busqueda} from '../lemonade-tools/Busqueda'
+import {BusquedaCancion} from '../lemonade-tools/Busqueda/BusquedaCancion'
 
 export function SongKeyFinder(){
 
@@ -10,13 +10,12 @@ export function SongKeyFinder(){
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
-            <p className="tool-description">{descripcion}</p>
+            <p className="text-center">{descripcion}</p>
 
-            <Busqueda 
-                tipo="cancion"
+            <BusquedaCancion
                 titulo="Elige una cancion"
                 isSongKeyFinder={true}
-                parentCallback = {miCallback}
+                callbackEleccion = {miCallback}
             />
         </div>
     )

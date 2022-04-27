@@ -33,9 +33,13 @@ export default function (props){
     songMode = getStringFromEscala(songMode);
     duracionCancion = milisegundosAString(duracionCancion);
 
+    function handleEleccionTarjeta(){
+        selectionCallback(jsonData);
+    }
+
     return(
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? selectionCallback.bind(jsonData) : undefined }>
+        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
                 {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">

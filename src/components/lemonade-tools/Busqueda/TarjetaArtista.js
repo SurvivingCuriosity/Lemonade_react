@@ -20,15 +20,13 @@ export default function (props){
     let link=jsonData.external_urls.spotify
     
 //cuando usuario hace click sobre una tarjeta se llama al callback del padre pasandole el json
-    function handleClick(){
+    function handleEleccionTarjeta(){
         selectionCallback(jsonData);
     }
-    React.useEffect(()=>{
-        
-    },[])
+
 
     return(
-        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleClick : undefined }>
+        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
                 {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}}/>}
                 <div className="--tarjeta-datos">

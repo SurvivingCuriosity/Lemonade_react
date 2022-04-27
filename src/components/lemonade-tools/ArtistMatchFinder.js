@@ -1,5 +1,4 @@
 import React from "react";
-import {Busqueda} from './Busqueda'
 
 export function ArtistMatchFinder(){
     let titulo = "Artist Match Finder"

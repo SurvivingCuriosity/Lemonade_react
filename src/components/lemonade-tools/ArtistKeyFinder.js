@@ -1,5 +1,5 @@
 import React from "react";
-import { Busqueda } from "./Busqueda";
+import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
@@ -24,7 +24,7 @@ export function ArtistKeyFinder(){
     const [haySeleccion, setHaySeleccion] = React.useState(false);
     
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
-
+    const [mostrarBotonFinal, setMostrarBotonFinal] = React.useState(true);
     
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
@@ -34,9 +34,9 @@ export function ArtistKeyFinder(){
             setHaySeleccion(false);
         }
         if(!seleccionArtista.id){
-            console.log('no hay seleccion');
+            console.log('no hay seleccion de artista');
         }
-    },[seleccionArtista,seleccionNotaEscala, seleccionArtista])
+    },[seleccionArtista,seleccionNotaEscala])
     
     let handleClickFinal = () =>{
         console.log('Usuario hace click final');
@@ -74,17 +74,17 @@ export function ArtistKeyFinder(){
             setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
         }
         setResultadoFinal(arrayResultadosFinales);
+        setMostrarBotonFinal(false);
     };
 
     return(
         <div className="tool-container">
             <h1 className="tool-titulo" >{titulo}</h1>
-            <p className="tool-description">{descripcion}</p>
+            <p className="text-center">{descripcion}</p>
             <div className="tool-container-sinTitulos">
                 <div className="containerSinResultado">
-                    <Busqueda 
+                    <BusquedaArtista
                         haySeleccion={seleccionArtista}
-                        tipo="artista"
                         titulo="1. Elige un artista"
                         callbackEleccion={userSelectsArtist}
                     />
@@ -99,12 +99,17 @@ export function ArtistKeyFinder(){
                 </div>
                 <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
+                    {mostrarBotonFinal 
+                        ? 
+                            <CustomButton 
+                                textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
+                                disabled={!haySeleccion}
+                                onClickCallback={handleClickFinal}
+                            />
+                        :
+                            ""
+                    }
                     
-                    <CustomButton 
-                        textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
-                        disabled={!haySeleccion}
-                        onClickCallback={handleClickFinal}
-                    />
 
                     <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
 
@@ -132,6 +137,7 @@ export function ArtistKeyFinder(){
     function userSelectsScale(objNotaEscala){
         console.log('Usuario elige nota y escala');
         setSeleccionNotaEscala(objNotaEscala);
+        setMostrarBotonFinal(true);
         try {
             //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
             console.log(cancionesArtista);
@@ -154,6 +160,7 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
+        setMostrarBotonFinal(true);
         //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         if(artistSelected.id){
             console.log('Usuario elige artista');
