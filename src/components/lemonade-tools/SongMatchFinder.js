@@ -90,7 +90,7 @@ export function SongMatchFinder(){
             setMsgResultado("No se encontraron coincidencias")
         }else{
             setMsgResultadoClass("success")
-            setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${notaEscalaDeCancion.nota} ${notaEscalaDeCancion.escala}`)
+            setMsgResultado(`Canciones de  ${seleccionArtista.name} en la misma escala que ${seleccionCancion.name}`)
         }
         setResultadoFinal(arrayResultadosFinales);
         setMostrarBotonFinal(false);
