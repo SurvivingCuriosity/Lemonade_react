@@ -52,7 +52,6 @@ export function SongMatchFinder(){
         if(seleccionArtista.id){
             window.setTimeout(()=>{
                 dameObjetosAudioFeatures(cancionesArtista);
-                console.log('ahora');
             },1000)
         }
         
@@ -90,7 +89,7 @@ export function SongMatchFinder(){
             setMsgResultado("No se encontraron coincidencias")
         }else{
             setMsgResultadoClass("success")
-            setMsgResultado(`Canciones de  ${seleccionArtista.name} en la misma escala que ${seleccionCancion.name}`)
+            setMsgResultado(`Canciones de  '${seleccionArtista.name}'' en la misma escala que '${seleccionCancion.name}'`)
         }
         setResultadoFinal(arrayResultadosFinales);
         setMostrarBotonFinal(false);
@@ -103,12 +102,12 @@ export function SongMatchFinder(){
             <p className="tool-description">{descripcion}</p>
             <div className="tool-wrapper">
                 <BusquedaCancion 
-                    clickable={true}
+                    haySeleccion={seleccionCancion.id? true : false}
                     titulo="1. Elige una canción"
                     callbackEleccion={userSelectsSong}
                 />
                 <BusquedaArtista
-                    clickable={true}
+                    haySeleccion={seleccionArtista.id? true : false}
                     titulo="2. Elige un artista"
                     callbackEleccion={userSelectsArtist}
                 />
@@ -126,7 +125,7 @@ export function SongMatchFinder(){
                     }
                     
 
-                    <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+                    <p className={`${msgResultadoClass} busqueda-texto-info text-center small-text`}>{msgResultado}</p>
 
                     {resultadoFinal.length>0 
                         ? 
@@ -134,6 +133,7 @@ export function SongMatchFinder(){
                                 {resultadoFinal.map((item) => {
                                     return (
                                         <TarjetaCancion 
+                                            isClickable={false}
                                             key={item.id}
                                             jsonData={item}
                                         />

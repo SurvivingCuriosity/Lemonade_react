@@ -255,7 +255,6 @@ export const getObjetosAudioFeatures = async (tracks) => {
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
     if(numeroDeTracks<100){
-        console.log('menos de 100');
         cadenaIDs="";
         tracks.map((track,index)=>{
             cadenaIDs+=track.id;

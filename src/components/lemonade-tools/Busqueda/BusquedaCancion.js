@@ -89,8 +89,7 @@ export function BusquedaCancion(props){
                 setMsg(MSG_INIT);
                 break;
             case 1:
-                setMsg(MSG_SELECCION);
-                break;
+                setMsg(MSG_RESULTADOS_OBTENIDOS);
             default:
                 if(listaResultados.length>0){
                     if(resultadoBusqueda.tracks){
@@ -98,9 +97,8 @@ export function BusquedaCancion(props){
                         setLinkPrev(resultadoBusqueda.tracks.previous)
                     }
                 }
-                setMsg(MSG_RESULTADOS_OBTENIDOS);
-
         }
+        if(haySeleccion) setMsg(MSG_SELECCION);
 
 
 
@@ -115,7 +113,7 @@ export function BusquedaCancion(props){
                 return (
                     <TarjetaCancion 
                         key={item.id}
-                        isClickable={(listaResultados.length>0 && !isSongKeyFinder) ? true : false}
+                        isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
                         selectionCallback={mandarEleccionAlPadre}
                         jsonData={item}
                     />

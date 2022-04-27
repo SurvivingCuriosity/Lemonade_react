@@ -5,7 +5,7 @@ import icon_followers from '../../../images/tarjeta/icon_followers.svg'
 
 
 export default function (props){
-    let tamanoImagen = '55'
+    let tamanoImagen = '65'
     let tamanoIcono = '15'
     
     let {
@@ -28,10 +28,10 @@ export default function (props){
     return(
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
-                {(imgArtista) && <img src={imgArtista} style={{width: tamanoImagen + 'px'}}/>}
+                {(imgArtista) && <img className="--tarjeta-img-ppal" src={imgArtista} style={{width: tamanoImagen + 'px'}}/>}
                 <div className="--tarjeta-datos">
-                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
-                    {(seguidoresArtista!=1) && <p className="--tarjeta-dato1"><img src={icon_followers} style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
+                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
+                    {(seguidoresArtista!=1) && <p className="--tarjeta-dato1"><img src={icon_followers} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
                 </div>
 
             </div>

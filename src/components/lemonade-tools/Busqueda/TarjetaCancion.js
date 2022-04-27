@@ -5,7 +5,7 @@ import icon_time from '../../../images/tarjeta/icon_time.svg'
 
 
 export default function (props){
-    const tamanoImagen = '50'
+    const tamanoImagen = '65'
     const tamanoIcono = '15'
 
     const {
@@ -41,11 +41,11 @@ export default function (props){
         //si es clickable, le anado la clase clickable (efectos para el hover)
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
-                {(imgCancion) && <img src={imgCancion} style={{width: tamanoImagen + 'px'}} />}
+                {(imgCancion) && <img src={imgCancion} className="--tarjeta-img-ppal" style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
-                    {(nombreCancion) && <p className="--tarjeta-dato-nombre"><img src={icon_song} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion)}</p>}
-                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
-                    {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} style={{width: tamanoIcono + 'px'}}/>{duracionCancion}</p>}
+                    {(nombreCancion) && <p className="--tarjeta-dato-nombre"><img src={icon_song} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion)}</p>}
+                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
+                    {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{duracionCancion}</p>}
                 </div>
 
             </div>

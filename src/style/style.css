@@ -356,7 +356,7 @@ html{
         color:var(--colorTextoColor);
     }
     .small-text{
-      font-size: 0.9em;
+      font-size: 0.9em!important;
     }
     .boton {
         font-size: 1.25em;
@@ -672,11 +672,6 @@ html{
     gap: 0.25em;
     align-items: center;
   }
-  
-  .tarjeta img, .tarjetaElegida img{
-    border-radius: 50%;
-    margin: auto; /*arregla proporcion de aspecto, la mantiene 1:1*/
-  }
   .--tarjeta-left{
     display: flex;
     flex-flow: row nowrap;
@@ -693,6 +688,15 @@ html{
     padding: 0.25em 0.5em;
     color: var(--fondo);
     font-weight: 500;
+  }
+  .--tarjeta-img-ppal{
+    border-radius: 15%;
+    margin: auto;
+    box-shadow: 0px 0px 23px 7px black;
+  }
+  .--tarjeta-icono{
+    border-radius: 50%;
+    margin: auto; /*arregla proporcion de aspecto, la mantiene 1:1*/
   }
   
   .enlaceLeftTarjeta{

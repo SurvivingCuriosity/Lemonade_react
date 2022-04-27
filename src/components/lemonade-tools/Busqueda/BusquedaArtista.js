@@ -67,26 +67,25 @@ export function BusquedaArtista(props){
 
 //se ejecuta cada vez que la lista de resultados cambia 
     React.useEffect(()=>{
-            if(listaResultados.length>1){
-                setIsLoading(false);
-                setMsg(MSG_RESULTADOS_OBTENIDOS);
-                setMsgClass("success");
-            }
-            if(listaResultados.length==1){
-                //Ha elegido
-                setMsgClass("success");
-                setMsg(MSG_SELECCION);
-            }
-            if(listaResultados.length==0){
+        setIsLoading(false);
+        switch (listaResultados.length) {
+            case 0:
                 setMsg(MSG_INIT);
-            }
-        
-        if(listaResultados.length>0){
-            if(resultadoBusqueda.artists){
-                setLinkNext(resultadoBusqueda.artists.next)
-                setLinkPrev(resultadoBusqueda.artists.previous)
-            }
+                break;
+            case 1:
+                setMsg(MSG_RESULTADOS_OBTENIDOS);
+            default:
+                if(listaResultados.length>0){
+                    if(resultadoBusqueda.artists){
+                        setLinkNext(resultadoBusqueda.artists.next)
+                        setLinkPrev(resultadoBusqueda.artists.previous)
+                    }
+                }
         }
+        if(haySeleccion) setMsg(MSG_SELECCION);
+
+
+
 
     },[resultadoBusqueda, listaResultados])
 
@@ -99,7 +98,7 @@ export function BusquedaArtista(props){
                 return (
                     <TarjetaArtista
                         key={item.id}
-                        isClickable={(listaResultados.length>1 && !isSongKeyFinder) ? true : false}
+                        isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
                         selectionCallback={handleEleccion}
                         jsonData={item}
                     />
@@ -169,7 +168,7 @@ export function BusquedaArtista(props){
             {!isLoading && listaResultados.length>1 ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 ? renderListaResultados : ""}
             
-            {((haySeleccion!=undefined && haySeleccion.id && listaResultados.length==1)||(isSongKeyFinder && listaResultados.length>0))
+            {listaResultados.length>0
                 ? 
                     <button 
                         className="busqueda-boton-borrar boton"

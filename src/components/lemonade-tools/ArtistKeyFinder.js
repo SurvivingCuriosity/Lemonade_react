@@ -84,7 +84,7 @@ export function ArtistKeyFinder(){
             <div className="tool-container-sinTitulos">
                 <div className="containerSinResultado">
                     <BusquedaArtista
-                        haySeleccion={seleccionArtista}
+                        haySeleccion={seleccionArtista.id? true : false}
                         titulo="1. Elige un artista"
                         callbackEleccion={userSelectsArtist}
                     />
