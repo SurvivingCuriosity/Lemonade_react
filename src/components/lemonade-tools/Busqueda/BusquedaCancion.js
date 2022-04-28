@@ -48,7 +48,7 @@ export function BusquedaCancion(props){
             setMsg(MSG_RESULTADOS_OBTENIDOS);
             setIsLoading(false);
             setListaResultados(lista);
-        },2000);
+        },1000);
     }
 
 
@@ -264,6 +264,6 @@ export function BusquedaCancion(props){
     }
 
     function esSpotifyID(text){
-        if(text.length==22) return true; else return false;
+        if(text.length==22 && !text.includes(' ')) return true; else return false;
     }
 }

@@ -13,7 +13,7 @@ export default function (props){
         selectionCallback,
         jsonData
     }=props;
-
+    console.log(jsonData);
     //extraigo los datos que quiero mostrar del json
     let songKey=jsonData.key
     let songMode=jsonData.mode

@@ -252,6 +252,8 @@ export const getAlbumTracks = async (id) => {
 };
 
 export const getObjetosAudioFeatures = async (tracks) => {
+    console.log('a get objetos en apiCalls le llega');
+    console.log(tracks);
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
     if(numeroDeTracks<100){

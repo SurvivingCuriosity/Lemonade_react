@@ -17,7 +17,7 @@ export function BusquedaArtista(props){
     const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
     const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
-    const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion} = props;
+    const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion, queArtistaEs} = props;
     
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -183,8 +183,9 @@ export function BusquedaArtista(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
+        console.log(queArtistaEs);
         setListaResultados([userSelection]);
-        callbackEleccion(userSelection);
+        callbackEleccion(userSelection, queArtistaEs);
     }
 
     function borrarSeleccion(){
