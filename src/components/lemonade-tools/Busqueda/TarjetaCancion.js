@@ -7,11 +7,12 @@ import icon_time from '../../../images/tarjeta/icon_time.svg'
 export default function (props){
     const tamanoImagen = '65'
     const tamanoIcono = '15'
-
+    
     const {
         isClickable,
         selectionCallback,
-        jsonData
+        jsonData,
+        reducirInformacion
     }=props;
     console.log(jsonData);
     //extraigo los datos que quiero mostrar del json
@@ -33,6 +34,11 @@ export default function (props){
     songMode = getStringFromEscala(songMode);
     duracionCancion = milisegundosAString(duracionCancion);
 
+    if(reducirInformacion){
+        nombreArtista=getCadenaArtistas(jsonData.artists,true);
+
+    }
+
     function handleEleccionTarjeta(){
         selectionCallback(jsonData);
     }
@@ -43,8 +49,8 @@ export default function (props){
             <div className="--tarjeta-left">
                 {(imgCancion) && <img src={imgCancion} className="--tarjeta-img-ppal" style={{width: tamanoImagen + 'px'}} />}
                 <div className="--tarjeta-datos">
-                    {(nombreCancion) && <p className="--tarjeta-dato-nombre"><img src={icon_song} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion)}</p>}
-                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
+                    {(nombreCancion) && <p className="--tarjeta-dato-nombre"><img src={icon_song} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion, reducirInformacion)}</p>}
+                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista, reducirInformacion)}</p>}
                     {(duracionCancion) && <p className="--tarjeta-dato1"><img src={icon_time} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{duracionCancion}</p>}
                 </div>
 
@@ -111,14 +117,15 @@ export default function (props){
         }
 
         //Esto es un nombre largo -> Esto es...
-        function truncaNombreLargo(cadena){
+        function truncaNombreLargo(cadena, reducirInformacion){
             if (cadena.length > 30) {
                 cadena = cadena.substring(0, 30) + "...";
             }
+            if(reducirInformacion) cadena = cadena.substring(0, 15) + "...";
             return cadena;
         }
         //[Hola, Adios, Buenas] -> 'Hola • Adios • Buenas'
-        function getCadenaArtistas(listaArtistas){
+        function getCadenaArtistas(listaArtistas, mostrarSoloUno=false){
             let cadenaArtistas = "";
             listaArtistas.map((artista,index)=>{
                 cadenaArtistas+=artista.name;
@@ -126,6 +133,7 @@ export default function (props){
                     cadenaArtistas+=" • "
                 }
             })
+            if(mostrarSoloUno) cadenaArtistas=listaArtistas[0].name;
             return truncaNombreLargo(cadenaArtistas);
         }
 }

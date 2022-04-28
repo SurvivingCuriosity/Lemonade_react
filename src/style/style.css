@@ -339,6 +339,9 @@ html{
   .text-center{
     text-align: center;
   }
+  .texto-dif-padding{
+    padding: 1em;
+  }
   .enlace{
     text-decoration: underline;
     color: var(--colorEnlaces);
@@ -638,6 +641,80 @@ html{
   }
   /* FIN BUSQUEDA */
   /* TARJETAS */
+  .resultado-left{
+      width:50%;
+      float: left;
+      font-size: 0.8em;
+  }
+  .resultado-right{
+    width:50%;
+    float: right;
+    font-size: 0.8em;
+  }
+  .resultado-left,
+  .resultado-right{
+      max-height: 10em;
+      overflow-y: scroll;
+  }
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #c0c0c0 #808080;
+  }
+
+  /* Chrome, Edge, and Safari */
+  .resultado-left::-webkit-scrollbar,
+  .resultado-right::-webkit-scrollbar{
+    width: 0.7em;
+  }
+
+  .resultado-right::-webkit-scrollbar-track,
+  .resultado-left::-webkit-scrollbar-track{
+    background: #808080;
+    
+  }
+
+  .resultado-left::-webkit-scrollbar-thumb,
+  .resultado-right::-webkit-scrollbar-thumb {
+    background-color: var(--colorTextoColor);
+    border-radius: 42px;
+    border: 3px none #400040;
+    height: 10px;
+    box-shadow: 0px 0px 20px 3px black;
+  }
+  .resultado-left .tarjeta,
+  .resultado-right .tarjeta{
+    margin: 0.5em 0.25em;
+    height: max-content;
+    padding: 0.5em;
+    box-shadow: none;
+  }
+  
+  .resultado-left .tarjeta .--tarjeta-img-ppal,
+  .resultado-right .tarjeta .--tarjeta-img-ppal{
+    height: 5em!important;
+    width: 5em!important;
+  }
+  .resultado-left .tarjeta .--tarjeta-info-bpm-scale,
+  .resultado-right .tarjeta .--tarjeta-info-bpm-scale{
+
+    font-size: 0.9em;
+    width: max-content;
+    margin: auto 0.5em;
+  }
+  .resultado-left .tarjeta a,
+  .resultado-right .tarjeta a{
+    display: none;
+  }
+  
+  .resultado-left .tarjeta .--tarjeta-icono,
+  .resultado-right .tarjeta .--tarjeta-icono{
+    height: 1em!important;
+    width: 1em!important;
+  }
+  .resultado-left .tarjeta .--tarjeta-datos,
+  .resultado-right .tarjeta .--tarjeta-datos{
+    font-size: 0.9em;
+  }
 
   .tarjeta{
     padding:1em;
@@ -692,7 +769,6 @@ html{
   .--tarjeta-img-ppal{
     border-radius: 15%;
     margin: auto;
-    box-shadow: 0px 0px 23px 7px black;
   }
   .--tarjeta-icono{
     border-radius: 50%;
