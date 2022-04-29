@@ -14,7 +14,6 @@ export default function (props){
         jsonData,
         reducirInformacion
     }=props;
-    console.log(jsonData);
     //extraigo los datos que quiero mostrar del json
     let songKey=jsonData.key
     let songMode=jsonData.mode
@@ -36,7 +35,6 @@ export default function (props){
 
     if(reducirInformacion){
         nombreArtista=getCadenaArtistas(jsonData.artists,true);
-
     }
 
     function handleEleccionTarjeta(){
@@ -136,4 +134,5 @@ export default function (props){
             if(mostrarSoloUno) cadenaArtistas=listaArtistas[0].name;
             return truncaNombreLargo(cadenaArtistas);
         }
+
 }

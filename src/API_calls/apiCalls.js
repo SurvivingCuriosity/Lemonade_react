@@ -159,18 +159,12 @@ export const getAllUniqueArtistSongs = async (id, finalCallback) => {
         }).then((res)=>{
             let albumesYSingles = res.data.items;
             //formateo el nombre de todos para poder comparalos despues y quedarme con los valores unicos
-            albumesYSingles.map((album)=>{album.name=formatearNombre(album.name)})
     
             //este codigo elimina los valores con nombre repetido
-            albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.name.toLowerCase())))
-            .map(name => {
-                return albumesYSingles.find(a => a.name.toLowerCase() === name.toLowerCase())
-            })
-            //este codigo elimina los valores con id repetido
-            albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.id)))
-            .map(id => {
-                return albumesYSingles.find(a => a.id === id)
-            })
+            // albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.name.toLowerCase())))
+            // .map(name => {
+            //     return albumesYSingles.find(a => a.name.toLowerCase() === name.toLowerCase())
+            // })
             getTracksFromAlbums(albumesYSingles, finalCallback);
         })
     })
@@ -212,16 +206,28 @@ function llamadasGetTracks(canciones,finalCallback,token){
 
 function getAllTracks(func, finalCallback){
     let cancionesTotales = [];
-    func.map((promesa)=>{
+    func.map((promesa, index)=>{
+
         promesa.then((e)=>{
             cancionesTotales.push(e.data);
+            if(func.length==index+1){
+                //este codigo elimina los valores con nombre repetido
+                console.log('antes');
+                console.log(cancionesTotales);
+                cancionesTotales.map((cancion)=>{
+                    cancion.name=formatearNombre(cancion.name);
+                })
+            cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name.toLowerCase())))
+            .map(name => {
+                return cancionesTotales.find(a => a.name.toLowerCase() === name.toLowerCase())
+            })
+            console.log('despues');
+            console.log(cancionesTotales);
+                finalCallback(cancionesTotales);
+            }
         })
+
     })
-    cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name)))
-    .map(name => {
-        return cancionesTotales.find(a => a.name === name)
-    })
-    finalCallback(cancionesTotales);
 }
 
 export const getTrack = async (id,token) => {
@@ -256,7 +262,9 @@ export const getObjetosAudioFeatures = async (tracks) => {
     console.log(tracks);
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
+    console.log(numeroDeTracks);
     if(numeroDeTracks<100){
+        console.log('Hay menos de 100');
         cadenaIDs="";
         tracks.map((track,index)=>{
             cadenaIDs+=track.id;
@@ -266,6 +274,7 @@ export const getObjetosAudioFeatures = async (tracks) => {
         })
         return getMultipleAudioFeatures(cadenaIDs);
     }else{
+        console.log('Hay mas de 100');
         let beginIndex=0;
         let numeroDeRepeticiones = Math.ceil(numeroDeTracks/100);
         let arrayCadenasFinal=[];
@@ -293,8 +302,14 @@ export const getObjetosAudioFeatures = async (tracks) => {
 //Hola(Live from las vegas) -> Hola [elimina los parentesis]
 function formatearNombre(cadena){
     if(cadena.indexOf('(') == -1){
-        return cadena;
+        
+    }else{
+        cadena = cadena.substr(0, cadena.indexOf('('));
     }
-    else
-        return cadena.substr(0, cadena.indexOf('('));
+    if(cadena.indexOf('-') == -1){
+        
+    }else{
+        cadena = cadena.substr(0, cadena.indexOf('-'));
+    }
+        return cadena;
 }

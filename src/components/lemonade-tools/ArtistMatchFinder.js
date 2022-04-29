@@ -4,6 +4,7 @@ import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
+import TarjetaCancionDoble from "./Busqueda/TarjetaCancionDoble";
 import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
 
 export function ArtistMatchFinder(){
@@ -29,32 +30,26 @@ export function ArtistMatchFinder(){
     const [mostrarBotonFinal, setMostrarBotonFinal] = React.useState(true);
     
     React.useEffect(()=>{
-        //compruebo que tienen valor preguntando por una propiedad que contienen
         console.log('useEfe');
+
+            window.setTimeout(()=>{
+                if(objetosAudioFeatures1.length>1){
+                    console.log('lo tenemos chavales');
+                }
+                console.log(objetosAudioFeatures1);
+            },2000)
+
+        //compruebo que tienen valor preguntando por una propiedad que contienen
         if(seleccionArtista1.id && seleccionArtista2.id){
-            console.log('haysele');
             setHaySeleccion(true);
         }else{
             setHaySeleccion(false);
         }
-        console.log('==========SELECCION ARTISTA 1');
-        console.log(seleccionArtista1);
-        console.log('==========CANCIONES ARTISTA 1');
-        console.log(cancionesArtista1);
-        console.log('==========AUDIO FEATURES 1');
-        console.log(objetosAudioFeatures1);
-        
-        console.log('==========SELECCION ARTISTA 2');
-        console.log(seleccionArtista2);
-        console.log('==========CANCIONES ARTISTA 2');
-        console.log(cancionesArtista2);
-        console.log('==========AUDIO FEATURES 2');
-        console.log(objetosAudioFeatures2);
 
-    },[seleccionArtista1, seleccionArtista2])
+    },[seleccionArtista1, seleccionArtista2, objetosAudioFeatures1])
 
     let handleClickFinal = () =>{
-        
+        setResultadoFinal([]);
         //para evitar recorrer arrays dentro de arrays, creo un mapa con los audioFeatures con clave=id valor=elobjeto
         let audioFeatures1_conKey = new Map();
         let audioFeatures2_conKey = new Map();
@@ -82,176 +77,128 @@ export function ArtistMatchFinder(){
 
         //anado a las canciones la informacion que necesito de las audioFeatures y las anado a su categoria
         cancionesArtista1.map((cancion)=>{
-            let nota = (audioFeatures1_conKey).get(cancion.id).key;
-            let escala = (audioFeatures1_conKey).get(cancion.id).mode;
-            let bpm = (audioFeatures1_conKey).get(cancion.id).tempo;
-
-            cancion.key=nota
-            cancion.bpm=bpm
-            cancion.mode=escala
-
-            console.log(cancion);
-            switch (cancion.key+"-"+cancion.mode) {
-                case ('0-1'):
-                case('9-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_C_Am.cancionesDe1.push(cancion);
-                    break;
-                case ('1-1'):
-                case('10-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_Csus_Asusm.cancionesDe1.push(cancion);
-                    break;
-                case ('2-1'):
-                case('11-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_D_Bm.cancionesDe1.push(cancion);
-                    break;
-                case ('3-1'):
-                case('0-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_Dsus_Cm.cancionesDe1.push(cancion);
-                    break;
-                case ('4-1'):
-                case('1-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_E_Csusm.cancionesDe1.push(cancion);
-                    break;
-                case ('5-1'):
-                case('2-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_F_Dm.cancionesDe1.push(cancion);
-                    break;
-                case ('6-1'):
-                case('3-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_Fsus_Dsusm.cancionesDe1.push(cancion);
-                    break;
-                case ('7-1'):
-                case('4-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_G_Em.cancionesDe1.push(cancion);
-                    break;
-                case ('8-1'):
-                case('5-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_Gsus_Fm.cancionesDe1.push(cancion);
-                    break;
-                case ('9-1'):
-                case('6-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_A_Fsusm.cancionesDe1.push(cancion);
-                    break;
-                case ('10-1'):
-                case('7-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_Asus_Gm.cancionesDe1.push(cancion);
-                    break;
-                case ('11-1'):
-                case('8-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra '+cancion.name);
-                    cancionesEn_B_Gsusm.cancionesDe1.push(cancion);
-                    break;
+            if((audioFeatures1_conKey).get(cancion.id)){
+                let nota = (audioFeatures1_conKey).get(cancion.id).key;
+                let escala = (audioFeatures1_conKey).get(cancion.id).mode;
+                let bpm = (audioFeatures1_conKey).get(cancion.id).tempo;
+    
+                cancion.key=nota
+                cancion.bpm=bpm
+                cancion.mode=escala
+    
+                switch (cancion.key+"-"+cancion.mode) {
+                    case ('0-1'):
+                    case('9-0'):
+                        cancionesEn_C_Am.cancionesDe1.push(cancion);
+                        break;
+                    case ('1-1'):
+                    case('10-0'):
+                        cancionesEn_Csus_Asusm.cancionesDe1.push(cancion);
+                        break;
+                    case ('2-1'):
+                    case('11-0'):
+                        cancionesEn_D_Bm.cancionesDe1.push(cancion);
+                        break;
+                    case ('3-1'):
+                    case('0-0'):
+                        cancionesEn_Dsus_Cm.cancionesDe1.push(cancion);
+                        break;
+                    case ('4-1'):
+                    case('1-0'):
+                        cancionesEn_E_Csusm.cancionesDe1.push(cancion);
+                        break;
+                    case ('5-1'):
+                    case('2-0'):
+                        cancionesEn_F_Dm.cancionesDe1.push(cancion);
+                        break;
+                    case ('6-1'):
+                    case('3-0'):
+                        cancionesEn_Fsus_Dsusm.cancionesDe1.push(cancion);
+                        break;
+                    case ('7-1'):
+                    case('4-0'):
+                        cancionesEn_G_Em.cancionesDe1.push(cancion);
+                        break;
+                    case ('8-1'):
+                    case('5-0'):
+                        cancionesEn_Gsus_Fm.cancionesDe1.push(cancion);
+                        break;
+                    case ('9-1'):
+                    case('6-0'):
+                        cancionesEn_A_Fsusm.cancionesDe1.push(cancion);
+                        break;
+                    case ('10-1'):
+                    case('7-0'):
+                        cancionesEn_Asus_Gm.cancionesDe1.push(cancion);
+                        break;
+                    case ('11-1'):
+                    case('8-0'):
+                        cancionesEn_B_Gsusm.cancionesDe1.push(cancion);
+                        break;
+                }
             }
         })
 
         cancionesArtista2.map((cancion)=>{
-            let nota = (audioFeatures2_conKey).get(cancion.id).key;
-            let escala = (audioFeatures2_conKey).get(cancion.id).mode;
-            let bpm = (audioFeatures2_conKey).get(cancion.id).tempo;
-
-            cancion.key=nota
-            cancion.bpm=bpm
-            cancion.mode=escala
-            console.log(cancion.name);
-            console.log(cancion.key+"-"+cancion.mode);
-            switch (cancion.key+"-"+cancion.mode) {
-                
-                case ('0-1'):
-                case('9-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_C_Am.cancionesDe2.push(cancion);
-                    break;
-                case ('1-1'):
-                case('10-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_Csus_Asusm.cancionesDe2.push(cancion);
-                    break;
-                case ('2-1'):
-                case('11-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_D_Bm.cancionesDe2.push(cancion);
-                    break;
-                case ('3-1'):
-                case('0-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_Dsus_Cm.cancionesDe2.push(cancion);
-                    break;
-                case ('4-1'):
-                case('1-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_E_Csusm.cancionesDe2.push(cancion);
-                    break;
-                case ('5-1'):
-                case('2-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_F_Dm.cancionesDe2.push(cancion);
-                    break;
-                case ('6-1'):
-                case('3-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_Fsus_Dsusm.cancionesDe2.push(cancion);
-                    break;
-                case ('7-1'):
-                case('4-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_G_Em.cancionesDe2.push(cancion);
-                    break;
-                case ('8-1'):
-                case('5-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_Gsus_Fm.cancionesDe2.push(cancion);
-                    break;
-                case ('9-1'):
-                case('6-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_A_Fsusm.cancionesDe2.push(cancion);
-                    break;
-                case ('10-1'):
-                case('7-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_Asus_Gm.cancionesDe2.push(cancion);
-                    break;
-                case ('11-1'):
-                case('8-0'):
-                    console.log(cancion.key+'-'+cancion.mode);
-                    console.log('aqui entra' + cancion.name);
-                    cancionesEn_B_Gsusm.cancionesDe2.push(cancion);
-                    break;
+            if((audioFeatures2_conKey).get(cancion.id)){
+                let nota = (audioFeatures2_conKey).get(cancion.id).key;
+                let escala = (audioFeatures2_conKey).get(cancion.id).mode;
+                let bpm = (audioFeatures2_conKey).get(cancion.id).tempo;
+                cancion.key=nota
+                cancion.bpm=bpm
+                cancion.mode=escala
+                switch (cancion.key+"-"+cancion.mode) {
+                    case ('0-1'):
+                    case('9-0'):
+                        cancionesEn_C_Am.cancionesDe2.push(cancion);
+                        break;
+                    case ('1-1'):
+                    case('10-0'):
+                        cancionesEn_Csus_Asusm.cancionesDe2.push(cancion);
+                        break;
+                    case ('2-1'):
+                    case('11-0'):
+                        cancionesEn_D_Bm.cancionesDe2.push(cancion);
+                        break;
+                    case ('3-1'):
+                    case('0-0'):
+                        cancionesEn_Dsus_Cm.cancionesDe2.push(cancion);
+                        break;
+                    case ('4-1'):
+                    case('1-0'):
+                        cancionesEn_E_Csusm.cancionesDe2.push(cancion);
+                        break;
+                    case ('5-1'):
+                    case('2-0'):
+                        cancionesEn_F_Dm.cancionesDe2.push(cancion);
+                        break;
+                    case ('6-1'):
+                    case('3-0'):
+                        cancionesEn_Fsus_Dsusm.cancionesDe2.push(cancion);
+                        break;
+                    case ('7-1'):
+                    case('4-0'):
+                        cancionesEn_G_Em.cancionesDe2.push(cancion);
+                        break;
+                    case ('8-1'):
+                    case('5-0'):
+                        cancionesEn_Gsus_Fm.cancionesDe2.push(cancion);
+                        break;
+                    case ('9-1'):
+                    case('6-0'):
+                        cancionesEn_A_Fsusm.cancionesDe2.push(cancion);
+                        break;
+                    case ('10-1'):
+                    case('7-0'):
+                        cancionesEn_Asus_Gm.cancionesDe2.push(cancion);
+                        break;
+                    case ('11-1'):
+                    case('8-0'):
+                        cancionesEn_B_Gsusm.cancionesDe2.push(cancion);
+                        break;
+                }
             }
+
         })
 
         let arrayResultadosFinales = [
@@ -308,7 +255,20 @@ export function ArtistMatchFinder(){
                 arrayResultadosFinales.splice(index,1);
             }
         })
-        console.log(arrayResultadosFinales);
+        let coincidenciasExactas = [];
+        arrayResultadosFinales.map((conjunto)=>{
+            conjunto.canciones.cancionesDe1.map((cancion1)=>{
+                let bpm1 = (Math.round(cancion1.bpm))
+                conjunto.canciones.cancionesDe2.map((cancion2)=>{
+                    let bpm2 = (Math.round(cancion2.bpm))
+                    if(bpm2==bpm1){
+                        coincidenciasExactas.push({cancion1, cancion2})
+                    }
+                })
+            })
+        })
+        arrayResultadosFinales.coincidencias = coincidenciasExactas;
+
         if(arrayResultadosFinales.length==0){
             setMsgResultadoClass("error")
             setMsgResultado("No se encontraron coincidencias")
@@ -326,13 +286,13 @@ export function ArtistMatchFinder(){
             <p className="tool-description">{descripcion}</p>
 
             <BusquedaArtista
-                haySeleccion={seleccionArtista1.id? true : false}
+                haySeleccion={seleccionArtista1.id ? true : false}
                 titulo="1. Elige el primer artista"
                 callbackEleccion={userSelectsArtist1}
             />
             <BusquedaArtista
-                haySeleccion={seleccionArtista2.id? true : false}
-                titulo="1. Elige el segundo artista"
+                haySeleccion={seleccionArtista2.id ? true : false}
+                titulo="2. Elige el segundo artista"
                 callbackEleccion={userSelectsArtist2}
             />
             <div className="busqueda-container">
@@ -352,9 +312,24 @@ export function ArtistMatchFinder(){
                 {resultadoFinal.length>0 
                     ? 
                         <ul className="busqueda-lista">
+                            <div className="">
+                                <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
+                                    {resultadoFinal.coincidencias.map((par)=>{
+                                        console.log(par);
+                                        return(
+                                            <TarjetaCancionDoble
+                                                key={par.cancion1.id+par.cancion2.id}
+                                                jsonData1={par.cancion1}
+                                                jsonData2={par.cancion2}
+                                            />
+                                        )
+                                    })}
+                                </div>
                             {resultadoFinal.map((conjunto) => {
+                                console.log(conjunto);
                                 return(
                                     <div>
+                                        
                                         <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
                                         <div className="resultado-left">
                                             {conjunto.canciones.cancionesDe1.map((cancion)=>{
@@ -392,57 +367,59 @@ export function ArtistMatchFinder(){
     )
 
     function lleganCancionesDeArtista1(listaCanciones){
+        console.log('Llegan las canciones de 1, las seteamos y  llamamos a dameObjetosAudioFeatures. Le pasamos: ');
         setCancionesArtista1(listaCanciones);
-        console.log('llegnaCanciones2 las seteamos y  llamamos a dameObjetosAudioFeatures');
         setIsLoading(true);
         window.setTimeout(()=>{
             dameObjetosAudioFeatures(listaCanciones, 1);
         },3000)
-        setIsLoading(false);
     }
     function lleganCancionesDeArtista2(listaCanciones){
+        console.log('Llegan las canciones de 2, las seteamos y  llamamos a dameObjetosAudioFeatures. Le pasamos: ');
         setCancionesArtista2(listaCanciones);
-        console.log('llegnaCanciones2 las seteamos y  llamamos a dameObjetosAudioFeatures');
+        setIsLoading(true);
         window.setTimeout(()=>{
             dameObjetosAudioFeatures(listaCanciones, 2);
         },3000)
-        setIsLoading(false);
     }
 
 
     function dameObjetosAudioFeatures(lista, queArtistaEs){
-        console.log(queArtistaEs);
-        console.log('vamos a llamar a getAudiofeatures y le pasamos:');
+        console.log('Estamos en dameObjetosAudioFeatures, vamos a llamar a getAudiofeatures y le pasamos:');
         console.log(lista);
-        setIsLoading(true);
         try {
             //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
             switch (queArtistaEs) {
                 case 1:
-                    console.log('es uno');
+                    console.log('Es el artista 1');
                     getObjetosAudioFeatures(lista).then((res1)=>{
                         console.log('getObjetosAudioFeatures');
+                        let listaObjetosFeatures = [];
                         if(res1.length>1){
                             console.log('res>1');
-                            res1.map((promesa)=>{
+                            res1.map((promesa, index)=>{
                                 console.log('mapeando promesas');
                                 console.log(promesa);
                                 promesa.then((res)=>{
-                                    console.log(res);
-                                    setObjetosAudioFeatures1([...objetosAudioFeatures1, ...res.data.audio_features])
+                                    listaObjetosFeatures.push(...res.data.audio_features)
+                                    // setObjetosAudioFeatures1([...objetosAudioFeatures1, ...res.data.audio_features])
                                 })
+                                if(index == res1.length-1){
+                                    console.log('Ultima iteracion y vamos a pasar');
+                                    console.log(listaObjetosFeatures);
+                                    setObjetosAudioFeatures1(listaObjetosFeatures)
+                                    setIsLoading(false);
+                                }
                             })
-                            setIsLoading(false);
                         }else{
-                            console.log('mostrando <100 audiofeatures');
-                            console.log(res1);
                             setObjetosAudioFeatures1(res1.data.audio_features)
                             setIsLoading(false);
                         }
+                        
                     })
                     break;
                 case 2:
-                    console.log('es dos');
+                    console.log('Es el artista 2');
                     getObjetosAudioFeatures(lista).then((res1)=>{
                         if(res1.length>1){
                             res1.map((promesa)=>{

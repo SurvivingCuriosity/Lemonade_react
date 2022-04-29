@@ -83,10 +83,6 @@ export function BusquedaArtista(props){
                 }
         }
         if(haySeleccion) setMsg(MSG_SELECCION);
-
-
-
-
     },[resultadoBusqueda, listaResultados])
 
     const renderListaResultados = (
@@ -137,7 +133,7 @@ export function BusquedaArtista(props){
             <h2 className="busqueda-titulo">{titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                {(!(listaResultados.length==1))
+                {(!(haySeleccion))
                 ? 
                     <span className="input_and_button">
                         <input
@@ -183,7 +179,6 @@ export function BusquedaArtista(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
-        console.log(queArtistaEs);
         setListaResultados([userSelection]);
         callbackEleccion(userSelection, queArtistaEs);
     }
