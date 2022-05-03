@@ -13,11 +13,11 @@ export function BusquedaArtista(props){
     const MSG_NO_TEXTO="No has introducido texto."
     const MSG_SELECCION="Has elegido: "
     const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MSG_RESULTADOS_OBTENIDOS="Resultados obtenidos: "
+    const MSG_RESULTADOS_OBTENIDOS="Elige un artista: "
     const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
     const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
-    const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion, queArtistaEs} = props;
+    const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion, queArtistaEs, mostrando, disabled} = props;
     
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -30,6 +30,8 @@ export function BusquedaArtista(props){
 
 //array de resultados obtenidos tras la busqueda
     const [listaResultados, setListaResultados] = React.useState([]);
+    const [seleccion, setSeleccion] = React.useState({});
+
     const [resultadoBusqueda, setResultadoBusqueda] = React.useState({});
 
     const [linkNext, setLinkNext] = React.useState("");
@@ -46,8 +48,9 @@ export function BusquedaArtista(props){
             return;
         }else{
             setIsLoading(true);
-                setMsg("Buscando");
-                setMsgClass("success");
+            setMsg("Buscando");
+            setMsgClass("success");
+
             if(esSpotifyID(text)){
                 try {
                     buscarArtistaID(text, miCallbackID);
@@ -87,9 +90,9 @@ export function BusquedaArtista(props){
 
     const renderListaResultados = (
         <ul className="busqueda-lista">
-
+            
             {/* hay mas resultados */}
-
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             {listaResultados.map((item) => {
                 return (
                     <TarjetaArtista
@@ -103,12 +106,23 @@ export function BusquedaArtista(props){
             }
         </ul>
     )
+    const renderTarjetaFinal = (
+        <ul className="busqueda-lista">
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            <TarjetaArtista
+                key={seleccion.id}
+                isClickable={false}
+                selectionCallback={handleEleccion}
+                jsonData={seleccion}
+            />
+        </ul>
+    )
     const renderButtonsPrevNext=(
         <div>
         {linkNext!=null
         ?
             <button 
-                className="boton_link botonPaginaSiguiente"
+                className="boton_link botonPaginaSiguiente zoom-on-click"
                 onClick={getPaginaSiguiente}
                 >Siguiente página
             </button>
@@ -118,7 +132,7 @@ export function BusquedaArtista(props){
         {linkPrev!=null
         ?
             <button 
-                className="boton_link botonPaginaAnterior"
+                className="boton_link botonPaginaAnterior zoom-on-click"
                 onClick={getPaginaAnterior}
                 >Página anterior
             </button>
@@ -138,13 +152,14 @@ export function BusquedaArtista(props){
                     <span className="input_and_button">
                         <input
                             type="search"
+                            disabled={disabled}
                             value={text}
                             placeholder={`Introduce artista...`}
-                            onChange={(e) => setText(e.target.value)}
+                            onChange={(e) => setText(()=>{return e.target.value})}
                         />
                         <button 
                             type="submit" 
-                            className="busqueda-boton-buscar boton"
+                            className="busqueda-boton-buscar boton zoom-on-click"
                             disabled={text=="" ? true : false}
                             
                             >Buscar
@@ -156,18 +171,19 @@ export function BusquedaArtista(props){
                 
 
             </form>
-
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+                
+            
 
             {/* Si ha resultados renderiza la lista */}
             {isLoading? <CustomSpinner /> : ""}
-            {!isLoading && listaResultados.length>1 ? renderButtonsPrevNext : ""}
+            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 ? renderListaResultados : ""}
+            {haySeleccion ? renderTarjetaFinal : ""}
             
-            {listaResultados.length>0
+            {haySeleccion
                 ? 
                     <button 
-                        className="busqueda-boton-borrar boton"
+                        className="busqueda-boton-borrar boton zoom-on-click"
                         onClick={borrarSeleccion}
                         >Nueva búsqueda
                     </button>
@@ -179,7 +195,9 @@ export function BusquedaArtista(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection){
-        setListaResultados([userSelection]);
+        setSeleccion(()=>{return userSelection})
+        setListaResultados(()=>{return []})
+        setMsg(MSG_SELECCION);
         callbackEleccion(userSelection, queArtistaEs);
     }
 
@@ -198,7 +216,7 @@ export function BusquedaArtista(props){
             return;
         }
         //no hay resultados parala busqueda
-        if(params.artists && params.artists.total==0){
+        if(params.artists && params.artists.total===0){
             setIsLoading(false);
             setMsgClass("error");
             setMsg(MSG_NO_RESULTADOS);
@@ -206,7 +224,7 @@ export function BusquedaArtista(props){
         }else{
             //hay resultados
             setMsgClass("success");
-            setMsg(MSG_PREPARANDO_RESULTADOS);
+            setMsg(MSG_RESULTADOS_OBTENIDOS);
             setLinkNext(params.artists.next);
             setLinkPrev(params.artists.previous);
 
@@ -217,7 +235,7 @@ export function BusquedaArtista(props){
     }
 
     function miCallbackID(params){
-        if(params=='error'){
+        if(params==='error'){
             setMsgClass("error");
             setMsg(MSG_ERROR_PETICION)
         }else{
@@ -243,6 +261,6 @@ export function BusquedaArtista(props){
     }
 
     function esSpotifyID(text){
-        if(text.length==22) return true; else return false;
+        if(text.length===22) return true; else return false;
     }
 }

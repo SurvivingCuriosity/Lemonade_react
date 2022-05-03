@@ -3,7 +3,7 @@ import Select from 'react-select'
 
 
 export function KeyScaleSelect(props){
-    const {titulo, disabled, mensaje, colorPlaceHolder} = props;
+    const {titulo, disabled, mensaje, colorPlaceHolder, callbackEleccion} = props;
 
 //nota seleccionada y su label keySelected=0 keySelectedLabel="C"
     const [keySelected,setKeySelected]= React.useState(-1);
@@ -13,8 +13,6 @@ export function KeyScaleSelect(props){
     const [scaleSelected,setScaleSelected] = React.useState(-1);
     const [scaleSelectedLabel,setScaleSelectedLabel] = React.useState("");
     
-//objeto que representa la nota y la escala
-    const [seleccion, setSeleccion] = React.useState(props.seleccion);
 
 
     const optionsKey = [
@@ -127,26 +125,26 @@ export function KeyScaleSelect(props){
     }
 
     const handleChangeKey = (e) =>{
-        setKeySelected(e.value)
-        setKeySelectedLabel(e.label)
+        setKeySelected(()=>{return e.value})
+        setKeySelectedLabel(()=>{return e.label})
     }
     const handleChangeScale = (e) =>{
-        setScaleSelected(e.value)
-        setScaleSelectedLabel(e.label)
+        setScaleSelected(()=>{return e.value})
+        setScaleSelectedLabel(()=>{return e.label})
     }
 
     React.useEffect(()=>{
         //si se han seleccionado nota y escala le paso los datos al padre
         if(keySelected>-1 && scaleSelected>-1){
             //paso la seleccion al padre mediante un objeto que contiene los valores y las label
-            props.callbackEleccion({
+            callbackEleccion({
                 nota : keySelected,
                 escala: scaleSelected,
                 notaLabel: keySelectedLabel,
                 escalaLabel: scaleSelectedLabel,
             });
         }
-    },[keySelected,scaleSelected])
+    },[keySelected, scaleSelected])
     
     return(
         <div className="busqueda-container">

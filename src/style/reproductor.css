@@ -1,0 +1,183 @@
+
+
+.reproductor{
+  width: 95%;
+  margin: auto;
+    margin-top: auto;
+  bottom: 0px;
+  border: 1px solid var(--fondo4);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  margin-top: 1em;
+  height: 8em;
+  border-radius: 20px;
+  background-position-x: 50%;
+  background-position-y: 45%;
+  background-size: 100%;
+  background-blend-mode: overlay;
+  background-color: #000000de;
+  margin-top: 5em;
+  box-shadow: 0px 0px 17px 7px black;
+  position: relative;
+  }
+  .reproductor .imagenPpal{
+    border-radius: 50%;
+  }
+  .reproductor-iconoYBarra-container{
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+    align-items: center;
+    color: var(--blanco);
+    flex-grow: 1;
+  }
+  .reproductor-boton{
+    width: 5.5em;
+    height: 5.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+  }
+  .reproductor-botonVolumen{
+    margin-top: 3px;
+  }
+  .reproductor-botonPlayPause:not(:active){
+    transition: all 1s;
+  }
+  .reproductor-botonPlayPause:active{
+    background-color: var(--negro3);
+  
+    transform: scale(1.2);
+  }
+  .reproductor-segundos-transcurridos,
+  .reproductor-segundos-totales{
+    font-size: 1.25em;
+  }
+  .reproductor-segundos-transcurridos{
+    color: var(--blanco);
+  }
+  .reproductor-segundos-totales{
+    color: var(--blanco3);
+  }
+  .reproductor-barraTiempo{
+    flex-grow: 1;
+  }
+  input[type=range] {
+    height: 24px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+    background: transparent;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 0.5em;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 2px #000000;
+    background: var(--fondo2);/*color de la barra*/
+    border-radius: 10px;
+    border: 0px solid #000000;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 2px #000000;
+    border: 0px solid #000000;
+    height: 0.5em;
+    width: 1.5em;
+    background: var(--blanco2);/*color del punto*/
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+  
+  input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #000000;
+    background: #E6E6E6;
+    border-radius: 0px;
+    border: 0px solid #000000;
+  }
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 18px;
+    width: 18px;
+    border-radius: 50px;
+    background: #FFF129;
+    cursor: pointer;
+  }
+  input[type=range]::-ms-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: #E6E6E6;
+    border: 0px solid #000000;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: #E6E6E6;
+    border: 0px solid #000000;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000;
+  }
+  input[type=range]::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 18px;
+    width: 18px;
+    border-radius: 50px;
+    background: #FFF129;
+    cursor: pointer;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: #E6E6E6;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: #E6E6E6;
+  }
+  .range-container{
+    width: 100%;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .range-wrapper{
+    background-color: grey;
+    padding: 0.3em;
+    position: absolute;
+    width: 100%;
+  }
+  .range-track{
+    background-color: var(--blanco3);
+    padding: 0.3em 0;
+    position: absolute;
+    top: 0%;
+  }
+  .reproductor-textoEncima{
+    position: absolute;
+    bottom: 0.5em;
+    left: 7em;
+  }
+  
+  .reproductor-textoAbajo{
+    position: absolute;
+    top: 0.5em;
+    left: 7em;
+  }
+  

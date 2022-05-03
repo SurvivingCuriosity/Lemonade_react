@@ -11,7 +11,9 @@ import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
-    
+    const TEXTO_BOTON_BUSCAR="Buscar";
+    const TEXTO_BOTON_RELLENA_CAMPOS="Rellena los campos";
+    const TEXTO_BOTON_NUEVA_BUSQUEDA="Nueva búsqueda"
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
 
@@ -20,61 +22,97 @@ export function ArtistKeyFinder(){
 
     const [cancionesArtista, setCancionesArtista] = React.useState([]);
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
-
-    const [haySeleccion, setHaySeleccion] = React.useState(false);
+    
+    const [mostrando, setMostrando] = React.useState(true);
     
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
-    const [mostrarBotonFinal, setMostrarBotonFinal] = React.useState(true);
+    const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
+    
+    const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
+    
+    const [numeroCanciones, setNumeroCanciones] = React.useState(0);
+    const [numeroAudioFeatures, setNumeroAudioFeatures] = React.useState(0);
     
     React.useEffect(()=>{
-        //compruebo que tienen valor preguntando por una propiedad que contienen
+        //se ha elegido artista y nota ? 
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
-            setHaySeleccion(true);
-        }else{
-            setHaySeleccion(false);
-        }
-        if(!seleccionArtista.id){
-            console.log('no hay seleccion de artista');
+            setTextoBotonFinal(TEXTO_BOTON_BUSCAR);
+            setDeshabilitarBotonFinal(()=>{return false});
         }
     },[seleccionArtista,seleccionNotaEscala])
     
-    let handleClickFinal = () =>{
-        console.log('Usuario hace click final');
-        let arrayResultadosFinales = [];
+    React.useEffect(()=>{
+        //compruebo que tienen valor preguntando por una propiedad que contienen
+        setNumeroCanciones(()=>{return cancionesArtista.length})
+    },[cancionesArtista])
+    
+    React.useEffect(()=>{
+        //compruebo que tienen valor preguntando por una propiedad que contienen
+        if(objetosAudioFeatures.length>0){
+            // setDeshabilitarBotonFinal(()=>{return true})
+        }
+    },[objetosAudioFeatures])
+    
+    React.useEffect(()=>{
+        if(resultadoFinal.length>0){
+            setTextoBotonFinal(TEXTO_BOTON_NUEVA_BUSQUEDA)
+            // setDeshabilitarBotonFinal(()=>{return false})
+        }else{
+            setTextoBotonFinal(TEXTO_BOTON_RELLENA_CAMPOS)
+            setDeshabilitarBotonFinal(()=>{return true})
+            setMostrando(()=>{return true})
+        }
+    },[resultadoFinal])
 
-        objetosAudioFeatures.map((obj)=>{
-            if(obj.mode == seleccionNotaEscala.escala 
-                && obj.key == seleccionNotaEscala.nota){
-                cancionesArtista.map((cancion)=>{
-                    if(cancion.id == obj.id){
-                        cancion.mode = obj.mode;
-                        cancion.key = obj.key;
-                        cancion.bpm = obj.tempo;
-                        arrayResultadosFinales.push(cancion);
+    
+    let handleClickFinal = (e) =>{
+        console.log('Usuario hace click final');
+        switch (e.target.textContent) {
+            case TEXTO_BOTON_BUSCAR:
+                let arrayResultadosFinales = [];
+
+                objetosAudioFeatures.map((obj)=>{
+                    if(obj.mode === seleccionNotaEscala.escala 
+                        && obj.key === seleccionNotaEscala.nota){
+                        cancionesArtista.map((cancion)=>{
+                            if(cancion.id === obj.id){
+                                cancion.mode = obj.mode;
+                                cancion.key = obj.key;
+                                cancion.bpm = obj.tempo;
+                                arrayResultadosFinales.push(cancion);
+                            }
+                        })
                     }
                 })
-            }
-        })
-
-        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.id)))
-        .map(id => {
-            return arrayResultadosFinales.find(a => (a.id === id))
-        })
         
-        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
-        .map(name => {
-            return arrayResultadosFinales.find(a => a.name === name)
-        })
-
-        if(arrayResultadosFinales.length==0){
-            setMsgResultadoClass("error")
-            setMsgResultado("No se encontraron coincidencias")
-        }else{
-            setMsgResultadoClass("success")
-            setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
+                
+                arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
+                .map(name => {
+                    return arrayResultadosFinales.find(a => a.name === name)
+                })
+        
+                if(arrayResultadosFinales.length===0){
+                    setMsgResultadoClass("error")
+                    setMsgResultado("No se encontraron coincidencias")
+                }else{
+                    setMsgResultadoClass("success")
+                    // setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
+                }
+                setResultadoFinal(()=>{return arrayResultadosFinales});
+                break;
+            case TEXTO_BOTON_NUEVA_BUSQUEDA:
+                setCancionesArtista(()=>{return []})
+                setSeleccionArtista(()=>{return {}})
+                setCancionesArtista(()=>{return []})
+                setSeleccionNotaEscala(()=>{return {}})
+                setResultadoFinal(()=>{return []})
+                setMostrando(()=>{return false})
+                break;
+            case TEXTO_BOTON_RELLENA_CAMPOS:
+                
+                break;
         }
-        setResultadoFinal(arrayResultadosFinales);
-        setMostrarBotonFinal(false);
+
     };
 
     return(
@@ -87,7 +125,18 @@ export function ArtistKeyFinder(){
                         haySeleccion={seleccionArtista.id? true : false}
                         titulo="1. Elige un artista"
                         callbackEleccion={userSelectsArtist}
+                        mostrando={mostrando}
                     />
+                    <div>
+                        {
+                        seleccionArtista.id 
+                        ? 
+                            <p className="text-center small-text texto-dif-padding">{`Se han obtenido ${numeroCanciones} canciones`}</p>    
+                        :
+                        ""
+                        }
+                        
+                    </div>
                     <KeyScaleSelect 
                         colorPlaceHolder={seleccionArtista && seleccionArtista.id ? 'var(--colorTextoColor)' : 'var(--blanco3)'}
                         mensaje={seleccionArtista && seleccionArtista.id ? "" : "Primero elige un artista"}
@@ -96,21 +145,26 @@ export function ArtistKeyFinder(){
                         seleccion={seleccionNotaEscala}
                         callbackEleccion = {userSelectsScale}
                     />
+                    <div>
+                    {
+                        seleccionArtista.id && seleccionNotaEscala.nota>-1
+                        ? 
+                        <p className="text-center small-text texto-dif-padding">{`Analizados datos de ${numeroAudioFeatures} canciones`}</p>   
+                        :
+                        ""
+                        }
+                        
+                    </div>
                 </div>
                 <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
-                    {mostrarBotonFinal 
-                        ? 
-                            <CustomButton 
-                                textoBoton={haySeleccion ? "Buscar" : "Rellena los campos"}
-                                disabled={!haySeleccion}
-                                onClickCallback={handleClickFinal}
-                            />
-                        :
-                            ""
-                    }
-                    
 
+                        <CustomButton 
+                            textoBoton={textoBotonFinal}
+                            disabled={deshabilitarBotonFinal}
+                            onClickCallback={handleClickFinal}
+                        />
+                    
                     <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
 
                     {resultadoFinal.length>0 
@@ -137,19 +191,26 @@ export function ArtistKeyFinder(){
     function userSelectsScale(objNotaEscala){
         console.log('Usuario elige nota y escala');
         setSeleccionNotaEscala(objNotaEscala);
-        setMostrarBotonFinal(true);
         try {
             //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
-            console.log(cancionesArtista);
             getObjetosAudioFeatures(cancionesArtista).then((res)=>{
+                let objetos = [];
                 if(res.length>1){
-                    res.map((promesa)=>{
-                        promesa.then((res)=>{
-                            setObjetosAudioFeatures([...res.data.audio_features]);
+                    res.map((promesa, index)=>{
+                        promesa.then((res2)=>{
+                            objetos.push(...res2.data.audio_features);
+                            if(index === res.length-1){
+                                console.log('es la ultima');
+                                console.log('Obtenidos '+objetos.length+' audio features');
+                                setObjetosAudioFeatures(()=>{return objetos;})
+                                setNumeroAudioFeatures(()=>{return objetos.length})
+                            }
                         })
                     })
                 }else{
-                    setObjetosAudioFeatures(res.data.audio_features)
+                    console.log('Obtenidos '+res.data.audio_features.length+' audio features');
+                    setNumeroAudioFeatures(()=>{return res.data.audio_features.length})
+                    setObjetosAudioFeatures(()=>{return res.data.audio_features})
                 }
             })
         } catch (err) {
@@ -160,7 +221,6 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
-        setMostrarBotonFinal(true);
         //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         if(artistSelected.id){
             console.log('Usuario elige artista');
@@ -176,8 +236,9 @@ export function ArtistKeyFinder(){
 
     }
 
-    function finalCallback(res){
-        console.log('final callback');
-        setCancionesArtista(res)
+    function finalCallback(canciones){
+        console.log('Final callback con '+canciones.length+ ' canciones');
+        setNumeroCanciones(()=>{return canciones.length})
+        setCancionesArtista(()=>{return canciones})
     }
 }

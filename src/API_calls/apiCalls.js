@@ -1,4 +1,3 @@
-import { LOGICAL_OPERATORS } from "@babel/types";
 import axios from "axios";
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
@@ -159,12 +158,13 @@ export const getAllUniqueArtistSongs = async (id, finalCallback) => {
         }).then((res)=>{
             let albumesYSingles = res.data.items;
             //formateo el nombre de todos para poder comparalos despues y quedarme con los valores unicos
-    
+            console.log('Hay '+albumesYSingles.length+' albumes y canciones');
+
             //este codigo elimina los valores con nombre repetido
-            // albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.name.toLowerCase())))
-            // .map(name => {
-            //     return albumesYSingles.find(a => a.name.toLowerCase() === name.toLowerCase())
-            // })
+            albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.id)))
+            .map(id => {
+                return albumesYSingles.find(a => a.id === id)
+            })
             getTracksFromAlbums(albumesYSingles, finalCallback);
         })
     })
@@ -183,12 +183,12 @@ function llamadasGetAlbums(func,finalCallback){
         let token=e.data.access_token;
         let cancionesTotales = [];
         func.map((promesa, index)=>{
-            promesa.then((e)=>{
+            return promesa.then((e)=>{
                 let itemsDelAlbum = e.data.items;
                 cancionesTotales=[...cancionesTotales, ...itemsDelAlbum];
 
-                if(index==func.length-1){
-                    llamadasGetTracks(cancionesTotales,finalCallback,token);
+                if(index===func.length-1){
+                    return llamadasGetTracks(cancionesTotales,finalCallback,token);
                 }
             })
         })
@@ -206,27 +206,21 @@ function llamadasGetTracks(canciones,finalCallback,token){
 
 function getAllTracks(func, finalCallback){
     let cancionesTotales = [];
-    func.map((promesa, index)=>{
 
+    func.map((promesa, index)=>{
         promesa.then((e)=>{
             cancionesTotales.push(e.data);
-            if(func.length==index+1){
-                //este codigo elimina los valores con nombre repetido
-                console.log('antes');
-                console.log(cancionesTotales);
-                cancionesTotales.map((cancion)=>{
-                    cancion.name=formatearNombre(cancion.name);
+            if(func.length===index+1){
+                
+                //este codigo elimina los valores con nombre repetido                
+                cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name)))
+                .map(name => {
+                    return cancionesTotales.find(a => a.name === name)
                 })
-            cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name.toLowerCase())))
-            .map(name => {
-                return cancionesTotales.find(a => a.name.toLowerCase() === name.toLowerCase())
-            })
-            console.log('despues');
-            console.log(cancionesTotales);
+
                 finalCallback(cancionesTotales);
             }
         })
-
     })
 }
 
@@ -258,23 +252,18 @@ export const getAlbumTracks = async (id) => {
 };
 
 export const getObjetosAudioFeatures = async (tracks) => {
-    console.log('a get objetos en apiCalls le llega');
-    console.log(tracks);
     let numeroDeTracks = tracks.length;
     let cadenaIDs;
-    console.log(numeroDeTracks);
     if(numeroDeTracks<100){
-        console.log('Hay menos de 100');
         cadenaIDs="";
         tracks.map((track,index)=>{
             cadenaIDs+=track.id;
-            if(index!=tracks.length-1){
+            if(index!==tracks.length-1){
                 cadenaIDs+=","
             }
         })
         return getMultipleAudioFeatures(cadenaIDs);
     }else{
-        console.log('Hay mas de 100');
         let beginIndex=0;
         let numeroDeRepeticiones = Math.ceil(numeroDeTracks/100);
         let arrayCadenasFinal=[];
@@ -282,7 +271,7 @@ export const getObjetosAudioFeatures = async (tracks) => {
             cadenaIDs="";
             for (let j = beginIndex; j < 100; j++) {
                 cadenaIDs+=tracks[j].id;
-                if(j!=99){
+                if(j!==99){
                     cadenaIDs+=","
                 }
                 if(!tracks[j+1]) return; //si no existe el siguiente elemento se sale
@@ -297,19 +286,3 @@ export const getObjetosAudioFeatures = async (tracks) => {
         return func;
     }    
 };
-
-
-//Hola(Live from las vegas) -> Hola [elimina los parentesis]
-function formatearNombre(cadena){
-    if(cadena.indexOf('(') == -1){
-        
-    }else{
-        cadena = cadena.substr(0, cadena.indexOf('('));
-    }
-    if(cadena.indexOf('-') == -1){
-        
-    }else{
-        cadena = cadena.substr(0, cadena.indexOf('-'));
-    }
-        return cadena;
-}

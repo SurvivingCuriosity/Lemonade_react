@@ -5,7 +5,7 @@ import icon_time from '../../../images/tarjeta/icon_time.svg'
 
 
 export default function (props){
-    const tamanoImagen = '65'
+    const tamanoImagen = '55'
     const tamanoIcono = '15'
     
     const {

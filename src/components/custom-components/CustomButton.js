@@ -6,7 +6,7 @@ export function CustomButton(props){
     return(
         <>
             <button
-                className="boton botonFinal"
+                className="boton botonFinal zoom-on-click"
                 disabled={disabled}
                 onClick={onClickCallback}
                 value={textoBoton}

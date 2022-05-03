@@ -5,7 +5,7 @@ import icon_followers from '../../../images/tarjeta/icon_followers.svg'
 
 
 export default function (props){
-    let tamanoImagen = '65'
+    let tamanoImagen = '45'
     let tamanoIcono = '15'
     
     let {
@@ -13,6 +13,7 @@ export default function (props){
         selectionCallback,
         jsonData
     }=props;
+
 
     let imgArtista=(jsonData.images[0]) ? (jsonData.images[0].url) : icon_artist
     let nombreArtista=jsonData.name
