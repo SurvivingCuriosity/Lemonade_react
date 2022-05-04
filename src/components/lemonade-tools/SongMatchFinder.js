@@ -1,11 +1,11 @@
 import React from "react";
+import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
+import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
+import { CustomButton } from "../custom-components/CustomButton";
+import { CustomSpinner } from "../custom-components/CustomSpinner";
 import {BusquedaArtista} from './Busqueda/BusquedaArtista'
 import {BusquedaCancion} from './Busqueda/BusquedaCancion'
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
-import { CustomButton } from "../custom-components/CustomButton";
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
-import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
-
 export function SongMatchFinder(){
     // const MSG_INIT=""
     // const MSG_NO_TEXTO="No has introducido texto."
@@ -21,6 +21,7 @@ export function SongMatchFinder(){
     const TEXTO_BOTON_BUSCAR="Buscar";
     const TEXTO_BOTON_RELLENA_CAMPOS="Rellena los campos";
     const TEXTO_BOTON_NUEVA_BUSQUEDA="Nueva búsqueda"
+    const TEXTO_BOTON_CARGANDO="Cargando"
 
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -42,15 +43,12 @@ export function SongMatchFinder(){
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(seleccionArtista.id && seleccionCancion.id){
             console.log('haysele');
-            setDeshabilitarBotonFinal(()=>{return false})
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
-
+            setDeshabilitarBotonFinal(()=>{return true})
+            setTextoBotonFinal(()=>{return TEXTO_BOTON_CARGANDO})
         }else{
             setDeshabilitarBotonFinal(()=>{return true})
             setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
         }
-
-        
     },[seleccionArtista, seleccionCancion])
     
     React.useEffect(()=>{
@@ -63,6 +61,7 @@ export function SongMatchFinder(){
 
     React.useEffect(()=>{
         if(objetosAudioFeatures.length>0){
+            console.log('Hay audio');
             setDeshabilitarBotonFinal(()=>{return false})
             setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
         }
@@ -115,9 +114,13 @@ export function SongMatchFinder(){
                 if(arrayResultadosFinales.length===0){
                     setMsgResultadoClass("error")
                     setMsgResultado("No se encontraron coincidencias")
+                    setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
+                    setDeshabilitarBotonFinal(()=>{return false})
                 }else{
                     setMsgResultadoClass("success")
                     setMsgResultado(`Canciones de  '${seleccionArtista.name}'' en la misma escala que '${seleccionCancion.name}'`)
+                    setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
+                    setDeshabilitarBotonFinal(()=>{return false})
                 }
                 setResultadoFinal(arrayResultadosFinales);
         }
@@ -134,11 +137,20 @@ export function SongMatchFinder(){
                     titulo="1. Elige una canción"
                     callbackEleccion={userSelectsSong}
                 />
-                <BusquedaArtista
+                {seleccionCancion.id ? <p className="text-center small-text texto-dif-padding">Canción elegida: {`${seleccionCancion.name}`}</p> : "" }
+                <BusquedaArtista 
                     haySeleccion={seleccionArtista.id? true : false}
                     titulo="2. Elige un artista"
                     callbackEleccion={userSelectsArtist}
                 />
+                <div>
+                    {seleccionArtista.id && objetosAudioFeatures.length<0 ? <CustomSpinner size="s" />  : ""}
+
+                    {seleccionArtista.id ? <p className="text-center small-text texto-dif-padding">Artista elegido: {`${seleccionArtista.name}`}</p> : "" }
+                    {seleccionArtista.id && cancionesArtista.length>0 ? <p className="text-center small-text texto-dif-padding">Obtenidas: {`${cancionesArtista.length}`} canciones</p> : "" }
+                    {seleccionArtista.id && objetosAudioFeatures.length>0 ? <p className="text-center small-text texto-dif-padding">Analizadas: {`${objetosAudioFeatures.length}`} canciones</p> : "" }
+                </div>
+
                 <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
 
@@ -150,11 +162,11 @@ export function SongMatchFinder(){
                     
                     
 
-                    <p className={`${msgResultadoClass} busqueda-texto-info text-center small-text`}>{msgResultado}</p>
 
                     {resultadoFinal.length>0 
                         ? 
-                            <ul className="busqueda-lista">
+                        <ul className="busqueda-lista">
+                                <p className={`${msgResultadoClass} busqueda-texto-info text-center small-text`}>{msgResultado}</p>
                                 {resultadoFinal.map((item) => {
                                     return (
                                         <TarjetaCancion 

@@ -17,7 +17,7 @@ export function BusquedaArtista(props){
     const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
     const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
 
-    const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion, queArtistaEs, mostrando, disabled} = props;
+    const {titulo, haySeleccion, callbackEleccion, queArtistaEs, disabled} = props;
     
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -30,9 +30,9 @@ export function BusquedaArtista(props){
 
 //array de resultados obtenidos tras la busqueda
     const [listaResultados, setListaResultados] = React.useState([]);
-    const [seleccion, setSeleccion] = React.useState({});
-
     const [resultadoBusqueda, setResultadoBusqueda] = React.useState({});
+    
+    const [seleccion, setSeleccion] = React.useState({});
 
     const [linkNext, setLinkNext] = React.useState("");
     const [linkPrev, setLinkPrev] = React.useState("");
@@ -50,21 +50,11 @@ export function BusquedaArtista(props){
             setIsLoading(true);
             setMsg("Buscando");
             setMsgClass("success");
-
-            if(esSpotifyID(text)){
-                try {
-                    buscarArtistaID(text, miCallbackID);
-                } catch (err) {
-                    console.log(err);
-                }
-            }else{
-                try {
-                    buscarArtista(text, miCallback);
-                } catch (err) {
-                    console.log(err);
-                }
+            try{
+                esSpotifyID(text) ? buscarArtistaID(text, miCallbackID) : buscarArtista(text, miCallback)
+            } catch(err){
+                console.log(err);
             }
-            
         }
     };
 
@@ -88,16 +78,16 @@ export function BusquedaArtista(props){
         if(haySeleccion) setMsg(MSG_SELECCION);
     },[resultadoBusqueda, listaResultados])
 
+
     const renderListaResultados = (
         <ul className="busqueda-lista">
             
             {/* hay mas resultados */}
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             {listaResultados.map((item) => {
                 return (
                     <TarjetaArtista
                         key={item.id}
-                        isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
+                        isClickable={(listaResultados.length>0 && !haySeleccion) ? true : false}
                         selectionCallback={handleEleccion}
                         jsonData={item}
                     />
@@ -108,7 +98,6 @@ export function BusquedaArtista(props){
     )
     const renderTarjetaFinal = (
         <ul className="busqueda-lista">
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             <TarjetaArtista
                 key={seleccion.id}
                 isClickable={false}
@@ -147,7 +136,7 @@ export function BusquedaArtista(props){
             <h2 className="busqueda-titulo">{titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                {(!(haySeleccion))
+                {!haySeleccion
                 ? 
                     <span className="input_and_button">
                         <input
@@ -168,18 +157,18 @@ export function BusquedaArtista(props){
                 : 
                 ""
                 }
-                
-
             </form>
                 
             
 
             {/* Si ha resultados renderiza la lista */}
-            {isLoading? <CustomSpinner /> : ""}
-            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
-            {listaResultados.length>0 ? renderListaResultados : ""}
-            {haySeleccion ? renderTarjetaFinal : ""}
             
+            {isLoading? <CustomSpinner /> : ""}
+            
+           
+            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
+            {listaResultados.length>0 && !haySeleccion ? renderListaResultados : ""}
+            {haySeleccion ? renderTarjetaFinal : ""}
             {haySeleccion
                 ? 
                     <button 
@@ -219,19 +208,17 @@ export function BusquedaArtista(props){
         if(params.artists && params.artists.total===0){
             setIsLoading(false);
             setMsgClass("error");
-            setMsg(MSG_NO_RESULTADOS);
+            setMsg(()=>{return MSG_NO_RESULTADOS});
             return;
         }else{
             //hay resultados
             setMsgClass("success");
             setMsg(MSG_RESULTADOS_OBTENIDOS);
-            setLinkNext(params.artists.next);
-            setLinkPrev(params.artists.previous);
-
-            setResultadoBusqueda(params);
-            setListaResultados(params.artists.items)
-            
+            setLinkNext(()=>{return params.artists.next});
+            setLinkPrev(()=>{return params.artists.previous});
         }
+        setResultadoBusqueda(()=>{return params});
+        setListaResultados(()=>{return params.artists.items})
     }
 
     function miCallbackID(params){

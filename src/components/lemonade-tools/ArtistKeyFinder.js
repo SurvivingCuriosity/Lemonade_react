@@ -1,17 +1,18 @@
 import React from "react";
+import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
+import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
 
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
-import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 
 
 export function ArtistKeyFinder(){
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
     const TEXTO_BOTON_BUSCAR="Buscar";
+    const TEXTO_BOTON_CARGANDO="Cargando";
     const TEXTO_BOTON_RELLENA_CAMPOS="Rellena los campos";
     const TEXTO_BOTON_NUEVA_BUSQUEDA="Nueva búsqueda"
     const [msgResultado, setMsgResultado] = React.useState("");
@@ -36,8 +37,10 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         //se ha elegido artista y nota ? 
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
-            setTextoBotonFinal(TEXTO_BOTON_BUSCAR);
+            setTextoBotonFinal(TEXTO_BOTON_CARGANDO);
             setDeshabilitarBotonFinal(()=>{return false});
+        }else{
+
         }
     },[seleccionArtista,seleccionNotaEscala])
     
@@ -49,7 +52,8 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(objetosAudioFeatures.length>0){
-            // setDeshabilitarBotonFinal(()=>{return true})
+            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
+            setDeshabilitarBotonFinal(()=>{return false})
         }
     },[objetosAudioFeatures])
     

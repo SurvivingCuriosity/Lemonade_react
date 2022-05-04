@@ -46,11 +46,10 @@ export function BusquedaCancion(props){
                 item.mode = res2.data.mode;
             })
         })
-        window.setTimeout(()=>{
-            setMsg(MSG_RESULTADOS_OBTENIDOS);
-            setIsLoading(false);
-            setListaResultados(lista);
-        },1000);
+
+        setMsg(MSG_RESULTADOS_OBTENIDOS);
+        setIsLoading(false);
+        setListaResultados(lista);
     }
 
 
@@ -109,7 +108,7 @@ export function BusquedaCancion(props){
         <ul className="busqueda-lista">
 
             {/* hay mas resultados */}
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            
             {listaResultados.map((item) => {
                 return (
                     <TarjetaCancion 
@@ -126,7 +125,6 @@ export function BusquedaCancion(props){
 
     const renderEleccion = (
         <ul className="busqueda-lista">
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             <TarjetaCancion 
                 key={seleccion.id}
                 isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
@@ -194,10 +192,10 @@ export function BusquedaCancion(props){
 
             {/* Si ha resultados renderiza la lista */}
             {isLoading? <CustomSpinner /> : ""}
-            {!isLoading && listaResultados.length>1 ? renderButtonsPrevNext : ""}
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 && !haySeleccion ? renderListaResultados : ""}
             {haySeleccion ? renderEleccion : ""}
-            
             {haySeleccion
                 ? 
                     <button 
@@ -245,11 +243,6 @@ export function BusquedaCancion(props){
                 agregaDatos(params.tracks.items);
             }
         }
-        
-        
-        
-        
-        
         // parentCallback(params);   
     }
 
