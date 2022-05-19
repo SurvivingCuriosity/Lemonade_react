@@ -10,7 +10,7 @@ html{
     transition: background-color 1s;
   }
   :root{
-    --negro: #000;
+    --negro: #111;
     --negro2: #222;
     --negro3: #333;
     --negro4: #666;
@@ -18,9 +18,11 @@ html{
     --blanco: #EEE;
     --blanco2: #CCC;
     --blanco3: #AAA;
-    --blanco4: #444;
-    --negroConTransparencia: rgb(36, 36, 36);
+    --blanco4: #888;
+
     --color: #FFCC4D;
+
+    --negroConTransparencia: rgb(36, 36, 36);
     --colorConTransparencia: #e6b846;
     --error:rgb(255, 75, 75);
     --fondoError:rgba(255, 0, 0, 0.3);
@@ -37,6 +39,7 @@ html{
   
     --colorIconos: var(--color);
   }
+  
   [data-theme="light"] {
     --fondo: var(--blanco);
     --fondo2: var(--blanco2);
@@ -139,13 +142,12 @@ html{
   }
   .header-main-nav ul{
     list-style-type: none;
-    flex-flow: column nowrap!important;
+    flex-flow: column nowrap;
     display: flex;
     align-items: center;
     gap: 1em;
     margin-top: 2em;
     width: 100%;
-    flex-flow: row nowrap;
     justify-content: space-evenly;
   }
   header a{
@@ -319,6 +321,9 @@ html{
     position: absolute;
     left: calc(50% - 75px);
     top: 3em;
+    filter: drop-shadow(5px 5px 15px #000000);
+    -webkit-filter: drop-shadow(5px 5px 15px #000000);
+    -moz-filter: drop-shadow(5px 5px 15px #000000);
   }
   .header-bottom-nav{
     font-size: 0.6em;
@@ -349,6 +354,7 @@ html{
   }
   .text-center{
     text-align: center;
+    width: 100%;
   }
   .texto-dif-padding{
     padding: 1em;
@@ -612,13 +618,15 @@ html{
   .modal{
     width: 100vw;
     height: 100vh;
-    position: fixed;
+    position: absolute;
     background-color: rgba(0,0,0,0.5);
     z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    top: 0;
+    left: 0;
   }
   .modal-container{
     display: flex;
@@ -1092,29 +1100,7 @@ html{
   /* FIN FORMULARIOS LOGIN Y REGISTRO */
   /* MEDIA QUERIES */
   /* Extra small devices (phones, 600px and down) */
-  @media only screen and (min-width: 480px) {
-    html{
-        font-size: 0.75em;
-    }
-    .container{
-        width: 95vw;
-    }
-    .header-main-nav ul{
-      flex-flow: column nowrap;
-    }
-    input[type="search"], input[type="text"], input[type="password"], input[type="email"]{
-        width: 100%;
-    }
-    .containerSinResultado{
-      display: flex;
-      flex-flow: column nowrap;
-      gap: 1em;
-    }
-    .busqueda-lista{
-      margin: auto;
-      width: 80%;
-    }
-  }
+
   
   /* Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 600px) {

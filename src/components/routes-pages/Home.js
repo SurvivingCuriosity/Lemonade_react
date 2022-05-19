@@ -7,10 +7,10 @@ import { BottomNav } from '../navs/BottomNav'
 
 export function Home(){
     return (
-        <main>
+        <>
             <Header />
             <Main />
             <BottomNav />
-        </main>
+        </>
     )
 }

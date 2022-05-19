@@ -1,6 +1,6 @@
 import React from "react";
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
-import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
+import { getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
+import { getAllAudioFeatures } from "../../API_calls/apiCustomMethods";
 import { CustomButton } from "../custom-components/CustomButton";
 import { CustomSpinner } from "../custom-components/CustomSpinner";
 import {BusquedaArtista} from './Busqueda/BusquedaArtista'
@@ -42,33 +42,40 @@ export function SongMatchFinder(){
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(seleccionArtista.id && seleccionCancion.id){
-            console.log('haysele');
-            setDeshabilitarBotonFinal(()=>{return true})
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_CARGANDO})
-        }else{
-            setDeshabilitarBotonFinal(()=>{return true})
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
+            setTextoBotonFinal('Cargando');
         }
     },[seleccionArtista, seleccionCancion])
+    React.useEffect(()=>{
+        if(seleccionArtista.id){
+            getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones)
+        }else{
+            setCancionesArtista([]);
+        }
+    },[seleccionArtista])
     
     React.useEffect(()=>{
         if(cancionesArtista.length>0){
-            window.setTimeout(()=>{
-                dameObjetosAudioFeatures(cancionesArtista);
-            },1000)
+            getAllAudioFeatures(cancionesArtista, lleganAudioFeatures);
+        }else{
+            setObjetosAudioFeatures([]);
         }
     },[cancionesArtista])
 
     React.useEffect(()=>{
-        if(objetosAudioFeatures.length>0){
-            console.log('Hay audio');
+        if(objetosAudioFeatures.length>0 && seleccionCancion.id){
             setDeshabilitarBotonFinal(()=>{return false})
             setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
+        }else{
+            setDeshabilitarBotonFinal(()=>{return true})
+            setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
         }
     },[objetosAudioFeatures])
 
     React.useEffect(()=>{
         if(resultadoFinal.length>0){
+            setDeshabilitarBotonFinal(()=>{return false})
+            setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
+        }else{
             setDeshabilitarBotonFinal(()=>{return false})
             setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
         }
@@ -79,14 +86,17 @@ export function SongMatchFinder(){
         console.log('Usuario hace click final');
         switch (e.target.textContent) {
             case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setSeleccionArtista({});
-                setSeleccionCancion({});
-                setResultadoFinal([]);
+                setSeleccionArtista(()=>{return {}})
+                setSeleccionCancion(()=>{return []})
+                setResultadoFinal(()=>{return []})
+                setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
+                setDeshabilitarBotonFinal(()=>{return true})
                 break;
             case TEXTO_BOTON_RELLENA_CAMPOS:
                 break;
             case TEXTO_BOTON_BUSCAR:
                 let arrayResultadosFinales = [];
+
                 objetosAudioFeatures.map((obj)=>{   
                     if(obj.mode === notaEscalaDeCancion.escala 
                         && obj.key === notaEscalaDeCancion.nota){
@@ -101,27 +111,21 @@ export function SongMatchFinder(){
                     }
                 })
         
-                arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.id)))
-                .map(id => {
-                    return arrayResultadosFinales.find(a => (a.id === id))
-                })
-                
-                arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
-                .map(name => {
-                    return arrayResultadosFinales.find(a => a.name === name)
-                })
         
                 if(arrayResultadosFinales.length===0){
+                    console.log('no coincidencias');
                     setMsgResultadoClass("error")
                     setMsgResultado("No se encontraron coincidencias")
                     setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
                     setDeshabilitarBotonFinal(()=>{return false})
                 }else{
+                    console.log('coincidencias');
                     setMsgResultadoClass("success")
-                    setMsgResultado(`Canciones de  '${seleccionArtista.name}'' en la misma escala que '${seleccionCancion.name}'`)
+                    setMsgResultado(`Canciones de  '${seleccionArtista.name}' en la misma escala que '${seleccionCancion.name}'`)
                     setTextoBotonFinal(()=>{return TEXTO_BOTON_NUEVA_BUSQUEDA})
                     setDeshabilitarBotonFinal(()=>{return false})
                 }
+                console.log(arrayResultadosFinales);
                 setResultadoFinal(arrayResultadosFinales);
         }
     };
@@ -137,19 +141,34 @@ export function SongMatchFinder(){
                     titulo="1. Elige una canción"
                     callbackEleccion={userSelectsSong}
                 />
-                {seleccionCancion.id ? <p className="text-center small-text texto-dif-padding">Canción elegida: {`${seleccionCancion.name}`}</p> : "" }
+                {seleccionCancion.id ? <p className="text-center small-text">Canción elegida: {`${seleccionCancion.name}`}</p> : "" }
                 <BusquedaArtista 
                     haySeleccion={seleccionArtista.id? true : false}
                     titulo="2. Elige un artista"
                     callbackEleccion={userSelectsArtist}
                 />
-                <div>
-                    {seleccionArtista.id && objetosAudioFeatures.length<0 ? <CustomSpinner size="s" />  : ""}
+                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? 
+                    <CustomSpinner />
+                :
+                ""
+                }
+                {seleccionArtista.id && objetosAudioFeatures.length<1 ?
+                <p className="text-center small-text">{`Obteniendo canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
 
-                    {seleccionArtista.id ? <p className="text-center small-text texto-dif-padding">Artista elegido: {`${seleccionArtista.name}`}</p> : "" }
-                    {seleccionArtista.id && cancionesArtista.length>0 ? <p className="text-center small-text texto-dif-padding">Obtenidas: {`${cancionesArtista.length}`} canciones</p> : "" }
-                    {seleccionArtista.id && objetosAudioFeatures.length>0 ? <p className="text-center small-text texto-dif-padding">Analizadas: {`${objetosAudioFeatures.length}`} canciones</p> : "" }
-                </div>
+                {cancionesArtista.length>1 ? 
+                <p className="text-center small-text">{`Obtenidas ${cancionesArtista.length} canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
+            
+                {objetosAudioFeatures.length>0 && seleccionArtista.id ? 
+                <p className="text-center small-text">{`Analizadas ${objetosAudioFeatures.length} canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
 
                 <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
@@ -162,11 +181,11 @@ export function SongMatchFinder(){
                     
                     
 
-
+                    {resultadoFinal.length===0 && seleccionArtista.id && seleccionCancion.id ? <p className={`text-center small-text ${msgResultadoClass}`}>{msgResultado}</p> : ""}
                     {resultadoFinal.length>0 
                         ? 
                         <ul className="busqueda-lista">
-                                <p className={`${msgResultadoClass} busqueda-texto-info text-center small-text`}>{msgResultado}</p>
+                            <p className={`text-center small-text ${msgResultadoClass}`}>{msgResultado}</p>
                                 {resultadoFinal.map((item) => {
                                     return (
                                         <TarjetaCancion 
@@ -185,8 +204,6 @@ export function SongMatchFinder(){
         </div>
     )
     function userSelectsSong(songSelected){
-        setDeshabilitarBotonFinal(true);
-        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         setSeleccionCancion(songSelected);
         setNotaEscalaDeCancion({
             nota: songSelected.key,
@@ -195,44 +212,16 @@ export function SongMatchFinder(){
     }
 
     function userSelectsArtist(artistSelected){
-        setDeshabilitarBotonFinal(true);
-        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
-        if(artistSelected.id){
-            console.log('Usuario elige artista');
-            setSeleccionArtista(artistSelected);
-            try {
-                getAllUniqueArtistSongs(artistSelected.id, finalCallback);
-            } catch (err) {
-              console.log(err);
-            }
-        }else{
-            setSeleccionArtista(()=>{return artistSelected});
-        }
-
+        setSeleccionArtista(()=>{return artistSelected});
     }
     
-    function finalCallback(listaCancionesArtista){
+    function lleganCanciones(listaCancionesArtista){
         setCancionesArtista(()=>{return listaCancionesArtista});
-        dameObjetosAudioFeatures(listaCancionesArtista);
     }
 
-    function dameObjetosAudioFeatures(lista){
-        try {
-            //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
-            getObjetosAudioFeatures(lista).then((res1)=>{
-                if(res1.length>1){
-                    res1.map((promesa)=>{
-                        promesa.then((res)=>{
-                            setObjetosAudioFeatures([...res.data.audio_features]);
-                        })
-                    })
-                }else{
-                    setObjetosAudioFeatures(()=>{return res1.data.audio_features})
-                }
-            })
-        } catch (err) {
-          console.log(err);
-        }
+    function lleganAudioFeatures(audio){
+        setObjetosAudioFeatures(audio);
     }
+
 
 }

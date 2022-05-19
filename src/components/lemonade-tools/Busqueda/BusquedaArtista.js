@@ -2,21 +2,13 @@ import React from "react";
 
 import TarjetaArtista from "./TarjetaArtista";
 import { CustomSpinner } from "../../custom-components/CustomSpinner";
-
+import {mensajes} from '../../../static_data/error_handling.js'
 import { buscarArtista } from "../../../API_calls/apiCalls";
 import { buscarArtistaID } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
 
 
 export function BusquedaArtista(props){
-    const MSG_INIT=""
-    const MSG_NO_TEXTO="No has introducido texto."
-    const MSG_SELECCION="Has elegido: "
-    const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MSG_RESULTADOS_OBTENIDOS="Elige un artista: "
-    const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
-    const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
-
     const {titulo, haySeleccion, callbackEleccion, queArtistaEs, disabled} = props;
     
     const [isLoading, setIsLoading] = React.useState(false);
@@ -25,8 +17,8 @@ export function BusquedaArtista(props){
     const [text, setText] = React.useState("");
 
 //mensajes de error y la clase (mostrar errores en rojo, warnings etc)
-    const [msg, setMsg] = React.useState(MSG_INIT);
-    const [msgClass, setMsgClass] = React.useState("");
+    const [msg, setMsg] = React.useState(mensajes.init.texto);
+    const [msgClass, setMsgClass] = React.useState(mensajes.init.clase);
 
 //array de resultados obtenidos tras la busqueda
     const [listaResultados, setListaResultados] = React.useState([]);
@@ -43,18 +35,9 @@ export function BusquedaArtista(props){
         setText("");
         if(text===""){
             //text input vacio
-            setMsgClass("error");
-            setMsg(MSG_NO_TEXTO);
             return;
         }else{
-            setIsLoading(true);
-            setMsg("Buscando");
-            setMsgClass("success");
-            try{
-                esSpotifyID(text) ? buscarArtistaID(text, miCallbackID) : buscarArtista(text, miCallback)
-            } catch(err){
-                console.log(err);
-            }
+            buscarArtista(text, miCallback);
         }
     };
 
@@ -63,25 +46,31 @@ export function BusquedaArtista(props){
         setIsLoading(false);
         switch (listaResultados.length) {
             case 0:
-                setMsg(MSG_INIT);
+                if(haySeleccion){
+                    setMsg(mensajes.seleccion.texto);
+                    setMsgClass(mensajes.seleccion.clase);
+                }else{
+                    setMsg(mensajes.error_no_resultados.texto);
+                    setMsgClass(mensajes.error_no_resultados.clase);
+                }
                 break;
             case 1:
-                setMsg(MSG_RESULTADOS_OBTENIDOS);
             default:
                 if(listaResultados.length>0){
+                    setMsg(mensajes.eligeArtista.texto);
+                    setMsgClass(mensajes.eligeArtista.clase);
                     if(resultadoBusqueda.artists){
                         setLinkNext(resultadoBusqueda.artists.next)
                         setLinkPrev(resultadoBusqueda.artists.previous)
                     }
                 }
         }
-        if(haySeleccion) setMsg(MSG_SELECCION);
     },[resultadoBusqueda, listaResultados])
 
 
     const renderListaResultados = (
         <ul className="busqueda-lista">
-            
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             {/* hay mas resultados */}
             {listaResultados.map((item) => {
                 return (
@@ -98,6 +87,7 @@ export function BusquedaArtista(props){
     )
     const renderTarjetaFinal = (
         <ul className="busqueda-lista">
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             <TarjetaArtista
                 key={seleccion.id}
                 isClickable={false}
@@ -128,7 +118,7 @@ export function BusquedaArtista(props){
         :
             ""
         }
-    </div>
+        </div>
     )
 
     return(
@@ -162,11 +152,8 @@ export function BusquedaArtista(props){
             
 
             {/* Si ha resultados renderiza la lista */}
-            
-            {isLoading? <CustomSpinner /> : ""}
-            
            
-            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
+            {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 && !haySeleccion ? renderListaResultados : ""}
             {haySeleccion ? renderTarjetaFinal : ""}
             {haySeleccion
@@ -186,7 +173,6 @@ export function BusquedaArtista(props){
     function handleEleccion(userSelection){
         setSeleccion(()=>{return userSelection})
         setListaResultados(()=>{return []})
-        setMsg(MSG_SELECCION);
         callbackEleccion(userSelection, queArtistaEs);
     }
 
@@ -198,56 +184,34 @@ export function BusquedaArtista(props){
     //funcion que se ejecuta cuando llegan los resultados
     function miCallback(params) {
         setResultadoBusqueda(params);
-        if(!params.artists){
-            setMsgClass("error");
-            setMsg(MSG_ERROR_PETICION);
-            setIsLoading(false);
-            return;
-        }
-        //no hay resultados parala busqueda
-        if(params.artists && params.artists.total===0){
-            setIsLoading(false);
-            setMsgClass("error");
-            setMsg(()=>{return MSG_NO_RESULTADOS});
-            return;
+//llega una lista
+        if(params.artists){
+            //no hay resultados parala busqueda
+            if(params.artists && params.artists.total===0){
+                return;
+            }else{
+                setLinkNext(()=>{return params.artists.next});
+                setLinkPrev(()=>{return params.artists.previous});
+            }
+            setResultadoBusqueda(()=>{return params});
+            setListaResultados(()=>{return params.artists.items})
+//llega solo uno
         }else{
-            //hay resultados
-            setMsgClass("success");
-            setMsg(MSG_RESULTADOS_OBTENIDOS);
-            setLinkNext(()=>{return params.artists.next});
-            setLinkPrev(()=>{return params.artists.previous});
-        }
-        setResultadoBusqueda(()=>{return params});
-        setListaResultados(()=>{return params.artists.items})
-    }
-
-    function miCallbackID(params){
-        if(params==='error'){
-            setMsgClass("error");
-            setMsg(MSG_ERROR_PETICION)
-        }else{
-            console.log(params);
-            setListaResultados([params]);
-            setIsLoading(false);
+            setResultadoBusqueda(()=>{return [params]});
+            setListaResultados(()=>{return [params]})
         }
     }
 
     function getPaginaSiguiente(){
-        setIsLoading(true);
         let url="";
         url=resultadoBusqueda.artists.next;
-
         getPaginaSiguienteOAnterior(url, miCallback)
     }
 
     function getPaginaAnterior(){
-        setIsLoading(true);
         let url="";
         url=resultadoBusqueda.artists.previous;
         getPaginaSiguienteOAnterior(url, miCallback)
     }
 
-    function esSpotifyID(text){
-        if(text.length===22) return true; else return false;
-    }
 }

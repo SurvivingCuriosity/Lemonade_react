@@ -2,9 +2,11 @@ import React from "react";
 import icon_song from '../../../images/tarjeta/icon_song.svg'
 import icon_artist from '../../../images/tarjeta/icon_artist.svg'
 import icon_time from '../../../images/tarjeta/icon_time.svg'
-import { Reproductor } from "../../custom-components/Reproductor";
 import play from '../../../images/reproductor/play.svg'
 import stop from '../../../images/reproductor/stop.svg'
+import { Reproductor } from "../../custom-components/Reproductor";
+import { formatearNombre, getStringFromEscala, getStringFromNota, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
+
 export default function (props){
     const tamanoImagen = '65'
     const tamanoIcono = '15'
@@ -108,70 +110,13 @@ export default function (props){
     )
 
 //==========FUNCIONES DE FORMATEO DE INFORMACION
-        //1231159->'3:40'
-        function milisegundosAString(ms) {
-            let minutes = Math.floor(ms / 60000);
-            let seconds = ((ms % 60000) / 1000).toFixed(0);
-            return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-        }
 
-        //0->'C', 1->'C#'
-        function getStringFromNota(notaInt) {
-            switch (notaInt) {
-                case 0:
-                    return "C";
-                case 1:
-                    return "C#";
-                case 2:
-                    return "D";
-                case 3:
-                    return "D#";
-                case 4:
-                    return "E";
-                case 5:
-                    return "F";
-                case 6:
-                    return "F#";
-                case 7:
-                    return "G";
-                case 8:
-                    return "G#";
-                case 9:
-                    return "A";
-                case 10:
-                    return "A#";
-                case 11:
-                    return "B";
-            }
-        }
 
-        //0-> 'menor'
-        function getStringFromEscala(escalaInt) {
-            switch (escalaInt) {
-                case 0:
-                    return "m"
-                case 1:
-                    return ""
-                default:
-                    break;
-            }
-        }
+        
 
-        //Esto es un nombre largo -> Esto es...
-        function truncaNombreLargo(cadena, reducirInformacion){
-            if (cadena.length > 30) {
-                cadena = cadena.substring(0, 30) + "...";
-            }
-            if(reducirInformacion) cadena = cadena.substring(0, 15) + "...";
-            return cadena;
-        }
-        function formatearNombre(cadena){
-            if(cadena.indexOf('(') == -1){
-                return cadena;
-            }
-            else
-                return cadena.substr(0, cadena.indexOf('('));
-        }
+
+
+
         function reproduce1(){
             if(mostrarReproductor1){
                 setMostrarReproductor1(false);

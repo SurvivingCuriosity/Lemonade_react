@@ -1,11 +1,11 @@
 import React from "react";
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
+import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
 import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
-
+import { CustomSpinner } from "../custom-components/CustomSpinner";
 
 
 export function ArtistKeyFinder(){
@@ -15,6 +15,7 @@ export function ArtistKeyFinder(){
     const TEXTO_BOTON_CARGANDO="Cargando";
     const TEXTO_BOTON_RELLENA_CAMPOS="Rellena los campos";
     const TEXTO_BOTON_NUEVA_BUSQUEDA="Nueva búsqueda"
+    
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
 
@@ -31,22 +32,21 @@ export function ArtistKeyFinder(){
     
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
     
-    const [numeroCanciones, setNumeroCanciones] = React.useState(0);
-    const [numeroAudioFeatures, setNumeroAudioFeatures] = React.useState(0);
-    
     React.useEffect(()=>{
-        //se ha elegido artista y nota ? 
+        if(seleccionArtista.id){
+            getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones);
+        }
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
             setTextoBotonFinal(TEXTO_BOTON_CARGANDO);
             setDeshabilitarBotonFinal(()=>{return false});
-        }else{
-
         }
     },[seleccionArtista,seleccionNotaEscala])
     
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
-        setNumeroCanciones(()=>{return cancionesArtista.length})
+        if(cancionesArtista.length>0){
+            getAllAudioFeatures(cancionesArtista, lleganAudioFeatures);
+        }
     },[cancionesArtista])
     
     React.useEffect(()=>{
@@ -132,13 +132,28 @@ export function ArtistKeyFinder(){
                         mostrando={mostrando}
                     />
                     <div>
-                        {
-                        seleccionArtista.id 
-                        ? 
-                            <p className="text-center small-text texto-dif-padding">{`Se han obtenido ${numeroCanciones} canciones`}</p>    
-                        :
-                        ""
-                        }
+                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? 
+                    <CustomSpinner />
+                :
+                ""
+                }
+                {seleccionArtista.id && objetosAudioFeatures.length<1 ?
+                <p className="text-center small-text">{`Obteniendo canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
+
+                {cancionesArtista.length>2 ? 
+                <p className="text-center small-text">{`Obtenidas ${cancionesArtista.length} canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
+            
+                {objetosAudioFeatures.length>0 && seleccionArtista.id ? 
+                <p className="text-center small-text">{`Analizadas ${objetosAudioFeatures.length} canciones de ${seleccionArtista.name}`}</p>
+                :
+                ""
+                }
                         
                     </div>
                     <KeyScaleSelect 
@@ -153,7 +168,7 @@ export function ArtistKeyFinder(){
                     {
                         seleccionArtista.id && seleccionNotaEscala.nota>-1
                         ? 
-                        <p className="text-center small-text texto-dif-padding">{`Analizados datos de ${numeroAudioFeatures} canciones`}</p>   
+                        <p className="text-center small-text texto-dif-padding">{`Analizados datos de ${objetosAudioFeatures.length} canciones`}</p>   
                         :
                         ""
                         }
@@ -207,13 +222,11 @@ export function ArtistKeyFinder(){
                                 console.log('es la ultima');
                                 console.log('Obtenidos '+objetos.length+' audio features');
                                 setObjetosAudioFeatures(()=>{return objetos;})
-                                setNumeroAudioFeatures(()=>{return objetos.length})
                             }
                         })
                     })
                 }else{
                     console.log('Obtenidos '+res.data.audio_features.length+' audio features');
-                    setNumeroAudioFeatures(()=>{return res.data.audio_features.length})
                     setObjetosAudioFeatures(()=>{return res.data.audio_features})
                 }
             })
@@ -225,24 +238,16 @@ export function ArtistKeyFinder(){
 
     //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
     function userSelectsArtist(artistSelected){
-        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         if(artistSelected.id){
             console.log('Usuario elige artista');
             setSeleccionArtista(artistSelected);
-            try {
-                getAllUniqueArtistSongs(artistSelected.id,finalCallback);
-            } catch (err) {
-              console.log(err);
-            }
-        }else{
-            setSeleccionArtista(artistSelected);
         }
-
     }
 
-    function finalCallback(canciones){
-        console.log('Final callback con '+canciones.length+ ' canciones');
-        setNumeroCanciones(()=>{return canciones.length})
+    function lleganCanciones(canciones){
         setCancionesArtista(()=>{return canciones})
+    }
+    function lleganAudioFeatures(audio){
+        setObjetosAudioFeatures(()=>{return audio})
     }
 }

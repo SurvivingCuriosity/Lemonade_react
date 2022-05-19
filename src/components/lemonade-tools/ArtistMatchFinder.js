@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCalls";
+import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
 import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 import { CustomSpinner } from "../custom-components/CustomSpinner";
 import { CustomButton } from "../custom-components/CustomButton";
@@ -10,8 +10,6 @@ import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import TarjetaCancionDoble from "./Busqueda/TarjetaCancionDoble";
 
 export function ArtistMatchFinder(){
-    const TIEMPO_ESPERA_GETCANCIONES = 0;
-    const TIEMPO_ESPERA_GETAUDIOFEATURES = 0;
     const TITULO = "Artist Match Finder"
     const DESCRIPCION = "Obten una lista de parejas de canciones compatibles a partir de dos artistas"
     
@@ -35,86 +33,55 @@ export function ArtistMatchFinder(){
 
     const [cancionesArtista1, setCancionesArtista1] = React.useState([]);
     const [cancionesArtista2, setCancionesArtista2] = React.useState([]);
-    
-    const prevCancionesAr1 = usePrevious(cancionesArtista1);
-    const prevCancionesAr2 = usePrevious(cancionesArtista2);
 
     const [objetosAudioFeatures1, setObjetosAudioFeatures1] = React.useState([]);
     const [objetosAudioFeatures2, setObjetosAudioFeatures2] = React.useState([]);
-    const prevAudioFeatures1 = usePrevious(objetosAudioFeatures1);
-    const prevAudioFeatures2 = usePrevious(objetosAudioFeatures2);
-
-    // const [isLoading, setIsLoading] = React.useState(false);
 
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
-
-    
-    const [finPrimero, setFinPrimero] = React.useState(false);
-    const [finSegundo, setFinSegundo] = React.useState(false);
 
     const [textoBotonFinal , setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
     
     React.useEffect(()=>{
-        console.log('useEfe seleccion');
         if(seleccionArtista1.id && seleccionArtista2.id){
-            setTextoBotonFinal(()=>{return "Cargando"})
+            setTextoBotonFinal('Cargando');
+        }
+        if(seleccionArtista1.id){
+            getAllUniqueArtistSongs(seleccionArtista1.id, lleganCancionesDeArtista1);
         }else{
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
-            setDeshabilitarBotonFinal(()=>{return true})
+            setCancionesArtista1([]);
         }
-        //si vacia alguna busqueda, ponemos a 0 los audio features
-        if(!seleccionArtista1.id) {
-            setObjetosAudioFeatures1(()=>{return []})
-            setCancionesArtista1(()=>{return []})
+        if(seleccionArtista2.id){
+            getAllUniqueArtistSongs(seleccionArtista2.id, lleganCancionesDeArtista2);
+        }else{
+            setCancionesArtista2([]);
         }
-        if(!seleccionArtista2.id) {
-            setObjetosAudioFeatures2(()=>{return []})
-            setCancionesArtista2(()=>{return []})
-        }
-
     },[seleccionArtista1, seleccionArtista2])
+
+    React.useEffect(()=>{
+        if(cancionesArtista1.length>0){
+            getAllAudioFeatures(cancionesArtista1, lleganAudioFeatures1);
+        }else{
+            setObjetosAudioFeatures1([]);
+        }
+        if(cancionesArtista2.length>0){
+            getAllAudioFeatures(cancionesArtista2, lleganAudioFeatures2);
+        }else{
+            setObjetosAudioFeatures2([]);
+        }
+    },[cancionesArtista1, cancionesArtista2])
     
     React.useEffect(()=>{
-       console.log('useEfe audioFeatures');
-        console.log(showModal);
-        console.log('Tenemos '+objetosAudioFeatures1.length+' audio Features 1');
-        console.log('Tenemos '+objetosAudioFeatures2.length+' audio Features 2');
-        
         if(objetosAudioFeatures1.length>0 && objetosAudioFeatures2.length>0){
-            setDeshabilitarBotonFinal(()=>{return false})
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
-        }else{
-            //espera 3 segundos por si no ha llegado nada, para desbloquear el proceso general
-            window.setTimeout(()=>{
-                if(objetosAudioFeatures1.length>0 && objetosAudioFeatures2.length>0){
-                    setDeshabilitarBotonFinal(()=>{return false})
-                    setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
-                }
-                objetosAudioFeatures1.length>0 ? setFinPrimero(true) : setFinPrimero(false);
-                objetosAudioFeatures2.length>0 ? setFinSegundo(true) : setFinSegundo(false);
-            },TIEMPO_ESPERA_GETAUDIOFEATURES)
+            setDeshabilitarBotonFinal(false);
+            setTextoBotonFinal(TEXTO_BOTON_BUSCAR)
         }
-        objetosAudioFeatures1.length>0 ? setFinPrimero(true) : setFinPrimero(false);
-        objetosAudioFeatures2.length>0 ? setFinSegundo(true) : setFinSegundo(false);
-        console.log(prevAudioFeatures1);
-        console.log(objetosAudioFeatures1);
-        if(objetosAudioFeatures1 !== prevAudioFeatures1){
-            console.log('NUEVOS 1');
-        }
-        if(objetosAudioFeatures2 !== prevAudioFeatures2){
-            console.log('NUEVOS 2');
-        }
-
-    },[objetosAudioFeatures1, objetosAudioFeatures2, prevAudioFeatures1])
+    },[objetosAudioFeatures1, objetosAudioFeatures2])
 
 
     let handleClickFinal = (e) =>{
-        
         switch (e.target.textContent) {
             case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setSeleccionArtista1(()=>{return {}})
-                setSeleccionArtista2(()=>{return {}})
                 setSeleccionArtista1(()=>{return {}})
                 setSeleccionArtista2(()=>{return {}})
                 setResultadoFinal(()=>{return []})
@@ -125,7 +92,7 @@ export function ArtistMatchFinder(){
                 
                 break;
             case TEXTO_BOTON_BUSCAR:
-                        //para evitar recorrer arrays dentro de arrays, creo un mapa con los audioFeatures con clave=id valor=elobjeto
+                //para evitar recorrer arrays dentro de arrays, creo un mapa con los audioFeatures con clave=id valor=elobjeto
                 let audioFeatures1_conKey = new Map();
                 let audioFeatures2_conKey = new Map();
 
@@ -326,7 +293,6 @@ export function ArtistMatchFinder(){
                         canciones: cancionesEn_B_Gsusm
                     }
                 ]
-                // arrayResultadosFinales = arrayResultadosFinales.filter(obj => obj.canciones.length>1);
                 
                 //elimino los conjuntos sin minimo una pareja de canciones
                 arrayResultadosFinales.map((conjunto,index)=>{
@@ -384,14 +350,22 @@ export function ArtistMatchFinder(){
                 titulo="1. Elige el primer artista"
                 callbackEleccion={userSelectsArtist1}
             />
+                {seleccionArtista1.id && !objetosAudioFeatures1.length>0 ? 
+                    <CustomSpinner />
+                :
+                ""
+                }
+                {seleccionArtista1.id && objetosAudioFeatures1.length<1 ?
+                <p className="text-center small-text">{`Obteniendo canciones de ${seleccionArtista1.name}`}</p>
+                :
+                ""
+                }
 
-                {seleccionArtista1.id ? 
+                {cancionesArtista1.length>1 ? 
                 <p className="text-center small-text">{`Obtenidas ${cancionesArtista1.length} canciones de ${seleccionArtista1.name}`}</p>
                 :
                 ""
-            }
-            {!finPrimero && seleccionArtista1.id ? <CustomSpinner size="s" />  : ""}
-            
+                }
             
                 {objetosAudioFeatures1.length>0 && seleccionArtista1.id ? 
                 <p className="text-center small-text">{`Analizadas ${objetosAudioFeatures1.length} canciones de ${seleccionArtista1.name}`}</p>
@@ -407,15 +381,24 @@ export function ArtistMatchFinder(){
             />
                 
 
-                {seleccionArtista2.id ? 
+                {seleccionArtista2.id && !objetosAudioFeatures2.length>0 ? 
+                    <CustomSpinner />
+                :
+                ""
+                }
+                {seleccionArtista2.id && objetosAudioFeatures2.length<1 ?
+                <p className="text-center small-text">{`Obteniendo canciones de ${seleccionArtista2.name}`}</p>
+                :
+                ""
+                }
+
+                {cancionesArtista2.length>2 ? 
                 <p className="text-center small-text">{`Obtenidas ${cancionesArtista2.length} canciones de ${seleccionArtista2.name}`}</p>
                 :
                 ""
                 }
             
-            {!finSegundo && seleccionArtista2.id ? <CustomSpinner size="s" />  : ""}
-            
-            {objetosAudioFeatures2.length>0 && seleccionArtista2.id ? 
+                {objetosAudioFeatures2.length>0 && seleccionArtista2.id ? 
                 <p className="text-center small-text">{`Analizadas ${objetosAudioFeatures2.length} canciones de ${seleccionArtista2.name}`}</p>
                 :
                 ""
@@ -488,171 +471,31 @@ export function ArtistMatchFinder(){
         </div>
     )
 
-    function lleganCancionesDeArtista1(listaCanciones){
-        console.log('Llegan las canciones de 1, las seteamos y  llamamos a dameObjetosAudioFeatures. Le pasamos: ');
-        if(listaCanciones.status==429){
-            // setCancionesArtista1(()=>{return []});
-            setSeleccionArtista1(()=>{return {}})
-            setSeleccionArtista2(()=>{return {}})
-            setSeleccionArtista1(()=>{return {}})
-            setSeleccionArtista2(()=>{return {}})
-            setResultadoFinal(()=>{return []})
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_RELLENA_CAMPOS})
-            setDeshabilitarBotonFinal(()=>{return true})
-            setModalConfig(()=>{
-                return (
-                        {
-                            titulo: 'ERROR 429',
-                            descripcion: 'El artista tiene demasiadas canciones. El proveedor de datos ha rechazado tantas peticiones. Inténtalo de nuevo.',
-                            hayBotones:false,
-                            tipoMensaje:'error',
-                            showing:{showModal}
-                        }
-                )
-            })
-            setShowModal(true);
-            return;
-        }else{
-            setCancionesArtista1(()=>{return listaCanciones;});
-            window.setTimeout(()=>{
-                dameObjetosAudioFeatures(listaCanciones, 1);
-            },TIEMPO_ESPERA_GETCANCIONES)
-        }
-
-    }
-    function lleganCancionesDeArtista2(listaCanciones){
-        console.log('Llegan las canciones de 2, las seteamos y  llamamos a dameObjetosAudioFeatures. Le pasamos: ');
-        if(listaCanciones.status==429){
-            console.log('429');
-            console.log(listaCanciones.status);
-            setModalConfig(()=>{
-                return (
-                        {
-                            titulo: 'ERROR 429',
-                            descripcion: 'El artista tiene demasiadas canciones. El proveedor de datos ha rechazado tantas peticiones. Inténtalo de nuevo.',
-                            hayBotones:false,
-                            tipoMensaje:'error',
-                            showing:{showModal}
-                        }
-                )
-            })
-            setShowModal(true)
-            return;
-        }else{
-            setCancionesArtista2(()=>{return listaCanciones;});
-            window.setTimeout(()=>{
-                dameObjetosAudioFeatures(listaCanciones, 2);
-            },TIEMPO_ESPERA_GETCANCIONES)
-        }
-    }
-
-
-    function dameObjetosAudioFeatures(lista, queArtistaEs){
-        console.log('Estamos en dameObjetosAudioFeatures, vamos a llamar a getAudiofeatures y le pasamos:');
-        try {
-            //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
-            switch (queArtistaEs) {
-                case 1:
-                    console.log('Es el artista 1');
-                    getObjetosAudioFeatures(lista).then((res1)=>{
-                        console.log('getObjetosAudioFeatures');
-                        let listaObjetosFeatures = [];
-                        if(res1.length>1){
-                            console.log('res>1');
-                            res1.map((promesa, index)=>{
-                                console.log('mapeando promesas');
-                                promesa.then((res)=>{
-                                    listaObjetosFeatures.push(...res.data.audio_features)
-                                })
-                                if(index === res1.length-1){
-                                    console.log('Ultima iteracion y vamos a pasar');
-                                    setObjetosAudioFeatures1(listaObjetosFeatures)
-                                }
-                            })
-                        }else{
-                            setObjetosAudioFeatures1(res1.data.audio_features)
-                        }
-                    }).catch((error)=>{
-                        console.log('ERROR OBTENIENDO OBJETOS AUDIO FETARUES');
-                        console.log(error.response);
-                    })
-                    break;
-                case 2:
-                    console.log('Es el artista 2');
-                    let listaObjetosFeatures = [];
-                    getObjetosAudioFeatures(lista).then((res1)=>{
-                        if(res1.length>1){
-                            res1.map((promesa, index)=>{
-                                console.log('mapeando promesas');
-                                promesa.then((res)=>{
-                                    listaObjetosFeatures.push(...res.data.audio_features)
-                                })
-                                if(index === res1.length-1){
-                                    console.log('Ultima iteracion y vamos a pasar');
-                                    setObjetosAudioFeatures2(()=>{return listaObjetosFeatures})
-                                }
-                            })
-                        }else{
-                            setObjetosAudioFeatures2(()=>{return res1.data.audio_features})
-                        }
-                    })
-                    break;
-                default:
-                    break;
-            }
-        } catch (err) {
-          console.log(err);
-        }
-    }
 
     function userSelectsArtist1(artistSelected){
         //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         if(artistSelected.id){
             console.log('Usuario elige primer artista');
             setSeleccionArtista1(artistSelected);
-            try {
-                getAllUniqueArtistSongs(artistSelected.id, lleganCancionesDeArtista1);
-            } catch (err) {
-                console.log('Error buscando canciones de 1');
-                console.log(err);
-            }
-        }else{
-            setSeleccionArtista1(artistSelected);
         }
-
-
     }
-
     function userSelectsArtist2(artistSelected){
         //a este metodo le puede llegar el array vacio asi que hay que controlarlo
         if(artistSelected.id){
-            console.log('Usuario elige segundo artista');
-            setSeleccionArtista2(artistSelected);
-            try {
-                getAllUniqueArtistSongs(artistSelected.id, lleganCancionesDeArtista2);
-            } catch (err) {
-                console.log('Error buscando canciones de 1');
-                console.log(err);
-            }
-        }else{
             setSeleccionArtista2(artistSelected);
         }
-
-
     }
-            // Hook
-        function usePrevious(value) {
-            // The ref object is a generic container whose current property is mutable ...
-            // ... and can hold any value, similar to an instance property on a class
-            const ref = React.useRef();
-        
-            // Store current value in ref
-            React.useEffect(() => {
-            ref.current = value;
-            }, [value]); // Only re-run if value changes
-        
-            // Return previous value (happens before update in useEffect above)
-            return ref.current;
-        }
+    function lleganCancionesDeArtista1(listaCanciones){
+        setCancionesArtista1(listaCanciones);
+    }
+    function lleganCancionesDeArtista2(listaCanciones){
+        setCancionesArtista2(listaCanciones);
+    }
+    function lleganAudioFeatures1(audio){
+        setObjetosAudioFeatures1(audio);
+    }
+    function lleganAudioFeatures2(audio){
+        setObjetosAudioFeatures2(audio);
+    }
 
 }

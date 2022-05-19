@@ -1,130 +1,113 @@
 import React from "react";
 
 import TarjetaCancion from "./TarjetaCancion";
-import { CustomSpinner } from "../../custom-components/CustomSpinner";
-
+import {mensajes} from '../../../static_data/error_handling.js'
 import { buscarCancion } from "../../../API_calls/apiCalls";
-import { buscarCancionID } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
-import { getAudioFeatures } from "../../../API_calls/apiCalls";
+import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
 
 export function BusquedaCancion(props){
-    const MSG_INIT=""
-    const MSG_NO_TEXTO="No has introducido texto."
-    const MSG_SELECCION="Has elegido: "
-    const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MSG_RESULTADOS_OBTENIDOS="Elige una cancion "
-    // const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
-    const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
-
     const {titulo, isSongKeyFinder, haySeleccion, callbackEleccion} = props;
-    
-    const [isLoading, setIsLoading] = React.useState(false);
 
-//texto buscado por el usuario y el ultimo texto valido
+//texto buscado por el usuario
     const [text, setText] = React.useState("");
 
 //mensajes de error y la clase (mostrar errores en rojo, warnings etc)
-    const [msg, setMsg] = React.useState(MSG_INIT);
-    const [msgClass, setMsgClass] = React.useState("");
+    const [msg, setMsg] = React.useState(mensajes.init.texto);
+    const [msgClass, setMsgClass] = React.useState(mensajes.init.clase);
 
 //array de resultados obtenidos tras la busqueda
     const [listaResultados, setListaResultados] = React.useState([]);
-    const [resultadoBusqueda, setResultadoBusqueda] = React.useState({});
+    const [resultadoBusqueda, setResultadoBusqueda] = React.useState([]);
+
+    const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
     
     const [seleccion, setSeleccion] = React.useState({});
 
     const [linkNext, setLinkNext] = React.useState("");
     const [linkPrev, setLinkPrev] = React.useState("");
 
-    let agregaDatos = async (lista) => {
-        setIsLoading(true);
-        lista.map((item)=>{
-            getAudioFeatures(item.id).then((res2)=>{
-                item.bpm = res2.data.tempo;
-                item.key = res2.data.key;
-                item.mode = res2.data.mode;
-            })
-        })
-
-        setMsg(MSG_RESULTADOS_OBTENIDOS);
-        setIsLoading(false);
-        setListaResultados(lista);
-    }
-
-
     let handleSubmit = async (e) => {
         e.preventDefault();
         setText("");
         if(text===""){
-            //text input vacio
-            setMsgClass("error");
-            setMsg(MSG_NO_TEXTO);
             return;
         }else{
-            setIsLoading(true);
-            setMsg("Buscando");
-            setMsgClass("success");
-            if(esSpotifyID(text)){
-                try {
-                    buscarCancionID(text, miCallbackID);
-                } catch (err) {
-                    console.log(err);
-                }
-            }else{
-                try {
-                    buscarCancion(text, miCallback);
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-            
+            buscarCancion(text, lleganResultadosDeBusqueda);
         }
     };
 
-//se ejecuta cada vez que la lista de resultados cambia 
+//se ejecuta cada vez que resultadoBusqueda cambia
     React.useEffect(()=>{
-        setIsLoading(false);
-        switch (listaResultados.length) {
-            case 0:
-                setMsg(MSG_INIT);
-                break;
-            case 1:
-                setMsg(MSG_RESULTADOS_OBTENIDOS);
-                break;
-            default:
-                if(listaResultados.length>0){
-                    if(resultadoBusqueda.tracks){
-                        setLinkNext(()=>{return resultadoBusqueda.tracks.next})
-                        setLinkPrev(()=>{return resultadoBusqueda.tracks.previous})
-                    }
-                }
-            break;
+        //llegan varios
+        if(resultadoBusqueda.tracks){
+            if(resultadoBusqueda.tracks.items.length>0){
+                getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
+            }
+        }else
+        if(resultadoBusqueda.id){
+            getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
-        if(haySeleccion) setMsg(MSG_SELECCION);
-    },[listaResultados])
+    },[resultadoBusqueda])
+
+    //se ejecuta cada vez que audioFeatures cambia
+    React.useEffect(()=>{
+        if(objetosAudioFeatures.length>0 && !resultadoBusqueda.id){
+            let audioFeatures_conKey = new Map();
+            objetosAudioFeatures.map((audioF)=>{
+                audioFeatures_conKey.set(`${audioF.id}`, audioF);
+            })
+            //anado a las canciones la informacion que necesito de las audioFeatures y las anado a su categoria
+            resultadoBusqueda.tracks.items.map((cancion)=>{
+                if((audioFeatures_conKey).get(cancion.id)){
+                    let nota = (audioFeatures_conKey).get(cancion.id).key;
+                    let escala = (audioFeatures_conKey).get(cancion.id).mode;
+                    let bpm = (audioFeatures_conKey).get(cancion.id).tempo;
+        
+                    cancion.key=nota
+                    cancion.bpm=bpm
+                    cancion.mode=escala
+                }
+            })
+            setListaResultados(resultadoBusqueda.tracks.items);
+        }else{
+            if(resultadoBusqueda.id){
+                resultadoBusqueda.key = objetosAudioFeatures[0].key;
+                resultadoBusqueda.mode = objetosAudioFeatures[0].mode;
+                resultadoBusqueda.bpm = objetosAudioFeatures[0].tempo;
+                setListaResultados(resultadoBusqueda);
+            }
+        }
+    },[objetosAudioFeatures])
 
     const renderListaResultados = (
         <ul className="busqueda-lista">
-
+        <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             {/* hay mas resultados */}
-            
-            {listaResultados.map((item) => {
+            {listaResultados.id ?
+                < TarjetaCancion 
+                    key={listaResultados.id}
+                    isClickable={(!isSongKeyFinder && !haySeleccion) ? true : false}
+                    selectionCallback={mandarEleccionAlPadre}
+                    jsonData={listaResultados}
+                /> 
+            : 
+            listaResultados.map((item) => {
                 return (
                     <TarjetaCancion 
                         key={item.id}
-                        isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
+                        isClickable={(!isSongKeyFinder && !haySeleccion) ? true : false}
                         selectionCallback={mandarEleccionAlPadre}
                         jsonData={item}
                     />
                 );
-            })
-            }
+            })}
         </ul>
     )
 
     const renderEleccion = (
         <ul className="busqueda-lista">
+            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
             <TarjetaCancion 
                 key={seleccion.id}
                 isClickable={(listaResultados.length>0 && !isSongKeyFinder && !haySeleccion) ? true : false}
@@ -134,6 +117,7 @@ export function BusquedaCancion(props){
 
         </ul>
     )
+    
     const renderButtonsPrevNext=(
         <div>
         {linkNext!=null
@@ -156,7 +140,7 @@ export function BusquedaCancion(props){
         :
             ""
         }
-    </div>
+        </div>
     )
 
     return(
@@ -184,17 +168,12 @@ export function BusquedaCancion(props){
                 : 
                 ""
                 }
-                
-
             </form>
 
             
-
-            {/* Si ha resultados renderiza la lista */}
-            {isLoading? <CustomSpinner /> : ""}
-            <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
-            {!isLoading && listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
-            {listaResultados.length>0 && !haySeleccion ? renderListaResultados : ""}
+            
+            {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
+            {listaResultados.length>0 || listaResultados.id && !haySeleccion ? renderListaResultados : ""}
             {haySeleccion ? renderEleccion : ""}
             {haySeleccion
                 ? 
@@ -211,68 +190,38 @@ export function BusquedaCancion(props){
     )
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function mandarEleccionAlPadre(userSelection){
-        console.log('en mandarEleccionAlPadre de busqueda');
         setSeleccion(()=>{return userSelection})
-        setListaResultados(()=>{return []});
+        setListaResultados(()=>{return []})
         callbackEleccion(userSelection);
     }
 
     function borrarSeleccion(){
         setListaResultados(()=>{return []});
-        callbackEleccion(listaResultados);
+        callbackEleccion([]);
     }
 
     //funcion que se ejecuta cuando llegan los resultados
-    function miCallback(params) {
-        setResultadoBusqueda(params);
-        if(!(params.tracks)){
-            setMsgClass("error");
-            setMsg(MSG_ERROR_PETICION);
-            setIsLoading(false);
-            return;
-        }else{
-            //no hay resultados parala busqueda
-            if((params.tracks && params.tracks.total===0)){
-                setIsLoading(false);
-                setMsgClass("error");
-                setMsg(MSG_NO_RESULTADOS);
-                return;
-            }else{
-                setLinkNext(params.tracks.next);
-                setLinkPrev(params.tracks.previous);
-                agregaDatos(params.tracks.items);
-            }
-        }
-        // parentCallback(params);   
+    function lleganResultadosDeBusqueda(resultados) {
+        console.log('Llegan resultados de búsqueda');
+        setResultadoBusqueda(resultados);
     }
 
-    function miCallbackID(params){
-        setIsLoading(false);
-        if(params==='error'){
-            setMsgClass("error");
-            setMsg(MSG_ERROR_PETICION)
-        }else{
-            console.log(params);
-            setListaResultados([params]);
-            agregaDatos([params]);
-        }
+    function lleganAudioFeatures(audio){
+        console.log('Llegan audio features');
+        setObjetosAudioFeatures(audio)
     }
 
     function getPaginaSiguiente(){
-        setIsLoading(true);
+        setResultadoBusqueda([]);
         let url="";
         url=resultadoBusqueda.tracks.next;
-        getPaginaSiguienteOAnterior(url, miCallback)
+        getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
     }
 
     function getPaginaAnterior(){
-        setIsLoading(true);
+        setResultadoBusqueda([]);
         let url="";
         url=resultadoBusqueda.tracks.previous;
-        getPaginaSiguienteOAnterior(url, miCallback)
-    }
-
-    function esSpotifyID(text){
-        if(text.length===22 && !text.includes(' ')) return true; else return false;
+        getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
     }
 }

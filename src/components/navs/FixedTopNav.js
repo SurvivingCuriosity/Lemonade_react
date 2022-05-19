@@ -7,7 +7,7 @@ export function FixedTopNav(){
         <div className="limon_lemonade_enlace">
             <Link to="/" className="linea-flex-start">
                 <img src={lemon} style={{width: tamanoImagen + 'px'}}/>
-                <h1 className="tituloTopNav">Lemonade</h1>
+                <h1 className="tituloTopNav">Ir a inicio</h1>
             </Link>
         </div>
 

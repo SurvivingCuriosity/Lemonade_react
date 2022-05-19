@@ -1,12 +1,16 @@
+//EN ESTE FICHERO ESTÁN ÚNICAMENTE LAS PETICIONES A LA API DE SPOTIFY
+//TODAS RECIBEN UN CALLBACK QUE SE EJECUTARÁ CUANDO LLEGUEN RESULTADOS
 import axios from "axios";
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
-
+import { eliminaElementosConNameRepetido } from "../helpers/FilteringArrays.js";
+import {esEnlaceDeSpotify, getIDFromURL} from '../helpers/StringURLMethods.js'
 
 const ClientId= 'ad9e75087eea487ab445f1ad9b610cab';
 const ClientSecret= 'f54517f6c44548a2873e07b23b100a35';
 let cadenaCredentials = Utf8.parse(ClientId + ':' + ClientSecret)
 let cadenaB64 = Base64.stringify(cadenaCredentials);
+
 //funcion para obtener el token necesario en todas las demas llamadas
 export const getToken = async () => {
     const response = axios('https://accounts.spotify.com/api/token',{
@@ -23,75 +27,76 @@ export const getToken = async () => {
 //funcion que devuelve resultados de buscar cancion
 export const buscarCancion = async (text, callback, offset=0) => {
     let limite=5;
-    getToken().then((e)=>{
-        axios(`https://api.spotify.com/v1/search?type=track&limit=${limite}&q=${text}&offset=${offset}`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+e.data.access_token
-            },
-            method: 'GET'
-        }).then((res)=>{
-            callback(res.data);
-        }).catch((err)=>{
-            callback("error" +err);
+    if(esEnlaceDeSpotify(text)){
+        let id = getIDFromURL(text);
+        getToken().then((res)=>{
+            axios(`https://api.spotify.com/v1/tracks/${id}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+res.data.access_token
+                },
+                method: 'GET'
+            }).then((res)=>{
+                callback(res.data);
+            }).catch((err)=>{
+                callback(err);
+            })
         })
-    })
-};
-//funcion que devuelve resultados de buscar cancion
-export const buscarCancionID = async (id, callback) => {
-    getToken().then((res)=>{
-        axios(`https://api.spotify.com/v1/tracks/${id}`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+res.data.access_token
-            },
-            method: 'GET'
-        }).then((res)=>{
-            callback(res.data);
-        }).catch((err)=>{
-            callback("error");
+    }else{
+        getToken().then((e)=>{
+            axios(`https://api.spotify.com/v1/search?type=track&limit=${limite}&q=${text}&offset=${offset}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+e.data.access_token
+                },
+                method: 'GET'
+            }).then((res)=>{
+                callback(res.data);
+            }).catch((err)=>{
+                callback(err);
+            })
         })
-    })
-
-};
-//funcion que devuelve resultados de buscar cancion
-export const buscarArtistaID = async (id, callback) => {
-    getToken().then((res)=>{
-        axios(`https://api.spotify.com/v1/artists/${id}`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+res.data.access_token
-            },
-            method: 'GET'
-        }).then((res)=>{
-            callback(res.data);
-        }).catch((err)=>{
-            callback("error");
-        })
-    })
-
+    }
 };
 
 //funcion que devuelve resultados de buscar artista
 export const buscarArtista = async (text, callback, offset=0) => {
     let limite=5;
-    getToken().then((e)=>{
-        axios(`https://api.spotify.com/v1/search?type=artist&limit=${limite}&q=${text}&offset=${offset}`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+e.data.access_token
-            },
-            method: 'GET'
-        }).then((res)=>{
-            callback(res.data);
-        }).catch((err)=>{
-            callback("error" +err);
+    if(esEnlaceDeSpotify(text)){
+        let id = getIDFromURL(text);
+        console.log(id);
+        getToken().then((res)=>{
+            axios(`https://api.spotify.com/v1/artists/${id}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+res.data.access_token
+                },
+                method: 'GET'
+            }).then((res)=>{
+                callback(res.data);
+            }).catch((err)=>{
+                callback(err);
+            })
         })
-    })
+    }else{
+        getToken().then((e)=>{
+            axios(`https://api.spotify.com/v1/search?type=artist&limit=${limite}&q=${text}&offset=${offset}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+e.data.access_token
+                },
+                method: 'GET'
+            }).then((res)=>{
+                callback(res.data);
+            }).catch((err)=>{
+                callback("error" +err);
+            })
+        })
+    }
 };
 
 export const getPaginaSiguienteOAnterior = async (url, callback)=>{
@@ -106,143 +111,94 @@ export const getPaginaSiguienteOAnterior = async (url, callback)=>{
         }).then((res)=>{
             callback(res.data);
         }).catch((err)=>{
-            console.log(err.data);
+            console.log(err);
         })
     })
 }
 
 //funcion que dado el id de una cancion, obtiene sus caracteristicas
-export const getAudioFeatures = async (id) => {
-    return getToken().then((res)=>{
-        const response = axios(`https://api.spotify.com/v1/audio-features/${id}`, {
+export const getAudioFeatures = async (id, resolve, reject) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/audio-features/${id}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+res.data.access_token
             },
             method: 'GET'
-        })
-        return response;
+        }).then(resolve).catch(reject);
     })
 
 };
 
 //funcion que dado el id de una cancion, obtiene sus caracteristicas
-export const getMultipleAudioFeatures = async (ids) => {
-    return getToken().then((res)=>{
-        const response = axios(`https://api.spotify.com/v1/audio-features?ids=${ids}`, {
+export const getMultipleAudioFeatures = async (ids, resolve, reject) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/audio-features?ids=${ids}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+res.data.access_token
             },
             method: 'GET'
-        })
-        return response;
+        }).then(resolve).catch(reject);
     })
 
 };
 
-//devuelve todos los albumes de un artista
-export const getAllUniqueArtistSongs = async (id, finalCallback) => {
-    console.log('getAllUniqueArtistSongs');
+export const get50ArtistAlbums = async (id, resolve, reject) => {
+    //devuelve 
     getToken().then((resToken)=>{
-        let token = resToken.data.access_token;
-        axios(`https://api.spotify.com/v1/artists/${id}/albums`, {
+        axios(`https://api.spotify.com/v1/artists/${id}/albums?limit=50&include_groups=album,single,compilation&locale=es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+token
+                'Authorization': 'Bearer '+resToken.data.access_token
             },
             method: 'GET'
-        }).then((res)=>{
-            let albumesYSingles = res.data.items;
-            //formateo el nombre de todos para poder comparalos despues y quedarme con los valores unicos
-            console.log('Hay '+albumesYSingles.length+' albumes y canciones');
-
-            //este codigo elimina los valores con nombre repetido
-            albumesYSingles = Array.from(new Set(albumesYSingles.map(a => a.name)))
-            .map(name => {
-                return albumesYSingles.find(a => a.name === name)
-            })
-            getTracksFromAlbums(albumesYSingles, finalCallback);
-        }).catch((error)=>{
-            console.log('========ERROR EN GET ALL UNIQUE ARTISTS SONG');
-            finalCallback(error.response);
-        })
-    }).catch((error)=>{
-        console.log('ERROR EN GET TOKEN');
-        console.log(error.response);
+        }).then(resolve).catch(reject)
     })
-
 }
 
-function getTracksFromAlbums(albumesYSingles, finalCallback){
-    const func = albumesYSingles.map((album)=>{
-        return getAlbumTracks(album.id);
+export const siguientePagina = async (url, resolve, reject) => {
+    console.log('En siguiente pagina: '+url);
+    getToken().then((resToken)=>{
+        axios(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+resToken.data.access_token
+            },
+            method: 'GET'
+        }).then(resolve).catch(reject);
     })
-    llamadasGetAlbums(func,finalCallback);
 }
 
-function llamadasGetAlbums(func,finalCallback){
-    getToken().then((e)=>{
-        let token=e.data.access_token;
-        let cancionesTotales = [];
-        func.map((promesa, index)=>{
-            promesa.then((e)=>{
-                let itemsDelAlbum = e.data.items;
-                cancionesTotales=[...cancionesTotales, ...itemsDelAlbum];
-
-                if(index===func.length-1){
-                    return llamadasGetTracks(cancionesTotales,finalCallback,token);
-                }
-            }).catch((error)=>{
-                console.log('========ERROR EN GET ALBUM TRACKS');
-                finalCallback(error.response);
-                return;
-            })
-        })
-    }).catch((error)=>{
-        console.log(error);
+export const getAlbumTracks = async (id, resolve, reject) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/albums/${id}/tracks`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+res.data.access_token
+            },
+            method: 'GET'
+        }).then(resolve).catch(reject);
     })
+};
 
-}
-
-function llamadasGetTracks(canciones,finalCallback,token){
-    const func = canciones.map((album)=>{
-        return getTrack(album.id,token);
+export const getSeveralTracks = async (cadenaIDs, resolve, reject) => {
+    getToken().then((res)=>{
+        axios(`https://api.spotify.com/v1/tracks?ids=${cadenaIDs}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+res.data.access_token
+            },
+            method: 'GET'
+        }).then(resolve).catch(reject);
     })
-
-    getAllTracks(func,finalCallback);
-}
-
-function getAllTracks(func, finalCallback){
-    let cancionesTotales = [];
-    try{
-        func.map((promesa, index)=>{
-                promesa.then((e)=>{
-                    cancionesTotales.push(e.data);
-                    if(func.length===index+1){
-
-                        //este codigo elimina los valores con nombre repetido                
-                        cancionesTotales = Array.from(new Set(cancionesTotales.map(a => a.name)))
-                        .map(name => {
-                            return cancionesTotales.find(a => a.name === name)
-                        })
-                        finalCallback(cancionesTotales);
-                        
-                    }
-                }).catch((error)=>{
-                    console.log('========ERROR EN GET ALL TRACKS');
-                    finalCallback(error.response);
-                    return;
-                })
-        })
-    }catch(err){
-        console.log('errorsito');
-        console.log(err);
-    }
-}
+};
 
 export const getTrack = async (id,token) => {
         const response = axios(`https://api.spotify.com/v1/tracks/${id}`, {
@@ -254,23 +210,6 @@ export const getTrack = async (id,token) => {
             method: 'GET'
         })
         return response;
-};
-
-export const getAlbumTracks = async (id) => {
-    return getToken().then((res)=>{
-        const response = axios(` 	https://api.spotify.com/v1/albums/${id}/tracks`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+res.data.access_token
-            },
-            method: 'GET'
-        }).catch((error)=>{
-            console.log(error);
-        })
-        return response;
-    })
-
 };
 
 export const getObjetosAudioFeatures = async (tracks) => {
@@ -308,3 +247,4 @@ export const getObjetosAudioFeatures = async (tracks) => {
         return func;
     }    
 };
+
