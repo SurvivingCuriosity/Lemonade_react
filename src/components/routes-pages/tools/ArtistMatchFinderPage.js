@@ -7,7 +7,7 @@ export function ArtistMatchFinderPage(){
     return(
         <div className="toolPage">
             <FixedTopNav />
-            <ArtistMatchFinder />
+            <ArtistMatchFinder/>
         </div>
     )
 }

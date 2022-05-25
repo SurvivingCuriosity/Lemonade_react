@@ -41,6 +41,7 @@ export function BusquedaCancion(props){
     React.useEffect(()=>{
         //llegan varios
         if(resultadoBusqueda.tracks){
+            
             if(resultadoBusqueda.tracks.items.length>0){
                 getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
             }
@@ -69,6 +70,10 @@ export function BusquedaCancion(props){
                     cancion.mode=escala
                 }
             })
+            if(resultadoBusqueda.tracks){
+                setLinkNext(resultadoBusqueda.tracks.next)
+                setLinkPrev(resultadoBusqueda.tracks.previous)
+            }
             setListaResultados(resultadoBusqueda.tracks.items);
         }else{
             if(resultadoBusqueda.id){
@@ -79,10 +84,34 @@ export function BusquedaCancion(props){
             }
         }
     },[objetosAudioFeatures])
-
+    const renderButtonsPrevNext=(
+        <div>
+        {linkNext!=null
+        ?
+            <button 
+                className="boton_link botonPaginaSiguiente"
+                onClick={getPaginaSiguiente}
+                >Siguiente página
+            </button>
+        :
+            ""
+        }
+        {linkPrev!=null
+        ?
+            <button 
+                className="boton_link botonPaginaAnterior"
+                onClick={getPaginaAnterior}
+                >Página anterior
+            </button>
+        :
+            ""
+        }
+        </div>
+    )
     const renderListaResultados = (
         <ul className="busqueda-lista">
         <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+        {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {/* hay mas resultados */}
             {listaResultados.id ?
                 < TarjetaCancion 
@@ -118,30 +147,7 @@ export function BusquedaCancion(props){
         </ul>
     )
     
-    const renderButtonsPrevNext=(
-        <div>
-        {linkNext!=null
-        ?
-            <button 
-                className="boton_link botonPaginaSiguiente zoom-on-click"
-                onClick={getPaginaSiguiente}
-                >Siguiente página
-            </button>
-        :
-            ""
-        }
-        {linkPrev!=null
-        ?
-            <button 
-                className="boton_link botonPaginaAnterior zoom-on-click"
-                onClick={getPaginaAnterior}
-                >Página anterior
-            </button>
-        :
-            ""
-        }
-        </div>
-    )
+
 
     return(
         <div className="busqueda-container">
@@ -152,6 +158,7 @@ export function BusquedaCancion(props){
                 ? 
                     <span className="input_and_button">
                         <input
+                            autoFocus
                             type="search"
                             value={text}
                             placeholder={`Introduce canción...`}
@@ -171,8 +178,6 @@ export function BusquedaCancion(props){
             </form>
 
             
-            
-            {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {listaResultados.length>0 || listaResultados.id && !haySeleccion ? renderListaResultados : ""}
             {haySeleccion ? renderEleccion : ""}
             {haySeleccion
@@ -202,12 +207,10 @@ export function BusquedaCancion(props){
 
     //funcion que se ejecuta cuando llegan los resultados
     function lleganResultadosDeBusqueda(resultados) {
-        console.log('Llegan resultados de búsqueda');
         setResultadoBusqueda(resultados);
     }
 
     function lleganAudioFeatures(audio){
-        console.log('Llegan audio features');
         setObjetosAudioFeatures(audio)
     }
 

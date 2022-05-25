@@ -67,10 +67,34 @@ export function BusquedaArtista(props){
         }
     },[resultadoBusqueda, listaResultados])
 
-
+    const renderButtonsPrevNext=(
+        <div>
+        {linkNext!=null
+        ?
+            <button 
+                className="boton_link botonPaginaSiguiente"
+                onClick={getPaginaSiguiente}
+                >Siguiente página
+            </button>
+        :
+            ""
+        }
+        {linkPrev!=null
+        ?
+            <button 
+                className="boton_link botonPaginaAnterior"
+                onClick={getPaginaAnterior}
+                >Página anterior
+            </button>
+        :
+            ""
+        }
+        </div>
+    )
     const renderListaResultados = (
         <ul className="busqueda-lista">
             <p className={`${msgClass} busqueda-texto-info`}>{msg}</p>
+            {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
             {/* hay mas resultados */}
             {listaResultados.map((item) => {
                 return (
@@ -96,40 +120,19 @@ export function BusquedaArtista(props){
             />
         </ul>
     )
-    const renderButtonsPrevNext=(
-        <div>
-        {linkNext!=null
-        ?
-            <button 
-                className="boton_link botonPaginaSiguiente zoom-on-click"
-                onClick={getPaginaSiguiente}
-                >Siguiente página
-            </button>
-        :
-            ""
-        }
-        {linkPrev!=null
-        ?
-            <button 
-                className="boton_link botonPaginaAnterior zoom-on-click"
-                onClick={getPaginaAnterior}
-                >Página anterior
-            </button>
-        :
-            ""
-        }
-        </div>
-    )
+
 
     return(
         <div className="busqueda-container">
             <h2 className="busqueda-titulo">{titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                {!haySeleccion
+                {(!listaResultados.length>0 && !haySeleccion)
                 ? 
                     <span className="input_and_button">
                         <input
+                            className={`input_artista_${queArtistaEs}`}
+                            autoFocus
                             type="search"
                             disabled={disabled}
                             value={text}
@@ -138,7 +141,7 @@ export function BusquedaArtista(props){
                         />
                         <button 
                             type="submit" 
-                            className="busqueda-boton-buscar boton zoom-on-click"
+                            className="busqueda-boton-buscar boton"
                             disabled={text=="" ? true : false}
                             
                             >Buscar
@@ -153,13 +156,13 @@ export function BusquedaArtista(props){
 
             {/* Si ha resultados renderiza la lista */}
            
-            {listaResultados.length>1 && !haySeleccion ? renderButtonsPrevNext : ""}
+
             {listaResultados.length>0 && !haySeleccion ? renderListaResultados : ""}
             {haySeleccion ? renderTarjetaFinal : ""}
-            {haySeleccion
+            {(listaResultados.length>0 && !haySeleccion)
                 ? 
                     <button 
-                        className="busqueda-boton-borrar boton zoom-on-click"
+                        className="busqueda-boton-borrar boton"
                         onClick={borrarSeleccion}
                         >Nueva búsqueda
                     </button>
@@ -213,5 +216,4 @@ export function BusquedaArtista(props){
         url=resultadoBusqueda.artists.previous;
         getPaginaSiguienteOAnterior(url, miCallback)
     }
-
 }

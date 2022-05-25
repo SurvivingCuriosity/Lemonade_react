@@ -233,8 +233,9 @@ html{
     gap: 1em;
     display: flex;
     flex-flow: column nowrap;
-    width: 100vw;
+    width: 95vw;
     margin: 1em auto;
+    align-items: center;
   }
   .tool-container-sinTitulos{
     display: flex;
@@ -342,6 +343,9 @@ html{
   }
   /* FIN FIXED NAVS */
   /* CLASES APOYO */
+  .borde{
+    border: 1px solid var(--color);
+  }
   .zoom-on-click{
     transition: transform 0.4s linear;
   }
@@ -611,6 +615,14 @@ html{
         align-items: center;
         border-radius: 5px;
     }
+    .fade-out{
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .fade-in{
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
 
   
   /*FIN CLASES APOYO */
@@ -694,11 +706,17 @@ html{
   /* BUSQUEDA */
   .busqueda-container{
     padding: 1em;
-    background-color: var(--fondo3);
+    background-color: var(--fondo2);
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
     width: 100%;
+    transition: all 0.5s ease-in-out;
+    min-height: 100px;
+  }
+  .busqueda-container:focus-within{
+    background-color: var(--fondo3);
+    transition: all 0.5s ease-in-out;
   }
   .containerSinResultado{
     display: flex;
@@ -727,11 +745,20 @@ html{
   }
   .botonPaginaSiguiente{
     float: right;
+    margin-bottom: 0.35em;
   }
   .botonPaginaAnterior{
     float: left;
+    margin-bottom: 0.35em;
   }
   /* FIN BUSQUEDA */
+  .preview-choices-div{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-around;
+    margin: 1em;
+  }
   /* TARJETAS */
   .resultado-left{
       width:50%;
@@ -903,10 +930,16 @@ html{
     opacity: 0.5 !important;
     bottom: auto;
   }
+  .clickable{
+    transition: transform 0.5s;
+  }
   .clickable:hover{
     background-color: var(--fondo3);
     box-shadow: 0px 0px 10px 0px var(--fondo3);
-    cursor:pointer;
+    cursor: pointer;
+    transition: transform 0.5s;
+    transform: scale(1.025);
+    border: 2px solid var(--color);
   }
   .tarjetaElegida{
     padding:1em;

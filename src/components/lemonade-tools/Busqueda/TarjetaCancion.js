@@ -14,7 +14,6 @@ export default function (props){
         jsonData,
         reducirInformacion
     } = props;
-    console.log(jsonData);
     //extraigo los datos que quiero mostrar del json
     const songKey=getStringFromNota(jsonData.key);
     const songMode=getStringFromEscala(jsonData.mode);

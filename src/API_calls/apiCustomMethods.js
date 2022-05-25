@@ -12,7 +12,6 @@ import {siguientePagina} from './apiCalls'
 
 //devuelve todas las canciones de un artista
 export const getAllUniqueArtistSongs = async (id, callback) => {
-    console.log('CUSTOM METHODS => getAllUniqueArtistSongs');
     //PRIMERO PEDIMOS LOS ALBUMS
         let next = null;
         let todosLosAlbums = [];
@@ -40,7 +39,6 @@ export const getAllUniqueArtistSongs = async (id, callback) => {
         todosLosAlbums = eliminaElementosConIDRepetido(todosLosAlbums);
         todosLosAlbums = eliminaElementosConNameRepetido(todosLosAlbums);
         todosLosAlbums = eliminaElementosRedundantes(todosLosAlbums);
-        console.log(todosLosAlbums);
         let obtenerCancionesDeAlbumes;
 
         for (let i = 0; i < todosLosAlbums.length; i++) {
@@ -54,7 +52,6 @@ export const getAllUniqueArtistSongs = async (id, callback) => {
         todasLasCanciones = eliminaElementosConIDRepetido(todasLasCanciones);
         todasLasCanciones = eliminaElementosConNameRepetido(todasLasCanciones);
         todasLasCanciones = eliminaElementosRedundantes(todasLasCanciones);
-        console.log(todasLasCanciones);
 
         let listaCadenasIDs = generaListaCadenasIDs(todasLasCanciones);
 
@@ -83,7 +80,6 @@ export const getAllAudioFeatures = async (listaCanciones, callback) => {
         callback(todosLosAudioFeatures);
     }else{
         
-        console.log('CUSTOM METHODS => getAllAudioFeatures');
     
         let listaCadenasIDs = generaListaCadenasIDs(listaCanciones);
     
@@ -96,7 +92,6 @@ export const getAllAudioFeatures = async (listaCanciones, callback) => {
             let respuesta = await obtener50AudioFeatures;
             todosLosAudioFeatures.push(...respuesta.data.audio_features);
         }
-        console.log(todosLosAudioFeatures);
         callback(todosLosAudioFeatures);
     }
 

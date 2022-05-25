@@ -35,10 +35,10 @@ export function Reproductor(props){
         }
     },[])
     
-    React.useEffect(()=>{
-        console.log('segundo actual usEffect: '+segundoActual);
+    // React.useEffect(()=>{
+    //     console.log('segundo actual usEffect: '+segundoActual);
         
-    },[segundoActual])
+    // },[segundoActual])
     
     let handle_reproduciendo = () => {
         setSegundoActual(()=>{return Math.round(audio.currentTime)})

@@ -18,10 +18,8 @@ export function generaListaCadenasIDs(listaCanciones=[]){
     let arrayFinal=[];
     let cuantosGruposDe50 = Math.ceil(listaCanciones.length/50);
     let cadenaIDS="";
-    console.log('se haran '+cuantosGruposDe50+" grupos");
 
     for (let i = 0; i < cuantosGruposDe50; i++) {
-        console.log('=============grupo');
         let primerIndice = i*50;
         let contador = 0;
         cadenaIDS="";

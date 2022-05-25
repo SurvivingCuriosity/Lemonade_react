@@ -1,21 +1,24 @@
 import React from "react";
 import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
-import { getObjetosAudioFeatures } from "../../API_calls/apiCalls";
 import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "./KeyScaleSelect";
 import { CustomButton } from "../custom-components/CustomButton";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import { CustomSpinner } from "../custom-components/CustomSpinner";
+import { PreviewChoices } from "./Busqueda/PreviewChoices";
+import { ProgressBar } from "../custom-components/ProgressBar";
 
 
 export function ArtistKeyFinder(){
+//====PROPIEDADES Y CONSTANTES
     let titulo = "Artist Key Finder"
     let descripcion = "Encuentra canciones de un artista en una escala"
     const TEXTO_BOTON_BUSCAR="Buscar";
     const TEXTO_BOTON_CARGANDO="Cargando";
     const TEXTO_BOTON_RELLENA_CAMPOS="Rellena los campos";
     const TEXTO_BOTON_NUEVA_BUSQUEDA="Nueva búsqueda"
-    
+
+//====ESTADO 
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
 
@@ -31,20 +34,93 @@ export function ArtistKeyFinder(){
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
     
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-    
+    const [configProgressBar, setConfigProgressBar] = React.useState({
+        progresoTotal: 0,
+                steps:[
+                    {
+                        titulo:'Elige artista',
+                        completa:false
+                    },{
+                        titulo:'Elige escala',
+                        completa:false
+                    },{
+                        titulo:'Resultados',
+                        completa:false
+                    }
+                ]
+    });
+//====USEEFFECT
     React.useEffect(()=>{
         if(seleccionArtista.id){
+            setConfigProgressBar({
+                progresoTotal: 0,
+                        steps:[
+                            {
+                                titulo:'Elige artista',
+                                completa:true
+                            },{
+                                titulo:'Elige escala',
+                                completa:false
+                            },{
+                                titulo:'Resultados',
+                                completa:false
+                            }
+                        ]
+            });
             getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones);
+            
+        }else{
+            setCancionesArtista([]);
+            setObjetosAudioFeatures([]);
+        }
+    },[seleccionArtista])
+    
+    React.useEffect(()=>{
+        if(seleccionNotaEscala.nota>-1){
+            setConfigProgressBar({
+                progresoTotal: 4,
+                        steps:[
+                            {
+                                titulo:'Elige artista',
+                                completa:true
+                            },{
+                                titulo:'Elige escala',
+                                completa:true
+                            },{
+                                titulo:'Resultados',
+                                completa:false
+                            }
+                        ]
+            });
         }
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
             setTextoBotonFinal(TEXTO_BOTON_CARGANDO);
-            setDeshabilitarBotonFinal(()=>{return false});
+            setDeshabilitarBotonFinal(true);
         }
-    },[seleccionArtista,seleccionNotaEscala])
+        if(objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1){
+            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
+            setDeshabilitarBotonFinal(()=>{return false})
+        }
+    },[seleccionNotaEscala])
     
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(cancionesArtista.length>0){
+            setConfigProgressBar({
+                progresoTotal: 1,
+                        steps:[
+                            {
+                                titulo:'Elige artista',
+                                completa:true
+                            },{
+                                titulo:'Elige escala',
+                                completa:false
+                            },{
+                                titulo:'Resultados',
+                                completa:false
+                            }
+                        ]
+            });
             getAllAudioFeatures(cancionesArtista, lleganAudioFeatures);
         }
     },[cancionesArtista])
@@ -52,15 +128,33 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(objetosAudioFeatures.length>0){
+            setConfigProgressBar({
+                progresoTotal: 2,
+                        steps:[
+                            {
+                                titulo:'Elige artista',
+                                completa:true
+                            },{
+                                titulo:'Elige escala',
+                                completa:false
+                            },{
+                                titulo:'Resultados',
+                                completa:false
+                            }
+                        ]
+            });
+        }
+        if(objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1){
             setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
             setDeshabilitarBotonFinal(()=>{return false})
         }
+        
     },[objetosAudioFeatures])
     
     React.useEffect(()=>{
         if(resultadoFinal.length>0){
             setTextoBotonFinal(TEXTO_BOTON_NUEVA_BUSQUEDA)
-            // setDeshabilitarBotonFinal(()=>{return false})
+            setDeshabilitarBotonFinal(()=>{return false})
         }else{
             setTextoBotonFinal(TEXTO_BOTON_RELLENA_CAMPOS)
             setDeshabilitarBotonFinal(()=>{return true})
@@ -68,11 +162,25 @@ export function ArtistKeyFinder(){
         }
     },[resultadoFinal])
 
-    
-    let handleClickFinal = (e) =>{
-        console.log('Usuario hace click final');
+//====FUNCIONES
+    const handleClickFinal = (e) =>{
         switch (e.target.textContent) {
             case TEXTO_BOTON_BUSCAR:
+                setConfigProgressBar({
+                    progresoTotal: 4,
+                            steps:[
+                                {
+                                    titulo:'Elige artista',
+                                    completa:true
+                                },{
+                                    titulo:'Elige escala',
+                                    completa:true
+                                },{
+                                    titulo:'Resultados',
+                                    completa:true
+                                }
+                            ]
+                });
                 let arrayResultadosFinales = [];
 
                 objetosAudioFeatures.map((obj)=>{
@@ -100,17 +208,31 @@ export function ArtistKeyFinder(){
                     setMsgResultado("No se encontraron coincidencias")
                 }else{
                     setMsgResultadoClass("success")
-                    // setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
+                    setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
                 }
                 setResultadoFinal(()=>{return arrayResultadosFinales});
                 break;
             case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setCancionesArtista(()=>{return []})
+                setConfigProgressBar({
+                    progresoTotal: 0,
+                            steps:[
+                                {
+                                    titulo:'Elige artista',
+                                    completa:false
+                                },{
+                                    titulo:'Elige escala',
+                                    completa:false
+                                },{
+                                    titulo:'Resultados',
+                                    completa:false
+                                }
+                            ]
+                });
                 setSeleccionArtista(()=>{return {}})
-                setCancionesArtista(()=>{return []})
                 setSeleccionNotaEscala(()=>{return {}})
                 setResultadoFinal(()=>{return []})
                 setMostrando(()=>{return false})
+                setMsgResultado("");
                 break;
             case TEXTO_BOTON_RELLENA_CAMPOS:
                 
@@ -119,63 +241,44 @@ export function ArtistKeyFinder(){
 
     };
 
-    return(
-        <div className="tool-container">
-            <h1 className="tool-titulo" >{titulo}</h1>
-            <p className="text-center">{descripcion}</p>
-            <div className="tool-container-sinTitulos">
-                <div className="containerSinResultado">
-                    <BusquedaArtista
-                        haySeleccion={seleccionArtista.id? true : false}
-                        titulo="1. Elige un artista"
-                        callbackEleccion={userSelectsArtist}
-                        mostrando={mostrando}
-                    />
-                    <div>
-                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? 
-                    <CustomSpinner />
-                :
-                ""
-                }
-                {seleccionArtista.id && objetosAudioFeatures.length<1 ?
-                <p className="text-center small-text">{`Obteniendo canciones de ${seleccionArtista.name}`}</p>
-                :
-                ""
-                }
+    const userSelectsScale = (objNotaEscala) => {
+        setSeleccionNotaEscala(objNotaEscala);
+    }
 
-                {cancionesArtista.length>2 ? 
-                <p className="text-center small-text">{`Obtenidas ${cancionesArtista.length} canciones de ${seleccionArtista.name}`}</p>
-                :
-                ""
-                }
-            
-                {objetosAudioFeatures.length>0 && seleccionArtista.id ? 
-                <p className="text-center small-text">{`Analizadas ${objetosAudioFeatures.length} canciones de ${seleccionArtista.name}`}</p>
-                :
-                ""
-                }
-                        
-                    </div>
-                    <KeyScaleSelect 
-                        colorPlaceHolder={seleccionArtista && seleccionArtista.id ? 'var(--colorTextoColor)' : 'var(--blanco3)'}
-                        mensaje={seleccionArtista && seleccionArtista.id ? "" : "Primero elige un artista"}
-                        disabled={seleccionArtista && seleccionArtista.id ? false : true}
-                        titulo="2. Elige una nota y escala"
-                        seleccion={seleccionNotaEscala}
-                        callbackEleccion = {userSelectsScale}
-                    />
-                    <div>
-                    {
-                        seleccionArtista.id && seleccionNotaEscala.nota>-1
-                        ? 
-                        <p className="text-center small-text texto-dif-padding">{`Analizados datos de ${objetosAudioFeatures.length} canciones`}</p>   
-                        :
-                        ""
-                        }
-                        
-                    </div>
-                </div>
-                <div className="busqueda-container">
+    const userSelectsArtist = (artistSelected) => {
+        if(artistSelected.id){
+            setSeleccionArtista(artistSelected);
+        }
+    }
+
+    const lleganCanciones = (canciones) => {
+        setCancionesArtista(()=>{return canciones})
+    }
+
+    const lleganAudioFeatures = (audio) => {
+        setObjetosAudioFeatures(()=>{return audio})
+    }
+//====RENDER PARTS
+const primer = (
+        <BusquedaArtista
+            haySeleccion={seleccionArtista.id? true : false}
+            titulo="1. Elige un artista"
+            callbackEleccion={userSelectsArtist}
+            mostrando={mostrando}
+        />
+)
+const segun = (
+        <KeyScaleSelect 
+            colorPlaceHolder={objetosAudioFeatures.length>0 ? 'var(--colorTextoColor)' : 'var(--blanco3)'}
+            mensaje={seleccionArtista && seleccionArtista.id ? "" : "Primero elige un artista"}
+            disabled={objetosAudioFeatures.length>0 ? false : true}
+            titulo="2. Elige una nota y escala"
+            seleccion={seleccionNotaEscala}
+            callbackEleccion = {userSelectsScale}
+        />
+)
+const resultado = (
+    <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
 
                         <CustomButton 
@@ -201,53 +304,32 @@ export function ArtistKeyFinder(){
                         :
                             ""
                     }
-                </div>
+    </div>
+)
+//====RENDER
+    return(
+        <div className="tool-container">
+            <h1 className="tool-titulo" >{titulo}</h1>
+            <p className="text-center">{descripcion}</p>
+            <ProgressBar 
+                key={Math.random()*1000}
+                config={configProgressBar}
+            />
+            <PreviewChoices 
+                json1={seleccionArtista}
+                json2={undefined}
+                canciones1={cancionesArtista.length}
+                notaEscala={seleccionNotaEscala}
+            />
+            <div className="tool-container">
+                {!seleccionArtista.id ? primer : ""}
+                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
+                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota==undefined && !seleccionNotaEscala.nota>-1 ? segun : ""}
+                {objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1  ? resultado : ""}
+                
             </div>
         </div>
     )
 
-    //funcion que se ejecuta cuando el usuario rellena los <ReactSelect /> del componente <KeyScaleSelect />
-    function userSelectsScale(objNotaEscala){
-        console.log('Usuario elige nota y escala');
-        setSeleccionNotaEscala(objNotaEscala);
-        try {
-            //getObjetosAudioFeatures devuelve un array o no, en funcion de si hay mas de 100 canciones
-            getObjetosAudioFeatures(cancionesArtista).then((res)=>{
-                let objetos = [];
-                if(res.length>1){
-                    res.map((promesa, index)=>{
-                        promesa.then((res2)=>{
-                            objetos.push(...res2.data.audio_features);
-                            if(index === res.length-1){
-                                console.log('es la ultima');
-                                console.log('Obtenidos '+objetos.length+' audio features');
-                                setObjetosAudioFeatures(()=>{return objetos;})
-                            }
-                        })
-                    })
-                }else{
-                    console.log('Obtenidos '+res.data.audio_features.length+' audio features');
-                    setObjetosAudioFeatures(()=>{return res.data.audio_features})
-                }
-            })
-        } catch (err) {
-          console.log(err);
-        }
-        
-    }
 
-    //funcion que se ejecuta onClick del componente tarjeta (si esClickable=true)
-    function userSelectsArtist(artistSelected){
-        if(artistSelected.id){
-            console.log('Usuario elige artista');
-            setSeleccionArtista(artistSelected);
-        }
-    }
-
-    function lleganCanciones(canciones){
-        setCancionesArtista(()=>{return canciones})
-    }
-    function lleganAudioFeatures(audio){
-        setObjetosAudioFeatures(()=>{return audio})
-    }
 }
