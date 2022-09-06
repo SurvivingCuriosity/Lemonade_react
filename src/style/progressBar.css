@@ -1,0 +1,101 @@
+.progress-bar{
+    padding: 1em;
+    width: 95%;
+    margin: 1em auto;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.progress-bar-bola{
+    padding: 1em;
+    border-radius: 50%;
+    background-color: var(--fondo3);
+    position: relative;
+    box-shadow: 0px 0px 20px 1px var(--fondo);
+    border: 3px solid var(--blanco3);
+}
+.progress-bar-barra{
+    background-color: var(--fondo4);
+    width: 90%;
+    height: 1em;
+    margin: -1em;
+    z-index: -1;
+    position: absolute;
+    left: 3em;
+}
+.progress-bar-bola-completa{
+    background-color: var(--color)!important;
+    border: 0.33em solid var(--fondo4) !important;
+}
+
+.progress-bar-titulo-step{
+    position: absolute;
+    top: 100%;
+    left: -140%;
+    margin-top: 0.5em;
+    width: max-content;
+}
+.progress-bar-progress{
+    background-color: var(--color);
+    position: absolute;
+    padding: 0.5em;
+    left: 1.25em;
+    z-index: -1;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: width 1s ease-in-out;
+}
+.progress-msg-condicion{
+    position: absolute;
+    width: max-content;
+    top: -1em;
+    left: 3em;
+}
+.progress-0{animation: progress0 0.5s ease-in-out}
+.progress-1{animation: progress1 0.5s ease-in-out}
+.progress-2{animation: progress2 0.5s ease-in-out}
+.progress-3{animation: progress3 0.5s ease-in-out}
+.progress-4{animation: progress4 0.5s ease-in-out}
+
+@keyframes progress1 {
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 25%;
+    }
+}
+@keyframes progress0 {
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 0%;
+    }
+}
+@keyframes progress2 {
+    0%{
+        width: 25%;
+    }
+    100%{
+        width: 48%;
+    }
+}
+@keyframes progress3 {
+    0%{
+        width: 48%;
+    }
+    100%{
+        width: 70%;
+    }
+}
+@keyframes progress4 {
+    0%{
+        width: 70%;
+    }
+    100%{
+        width: 90%;
+    }
+}
