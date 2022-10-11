@@ -12,7 +12,6 @@ export function SobreElProyecto(){
                 <p>Esta aplicación ha sido desarrollada durante los meses de abril y mayo del 2022 durante mi estancia en Polonia, primero como proyecto personal y segundo como anexo a mi proyecto final del grado superior de Desarrollo de Aplicaciones Web</p>
             <h3>Líneas de trabajo futuras</h3>
                 <p>Se pretende implementar un backend que permita a los usuarios registrarse y poder guardar ciertas búsquedas.</p>
-
         </section>
     )
 }

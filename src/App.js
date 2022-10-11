@@ -1,10 +1,8 @@
-import {Home} from './components/routes-pages/Home'
-
-import {ArtistMatchFinderPage} from './components/routes-pages/tools/ArtistMatchFinderPage'
-import {SongMatchFinderPage} from './components/routes-pages/tools/SongMatchFinderPage'
-import {ArtistKeyFinderPage} from './components/routes-pages/tools/ArtistKeyFinderPage'
-import {SongKeyFinderPage} from './components/routes-pages/tools/SongKeyFinderPage'
-import {LoginPage} from './components/routes-pages/LoginPage'
+import {Home} from './components/screens/Home'
+import {ArtistMatchFinderPage} from './components/screens/ArtistMatchFinderPage'
+import {SongMatchFinderPage} from './components/screens/SongMatchFinderPage'
+import {ArtistKeyFinderPage} from './components/screens/ArtistKeyFinderPage'
+import {SongKeyFinderPage} from './components/screens/SongKeyFinderPage'
 import {Footer} from './components/big-containers/Footer'
 
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'

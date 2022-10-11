@@ -40,25 +40,10 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         actualizarInfoProgressBar();
     },[])
+    
     React.useEffect(()=>{
         if(seleccionArtista.id){
-            setConfigProgressBar({
-                progresoTotal: 0,
-                        steps:[
-                            {
-                                titulo:'Elige artista',
-                                completa:true
-                            },{
-                                titulo:'Elige escala',
-                                completa:false
-                            },{
-                                titulo:'Resultados',
-                                completa:false
-                            }
-                        ]
-            });
             getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones);
-            
         }else{
             setCancionesArtista([]);
             setObjetosAudioFeatures([]);
@@ -67,23 +52,6 @@ export function ArtistKeyFinder(){
     },[seleccionArtista])
     
     React.useEffect(()=>{
-        if(seleccionNotaEscala.nota>-1){
-            setConfigProgressBar({
-                progresoTotal: 4,
-                        steps:[
-                            {
-                                titulo:'Elige artista',
-                                completa:true
-                            },{
-                                titulo:'Elige escala',
-                                completa:true
-                            },{
-                                titulo:'Resultados',
-                                completa:false
-                            }
-                        ]
-            });
-        }
         if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
             setTextoBotonFinal(TEXTO_BOTON_CARGANDO);
             setDeshabilitarBotonFinal(true);
@@ -98,21 +66,6 @@ export function ArtistKeyFinder(){
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(cancionesArtista.length>0){
-            setConfigProgressBar({
-                progresoTotal: 1,
-                        steps:[
-                            {
-                                titulo:'Elige artista',
-                                completa:true
-                            },{
-                                titulo:'Elige escala',
-                                completa:false
-                            },{
-                                titulo:'Resultados',
-                                completa:false
-                            }
-                        ]
-            });
             getAllAudioFeatures(cancionesArtista, lleganAudioFeatures);
         }
         actualizarInfoProgressBar();
@@ -120,24 +73,8 @@ export function ArtistKeyFinder(){
     
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
-        if(objetosAudioFeatures.length>0){
-            setConfigProgressBar({
-                progresoTotal: 2,
-                        steps:[
-                            {
-                                titulo:'Elige artista',
-                                completa:true
-                            },{
-                                titulo:'Elige escala',
-                                completa:false
-                            },{
-                                titulo:'Resultados',
-                                completa:false
-                            }
-                        ]
-            });
-        }
         if(objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1){
+            obtenerResultadoFinal();
             setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
             setDeshabilitarBotonFinal(()=>{return false})
         }
@@ -160,68 +97,9 @@ export function ArtistKeyFinder(){
     const handleClickFinal = (e) =>{
         switch (e.target.textContent) {
             case TEXTO_BOTON_BUSCAR:
-                setConfigProgressBar({
-                    progresoTotal: 4,
-                            steps:[
-                                {
-                                    titulo:'Elige artista',
-                                    completa:true
-                                },{
-                                    titulo:'Elige escala',
-                                    completa:true
-                                },{
-                                    titulo:'Resultados',
-                                    completa:true
-                                }
-                            ]
-                });
-                let arrayResultadosFinales = [];
 
-                objetosAudioFeatures.map((obj)=>{
-                    if(obj.mode === seleccionNotaEscala.escala 
-                        && obj.key === seleccionNotaEscala.nota){
-                        cancionesArtista.map((cancion)=>{
-                            if(cancion.id === obj.id){
-                                cancion.mode = obj.mode;
-                                cancion.key = obj.key;
-                                cancion.bpm = obj.tempo;
-                                arrayResultadosFinales.push(cancion);
-                            }
-                        })
-                    }
-                })
-        
-                
-                arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
-                .map(name => {
-                    return arrayResultadosFinales.find(a => a.name === name)
-                })
-        
-                if(arrayResultadosFinales.length===0){
-                    setMsgResultadoClass("error")
-                    setMsgResultado("No se encontraron coincidencias")
-                }else{
-                    setMsgResultadoClass("success")
-                    setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
-                }
-                setResultadoFinal(()=>{return arrayResultadosFinales});
                 break;
             case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setConfigProgressBar({
-                    progresoTotal: 0,
-                            steps:[
-                                {
-                                    titulo:'Elige artista',
-                                    completa:false
-                                },{
-                                    titulo:'Elige escala',
-                                    completa:false
-                                },{
-                                    titulo:'Resultados',
-                                    completa:false
-                                }
-                            ]
-                });
                 setSeleccionArtista(()=>{return {}})
                 setSeleccionNotaEscala(()=>{return {}})
                 setResultadoFinal(()=>{return []})
@@ -229,12 +107,43 @@ export function ArtistKeyFinder(){
                 setMsgResultado("");
                 break;
             case TEXTO_BOTON_RELLENA_CAMPOS:
-                
+            default:
                 break;
         }
 
     };
+    const obtenerResultadoFinal = () => {
+        let arrayResultadosFinales = [];
 
+        objetosAudioFeatures.map((obj)=>{
+            if(obj.mode === seleccionNotaEscala.escala 
+                && obj.key === seleccionNotaEscala.nota){
+                cancionesArtista.map((cancion)=>{
+                    if(cancion.id === obj.id){
+                        cancion.mode = obj.mode;
+                        cancion.key = obj.key;
+                        cancion.bpm = obj.tempo;
+                        arrayResultadosFinales.push(cancion);
+                    }
+                })
+            }
+        })
+
+        
+        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
+        .map(name => {
+            return arrayResultadosFinales.find(a => a.name === name)
+        })
+
+        if(arrayResultadosFinales.length===0){
+            setMsgResultadoClass("error")
+            setMsgResultado("No se encontraron coincidencias")
+        }else{
+            setMsgResultadoClass("success")
+            setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
+        }
+        setResultadoFinal(()=>{return arrayResultadosFinales});
+    }
     const userSelectsScale = (objNotaEscala) => {
         setSeleccionNotaEscala(objNotaEscala);
     }
@@ -333,7 +242,7 @@ const resultado = (
             <div className="tool-container">
                 {!seleccionArtista.id ? primer : ""}
                 {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
-                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota==undefined && !seleccionNotaEscala.nota>-1 ? segun : ""}
+                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota===undefined && !seleccionNotaEscala.nota>-1 ? segun : ""}
                 {objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1  ? resultado : ""}
                 
             </div>

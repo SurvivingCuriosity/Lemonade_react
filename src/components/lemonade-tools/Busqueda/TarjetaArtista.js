@@ -29,10 +29,10 @@ export default function (props){
     return(
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
-                {(imgArtista) && <img className="--tarjeta-img-ppal" src={imgArtista} style={{width: tamanoImagen + 'px'}}/>}
+                {(imgArtista) && <img alt='carátula canción' className="--tarjeta-img-ppal" src={imgArtista} style={{width: tamanoImagen + 'px', aspectRatio: 1}}/>}
                 <div className="--tarjeta-datos">
-                    {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
-                    {(seguidoresArtista!=1) && <p className="--tarjeta-dato1"><img src={icon_followers} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
+                    {(nombreArtista) && <p className="--tarjeta-dato1"><img alt='icono artista' src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista)}</p>}
+                    {(seguidoresArtista!==1) && <p className="--tarjeta-dato1"><img alt='icono seguidores del artista' src={icon_followers} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{numberWithCommas(seguidoresArtista)}</p>}
                 </div>
 
             </div>

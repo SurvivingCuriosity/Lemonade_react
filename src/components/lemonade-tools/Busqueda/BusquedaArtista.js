@@ -1,10 +1,8 @@
 import React from "react";
-
 import TarjetaArtista from "./TarjetaArtista";
 import { CustomSpinner } from "../../custom-components/CustomSpinner";
 import {mensajes} from '../../../static_data/error_handling.js'
 import { buscarArtista } from "../../../API_calls/apiCalls";
-import { buscarArtistaID } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
 
 
@@ -143,7 +141,7 @@ export function BusquedaArtista(props){
                         <button 
                             type="submit" 
                             className="busqueda-boton-buscar boton"
-                            disabled={text=="" ? true : false}
+                            disabled={text==="" ? true : false}
                             
                             >Buscar
                         </button>

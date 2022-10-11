@@ -1,6 +1,4 @@
 import React from "react";
-import lemon from '../../images/lemon.svg'
-
 
 export function CustomModal(props){
 
@@ -12,7 +10,7 @@ export function CustomModal(props){
         setIsShowing(false);
     }
     let handleClickModal = (e) => {
-        if(e.target.className=='modal'){
+        if(e.target.className==='modal'){
             setIsShowing(false);
         }
     }

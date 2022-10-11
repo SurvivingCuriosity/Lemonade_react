@@ -11,14 +11,6 @@ import { ProgressBar } from "../custom-components/ProgressBar";
 
 export function SongMatchFinder(){
 //====PROPIEDADES Y CONSTANTES
-    const MSG_INIT=""
-    const MSG_NO_TEXTO="No has introducido texto."
-    const MSG_SELECCION="Has elegido: "
-    const MSG_NO_RESULTADOS="No hay resultados para tu búsqueda."
-    const MSG_RESULTADOS_OBTENIDOS="Resultados obtenidos: "
-    const MSG_PREPARANDO_RESULTADOS="Preparando resultados: "
-    const MSG_ERROR_PETICION="Error en la búsqueda. Contacta con el programador."
-
     let titulo = "Song Match Finder"
     let descripcion = "Obten una lista de canciones de un artista elegido, compatibles con la cancion introducida"
 
@@ -43,6 +35,7 @@ export function SongMatchFinder(){
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
     const [configProgressBar, setConfigProgressBar] = React.useState({});
+
 //====USE EFFECT
     React.useEffect(()=>{
         //compruebo que tienen valor preguntando por una propiedad que contienen
@@ -52,9 +45,6 @@ export function SongMatchFinder(){
         actualizarInfoProgressBar();
     },[seleccionArtista, seleccionCancion])
     
-    React.useEffect(()=>{
-        actualizarInfoProgressBar();
-    },[seleccionCancion])
     
     React.useEffect(()=>{
         if(seleccionArtista.id){
@@ -76,6 +66,7 @@ export function SongMatchFinder(){
 
     React.useEffect(()=>{
         if(objetosAudioFeatures.length>0 && seleccionCancion.id){
+            formarResultadoFinal();
             setDeshabilitarBotonFinal(()=>{return false})
             setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
         }else{
@@ -109,7 +100,11 @@ export function SongMatchFinder(){
             case TEXTO_BOTON_RELLENA_CAMPOS:
                 break;
             case TEXTO_BOTON_BUSCAR:
-                let arrayResultadosFinales = [];
+        }
+    };
+
+    const formarResultadoFinal = () => {
+        let arrayResultadosFinales = [];
 
                 objetosAudioFeatures.map((obj)=>{   
                     if(obj.mode === notaEscalaDeCancion.escala 
@@ -137,8 +132,7 @@ export function SongMatchFinder(){
                     setDeshabilitarBotonFinal(()=>{return false})
                 }
                 setResultadoFinal(arrayResultadosFinales);
-        }
-    };
+    }
 
     const userSelectsSong = (songSelected)=> {
         setSeleccionCancion(songSelected);
@@ -160,6 +154,7 @@ export function SongMatchFinder(){
     const lleganAudioFeatures = (audio)=> {
         setObjetosAudioFeatures(audio);
     }
+
     const actualizarInfoProgressBar = () => {
         setConfigProgressBar({
             tipo1: "cancion",
@@ -167,10 +162,10 @@ export function SongMatchFinder(){
             canciones2: cancionesArtista.length || undefined,
             titulo1: 'Canción',
             titulo2: 'Artista', 
-            primerPaso: seleccionCancion,
-            primeraCondicion: seleccionCancion && seleccionCancion.id ? true : false,
-            segundoPaso: seleccionArtista,
-            segundaCondicion: seleccionCancion && seleccionCancion.id && seleccionArtista && seleccionArtista.id ? true : false
+            primerPaso: seleccionCancion.id ? true : false,
+            primeraCondicion: seleccionCancion.id ? true : false,
+            segundoPaso: seleccionArtista.id ? true : false,
+            segundaCondicion: seleccionCancion.id && seleccionArtista.id && objetosAudioFeatures.length>0 ? true : false
         });
     }
 //====RENDER PARTS
@@ -203,7 +198,7 @@ const resultado = (
     {resultadoFinal.length===0 && seleccionArtista.id && seleccionCancion.id ? <p className={`text-center small-text ${msgResultadoClass}`}>{msgResultado}</p> : ""}
     {resultadoFinal.length>0 
         ? 
-        <ul className="busqueda-lista">
+            <ul className="busqueda-lista">
             <p className={`text-center small-text ${msgResultadoClass}`}>{msgResultado}</p>
                 {resultadoFinal.map((item) => {
                     return (
@@ -235,10 +230,10 @@ const resultado = (
                 canciones2={cancionesArtista.length}
             />
 
-                {!seleccionCancion.id ? primer : ""}
-                {seleccionCancion.id && !objetosAudioFeatures.length>0 ? segun : ""}
-                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
-                {objetosAudioFeatures.length>0 && notaEscalaDeCancion  ? resultado : ""}
+            {!seleccionCancion.id ? primer : ""}
+            {seleccionCancion.id && !objetosAudioFeatures.length>0 ? segun : ""}
+            {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
+            {objetosAudioFeatures.length>0 && notaEscalaDeCancion  ? resultado : ""}
 
 
         </div>
