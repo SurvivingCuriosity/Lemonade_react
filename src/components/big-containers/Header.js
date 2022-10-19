@@ -1,6 +1,6 @@
 import React from 'react'
 import lemon from '../../images/lemon.svg'
-import { HeaderMainNav } from '../navs/HeaderMainNav'
+import { HeaderToolsNav } from '../navs/HeaderToolsNav'
 import { HeaderBottomNav } from '../navs/HeaderBottomNav'
 
 export function Header(){
@@ -13,7 +13,7 @@ export function Header(){
 
                 <p>Por productores, para productores...</p>
 
-                <HeaderMainNav />
+                <HeaderToolsNav />
                 <HeaderBottomNav />
             </div>
         </header>

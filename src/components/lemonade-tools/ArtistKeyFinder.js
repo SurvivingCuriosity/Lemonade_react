@@ -8,8 +8,6 @@ import { CustomSpinner } from "../custom-components/CustomSpinner";
 import { PreviewChoices } from "./Busqueda/PreviewChoices";
 import { ProgressBar } from "../custom-components/ProgressBar";
 
-
-
 export function ArtistKeyFinder(){
 //====PROPIEDADES Y CONSTANTES
     let titulo = "Artist Key Finder"

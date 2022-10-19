@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-export function HeaderMainNav(){
+export function HeaderToolsNav(){
     return (
         <nav className="header-main-nav">
             <ul>

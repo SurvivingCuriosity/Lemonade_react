@@ -442,23 +442,22 @@ export function ArtistMatchFinder(){
                                     {resultadoFinal.coincidencias.canciones.map((par,index)=>{
                                         return(
                                             <TarjetaCancionDoble
-                                                key={resultadoFinal.coincidencias[index]}
+                                                key={index+'-'+par.cancion1.name+'-'+par.cancion2.name}
                                                 jsonData1={par.cancion1}
                                                 jsonData2={par.cancion2}
                                             />
                                         )
                                     })}
                                 </div>
-                            {resultadoFinal.map((conjunto) => {
+                            {resultadoFinal.map((conjunto, index) => {
                                 return(
-                                    <div>
-                                        
+                                    <div key={index}>
                                         <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
                                         <div className="resultado-left">
-                                            {conjunto.canciones.cancionesDe1.map((cancion)=>{
+                                            {conjunto.canciones.cancionesDe1.map((cancion,index)=>{
                                                 return(
                                                     <TarjetaCancion
-                                                        key={cancion.id}
+                                                        key={index+Math.random()*1000+cancion.id}
                                                         jsonData={cancion}
                                                         reducirInformacion={true}
                                                     />
@@ -467,17 +466,16 @@ export function ArtistMatchFinder(){
                                             })}
                                         </div>
                                         <div className="resultado-right">
-                                            {conjunto.canciones.cancionesDe2.map((cancion)=>{
+                                            {conjunto.canciones.cancionesDe2.map((cancion,index)=>{
                                                     return(
                                                         <TarjetaCancion
-                                                            key={conjunto.titulo+''+cancion.id}
+                                                            key={index+Math.random()*1000+conjunto.titulo+''+cancion.id}
                                                             jsonData={cancion}
                                                             reducirInformacion={true}
                                                         />
                                                     )
                                                 })}
                                         </div>
-
                                     </div>
                                 )
                             })}
@@ -493,7 +491,6 @@ export function ArtistMatchFinder(){
             <h1 className="tool-titulo">{TITULO}</h1>
             <p className="tool-description text-center">{DESCRIPCION}</p>
             <ProgressBar 
-                key={Math.random()*1000}
                 config={configProgressBar}
             />
             <PreviewChoices 

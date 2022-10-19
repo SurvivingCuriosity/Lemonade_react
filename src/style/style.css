@@ -371,10 +371,10 @@ footer {
 }
 
 .header-bottom-nav {
-  font-size: 0.6em;
+  font-size: 0.75em;
   width: 90%;
   position: absolute;
-  bottom: 10em;
+  bottom: 12em;
 }
 
 .header-bottom-nav ul {
@@ -426,7 +426,7 @@ footer {
 }
 
 .error {
-  color: red;
+  color: var(--error);
 }
 
 .success {
@@ -471,12 +471,12 @@ footer {
 
 .busqueda-boton-buscar {
   padding: 0.2em 0.9em;
+  margin: 1em auto;
 }
 
 .busqueda-boton-borrar {
-  color: var(--colorTextoColor);
-  margin-left: auto;
-  font-size: 1em;
+  padding: 0.2em 0.9em;
+  margin: 1em auto;
 }
 
 .boton_link {
