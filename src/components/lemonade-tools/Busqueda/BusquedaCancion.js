@@ -78,14 +78,12 @@ export function BusquedaCancion(props) {
                 setLinkPrev(resultadoBusqueda.tracks.previous)
             }
             setListaResultados(resultadoBusqueda.tracks.items);
-            setResultadoBusqueda([]);
         } else {
             if (resultadoBusqueda.id) {
                 resultadoBusqueda.key = objetosAudioFeatures[0].key;
                 resultadoBusqueda.mode = objetosAudioFeatures[0].mode;
                 resultadoBusqueda.bpm = objetosAudioFeatures[0].tempo;
                 setListaResultados(resultadoBusqueda);
-                setResultadoBusqueda([]);
             }
         }
         setIsLoading(false);
@@ -165,14 +163,12 @@ export function BusquedaCancion(props) {
 
     function getPaginaSiguiente() {
         setIsLoading(true);
-        setResultadoBusqueda([]);
         let url = resultadoBusqueda.tracks.next;
         getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
     }
 
     function getPaginaAnterior() {
         setIsLoading(true);
-        setResultadoBusqueda([]);
         let url = resultadoBusqueda.tracks.previous;
         getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
     }
