@@ -30,6 +30,15 @@ html {
   --fondoError: rgba(255, 0, 0, 0.3);
 }
 
+input,
+textarea,
+button,
+select,
+a {
+  /* Elimina cuadro azul en movil */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 [data-theme="dark"] {
   --fondo: var(--negro);
   --fondo2: var(--negro2);
@@ -1150,9 +1159,11 @@ input:focus {
 }
 
 .botonCambiarPreview {
+  white-space: pre;
   position: absolute;
   bottom: -2em;
-  right: 0;
+  left: 0;
+  background: transparent;
 }
 
 .tarjeta p,

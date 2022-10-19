@@ -50,13 +50,18 @@ export function ArtistKeyFinder(){
     },[seleccionArtista])
     
     React.useEffect(()=>{
-        if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
-            setTextoBotonFinal(TEXTO_BOTON_CARGANDO);
+        if(!seleccionNotaEscala.nota>-1){
+            setTextoBotonFinal(TEXTO_BOTON_RELLENA_CAMPOS);
             setDeshabilitarBotonFinal(true);
+            setMsgResultado(``);
+        }
+
+        if(seleccionArtista.id && seleccionNotaEscala.nota>-1){
+            setTextoBotonFinal(TEXTO_BOTON_NUEVA_BUSQUEDA);
+            setDeshabilitarBotonFinal(false);
         }
         if(objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1){
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
-            setDeshabilitarBotonFinal(()=>{return false})
+            obtenerResultadoFinal();
         }
         actualizarInfoProgressBar();
     },[seleccionNotaEscala])
@@ -73,29 +78,26 @@ export function ArtistKeyFinder(){
         //compruebo que tienen valor preguntando por una propiedad que contienen
         if(objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1){
             obtenerResultadoFinal();
-            setTextoBotonFinal(()=>{return TEXTO_BOTON_BUSCAR})
-            setDeshabilitarBotonFinal(()=>{return false})
         }
         actualizarInfoProgressBar();
     },[objetosAudioFeatures])
     
-    React.useEffect(()=>{
-        if(resultadoFinal.length>0){
-            setTextoBotonFinal(TEXTO_BOTON_NUEVA_BUSQUEDA)
-            setDeshabilitarBotonFinal(()=>{return false})
-        }else{
-            setTextoBotonFinal(TEXTO_BOTON_RELLENA_CAMPOS)
-            setDeshabilitarBotonFinal(()=>{return true})
-            setMostrando(()=>{return true})
+    
+    //====FUNCIONES
+    const userSelectsArtist = (artistSelected) => {
+        if(artistSelected.id){
+            setSeleccionArtista(artistSelected);
         }
-        actualizarInfoProgressBar();
-    },[resultadoFinal])
+    }
 
-//====FUNCIONES
+    const userSelectsScale = (objNotaEscala) => {
+        setSeleccionNotaEscala(objNotaEscala);
+    }
+
     const handleClickFinal = (e) =>{
         switch (e.target.textContent) {
             case TEXTO_BOTON_BUSCAR:
-
+                obtenerResultadoFinal();
                 break;
             case TEXTO_BOTON_NUEVA_BUSQUEDA:
                 setSeleccionArtista(()=>{return {}})
@@ -110,6 +112,7 @@ export function ArtistKeyFinder(){
         }
 
     };
+
     const obtenerResultadoFinal = () => {
         let arrayResultadosFinales = [];
 
@@ -133,24 +136,21 @@ export function ArtistKeyFinder(){
             return arrayResultadosFinales.find(a => a.name === name)
         })
 
-        if(arrayResultadosFinales.length===0){
+        if(arrayResultadosFinales.length===0 && seleccionNotaEscala.nota>-1){
             setMsgResultadoClass("error")
             setMsgResultado("No se encontraron coincidencias")
-        }else{
+        }
+        if(arrayResultadosFinales.length>0 && !seleccionNotaEscala.nota>-1){
+            setMsgResultadoClass("success")
+            setMsgResultado(``)
+        }
+        if(arrayResultadosFinales.length>0 && seleccionNotaEscala.nota>-1){
             setMsgResultadoClass("success")
             setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
         }
         setResultadoFinal(()=>{return arrayResultadosFinales});
     }
-    const userSelectsScale = (objNotaEscala) => {
-        setSeleccionNotaEscala(objNotaEscala);
-    }
 
-    const userSelectsArtist = (artistSelected) => {
-        if(artistSelected.id){
-            setSeleccionArtista(artistSelected);
-        }
-    }
 
     const lleganCanciones = (canciones) => {
         setCancionesArtista(()=>{return canciones})
@@ -175,7 +175,7 @@ export function ArtistKeyFinder(){
         });
     }
 //====RENDER PARTS
-const primer = (
+const busquedaArtista = (
         <BusquedaArtista
             haySeleccion={seleccionArtista.id? true : false}
             titulo="1. Elige un artista"
@@ -183,16 +183,17 @@ const primer = (
             mostrando={mostrando}
         />
 )
-const segun = (
+
+const eleccionNota = (
         <KeyScaleSelect 
             colorPlaceHolder={objetosAudioFeatures.length>0 ? 'var(--colorTextoColor)' : 'var(--blanco3)'}
-            mensaje={seleccionArtista && seleccionArtista.id ? "" : "Primero elige un artista"}
             disabled={objetosAudioFeatures.length>0 ? false : true}
             titulo="2. Elige una nota y escala"
             seleccion={seleccionNotaEscala}
             callbackEleccion = {userSelectsScale}
         />
 )
+
 const resultado = (
     <div className="busqueda-container">
                     <h2 className="busqueda-titulo">3. Resultados</h2>
@@ -236,13 +237,13 @@ const resultado = (
                 json2={undefined}
                 canciones1={cancionesArtista.length}
                 notaEscala={seleccionNotaEscala}
+                callbackCambiarEscala={()=>{setSeleccionNotaEscala('')}}
             />
             <div className="tool-container">
-                {!seleccionArtista.id ? primer : ""}
+                {!seleccionArtista.id ? busquedaArtista : ""}
                 {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
-                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota===undefined && !seleccionNotaEscala.nota>-1 ? segun : ""}
-                {objetosAudioFeatures.length>0 && seleccionNotaEscala.nota>-1  ? resultado : ""}
-                
+                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota===undefined && !seleccionNotaEscala.nota>-1 ? eleccionNota : ""}
+                {objetosAudioFeatures.length>0 ? resultado : ""}
             </div>
         </div>
     )

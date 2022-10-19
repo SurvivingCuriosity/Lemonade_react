@@ -47,11 +47,14 @@ export function BusquedaCancion(props) {
             if (resultadoBusqueda.tracks.items.length > 0) {
                 getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
             } else {
-                setTemporalMsgConfig(() => { return { msg: 'No hay resultados', type: 'error' } })
+                setTemporalMsgConfig(()=>{return {msg:'No hay resultados', type:'error'}})
+                setIsLoading(false)
             }
+        //llega uno
         } else if (resultadoBusqueda.id) {
             getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
+        console.log(listaResultados);
     }, [resultadoBusqueda])
 
 
@@ -65,13 +68,9 @@ export function BusquedaCancion(props) {
             //anado a las canciones la informacion que necesito de las audioFeatures y las anado a su categoria
             resultadoBusqueda.tracks.items.map((cancion) => {
                 if ((audioFeatures_conKey).get(cancion.id)) {
-                    let nota = (audioFeatures_conKey).get(cancion.id).key;
-                    let escala = (audioFeatures_conKey).get(cancion.id).mode;
-                    let bpm = (audioFeatures_conKey).get(cancion.id).tempo;
-
-                    cancion.key = nota
-                    cancion.bpm = bpm
-                    cancion.mode = escala
+                    cancion.key =  (audioFeatures_conKey).get(cancion.id).key;
+                    cancion.bpm = (audioFeatures_conKey).get(cancion.id).tempo;
+                    cancion.mode = (audioFeatures_conKey).get(cancion.id).mode;
                 }
             })
             if (resultadoBusqueda.tracks) {
@@ -79,12 +78,14 @@ export function BusquedaCancion(props) {
                 setLinkPrev(resultadoBusqueda.tracks.previous)
             }
             setListaResultados(resultadoBusqueda.tracks.items);
+            setResultadoBusqueda([]);
         } else {
             if (resultadoBusqueda.id) {
                 resultadoBusqueda.key = objetosAudioFeatures[0].key;
                 resultadoBusqueda.mode = objetosAudioFeatures[0].mode;
                 resultadoBusqueda.bpm = objetosAudioFeatures[0].tempo;
                 setListaResultados(resultadoBusqueda);
+                setResultadoBusqueda([]);
             }
         }
         setIsLoading(false);
@@ -201,8 +202,9 @@ export function BusquedaCancion(props) {
 
             {isLoading && <CustomSpinner />}
 
-            {listaResultados.length > 0 || listaResultados.id && !haySeleccion ? renderListaResultados : ''}
-            {listaResultados.length === 0 && <TmpMessage config={temporalMsgConfig} />}
+            {resultadoBusqueda.tracks && <TmpMessage config={temporalMsgConfig} />}
+            
+            {listaResultados.length > 0 && !haySeleccion ? renderListaResultados : ''}
         </div>
     )
 }

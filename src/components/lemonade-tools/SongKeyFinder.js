@@ -1,11 +1,12 @@
 import React from "react";
 import {BusquedaCancion} from '../lemonade-tools/Busqueda/BusquedaCancion'
+import { buscarCancion } from "../../API_calls/apiCalls";
 
 export function SongKeyFinder(){
 
     let titulo = "Song Key Finder"
     let descripcion = "Busca una canción para ver su escala y bpm"
-    
+
     return(
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
@@ -14,11 +15,7 @@ export function SongKeyFinder(){
             <BusquedaCancion
                 titulo="Elige una cancion"
                 isSongKeyFinder={true}
-                callbackEleccion = {miCallback}
             />
         </div>
     )
-    function miCallback(params) {
-        
-    }
 }

@@ -149,7 +149,6 @@ export function KeyScaleSelect(props){
     return(
         <div className="busqueda-container">
             <h2 className="busqueda-titulo">{titulo}</h2>
-            <p className="text-center small-text">{mensaje}</p>
             <div className="linea-flex-center">
                 <Select
                     isDisabled={disabled}

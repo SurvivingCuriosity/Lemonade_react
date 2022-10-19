@@ -7,7 +7,6 @@ import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
 import TarjetaCancion from "./Busqueda/TarjetaCancion";
 import TarjetaCancionDoble from "./Busqueda/TarjetaCancionDoble";
 import { PreviewChoices } from "./Busqueda/PreviewChoices";
-import { mensajes } from "../../static_data/error_handling";
 
 export function ArtistMatchFinder(){
 //====PROPIEDADES Y CONSTANTES
@@ -403,7 +402,7 @@ export function ArtistMatchFinder(){
         });
     }
 //====RENDER PARTS
-    const primer = (
+    const busquedaArtista1 = (
         <BusquedaArtista
                 haySeleccion={seleccionArtista1.id ? true : false}
                 titulo="1. Elige el primer artista"
@@ -411,7 +410,7 @@ export function ArtistMatchFinder(){
                 queArtistaEs={1}
             />
     )
-    const segun = (
+    const busquedaArtista2 = (
         <BusquedaArtista
         disabled={objetosAudioFeatures1.length>0 ? false : true}
         haySeleccion={seleccionArtista2.id ? true : false}
@@ -424,7 +423,6 @@ export function ArtistMatchFinder(){
         const resultado = (
         <div className="busqueda-container">
                 <h2 className="busqueda-titulo">3. Resultados</h2>
-
 
                 <CustomButton 
                     disabled={deshabilitarBotonFinal}
@@ -502,9 +500,9 @@ export function ArtistMatchFinder(){
                 callbackCambiarEleccion2={eliminarEleccion2}
             />
 
-            {!seleccionArtista1.id ? primer : ""}
+            {!seleccionArtista1.id ? busquedaArtista1 : ""}
             {seleccionArtista1.id && !objetosAudioFeatures1.length>0 ? <CustomSpinner /> : ""}
-            {!seleccionArtista2.id && objetosAudioFeatures1.length>0 && !objetosAudioFeatures2.length>0 ? segun : ""}
+            {!seleccionArtista2.id && objetosAudioFeatures1.length>0 && !objetosAudioFeatures2.length>0 ? busquedaArtista2 : ""}
             {seleccionArtista2.id && !objetosAudioFeatures2.length>0 ? <CustomSpinner /> : ""}
             {objetosAudioFeatures1.length>0 && objetosAudioFeatures2.length>0  ? resultado : ""}
         </div>
