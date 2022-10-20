@@ -8,7 +8,7 @@ import { IconAndText } from "../../containers/IconAndText";
 
 export function TarjetaEleccionArtista(props) {
 
-    const { isClickable, callbackCambiarEleccion, json, canciones } = props;
+    const { json, callbackCambiarEleccion, canciones } = props;
 
     let imgArtista = "", nombreArtista = "", seguidoresArtista = "", link = ""
     if (json) {
@@ -17,9 +17,8 @@ export function TarjetaEleccionArtista(props) {
         seguidoresArtista = json.followers.total
         link = json.external_urls.spotify
     }
-    function handleEleccionTarjeta() { }
     return (
-        <div className={`tarjeta ${isClickable ? "clickable" : ""} borde`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
+        <div className={`tarjeta borde`}>
             <div className="--tarjeta-left">
 
                 <Image src={imgArtista} alt='Imagen del artista' size='M' />
@@ -41,8 +40,7 @@ export function TarjetaEleccionArtista(props) {
                 </div>
 
             </div>
-            {canciones > 0 ? <button className='botonCambiarPreview boton2' onClick={callbackCambiarEleccion}>Cambiar artista</button> : ""}
-
+            <button className='botonCambiarPreview boton2' onClick={callbackCambiarEleccion}>Cambiar artista</button>
         </div>
     )
 

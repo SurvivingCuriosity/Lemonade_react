@@ -288,7 +288,7 @@ footer {
   gap: 1em;
   display: flex;
   flex-flow: column nowrap;
-  width: 97vw;
+  width: 95vw;
   margin: 1em auto;
   align-items: center;
 }
@@ -870,7 +870,7 @@ input:focus {
 /* FIN ANIMACIONES */
 /* BUSQUEDA */
 .busqueda-container {
-  padding: 1em;
+  padding: 4em 1em;
   background-color: var(--fondo2);
   display: flex;
   flex-flow: column nowrap;
@@ -878,11 +878,6 @@ input:focus {
   width: 100%;
   transition: all 0.5s ease-in-out;
   min-height: 100px;
-}
-
-.busqueda-container:focus-within {
-  background-color: var(--fondo3);
-  transition: all 0.5s ease-in-out;
 }
 
 .containerSinResultado {

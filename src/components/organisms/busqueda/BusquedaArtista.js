@@ -99,8 +99,8 @@ export function BusquedaArtista(props) {
 
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection) {
-        setListaResultados(() => { return [] })
         callbackEleccion(userSelection, queArtistaEs);
+        setListaResultados(() => { return [] })
     }
 
     function borrarSeleccion() {

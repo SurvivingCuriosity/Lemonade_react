@@ -12,6 +12,7 @@ import {siguientePagina} from './apiCalls'
 
 //devuelve todas las canciones de un artista
 export const getAllUniqueArtistSongs = async (id, callback) => {
+    if(id===undefined) return;
     //PRIMERO PEDIMOS LOS ALBUMS
         let next = null;
         let todosLosAlbums = [];
@@ -67,7 +68,6 @@ export const getAllUniqueArtistSongs = async (id, callback) => {
         callback(todosLosTracks);
 }
 
-//devuelve todas las canciones de un artista
 export const getAllAudioFeatures = async (listaCanciones, callback) => {
     //cuando llega solo una, en vez de una lista
     let todosLosAudioFeatures = [];
@@ -79,10 +79,7 @@ export const getAllAudioFeatures = async (listaCanciones, callback) => {
         todosLosAudioFeatures.push(respuesta.data);
         callback(todosLosAudioFeatures);
     }else{
-        
-    
         let listaCadenasIDs = generaListaCadenasIDs(listaCanciones);
-    
         for (let i = 0; i < listaCadenasIDs.length; i++) {
             const grupo = listaCadenasIDs[i];
             let obtener50AudioFeatures = new Promise((resolve, reject) => {

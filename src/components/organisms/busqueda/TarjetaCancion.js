@@ -31,7 +31,11 @@ export default function (props) {
     }
 
     function handleEleccionTarjeta() {
-        selectionCallback(jsonData);
+        if(jsonData.id){
+            selectionCallback(jsonData);
+        }else{
+            selectionCallback({ error : "Unable to obtain data from TarjetaArtista" });
+        }
     }
 
     return (

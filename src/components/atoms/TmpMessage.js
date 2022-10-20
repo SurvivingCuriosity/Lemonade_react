@@ -5,7 +5,6 @@ export const TmpMessage = ({ config }) => {
   const [showing, setShowing] = useState(false);
 
   useEffect(() => {
-    console.log('rendering component');
     setShowing(true)
     let timer1 = setTimeout(() => setShowing(false), 5000);
 

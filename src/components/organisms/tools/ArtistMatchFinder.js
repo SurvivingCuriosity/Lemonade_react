@@ -29,72 +29,49 @@ export function ArtistMatchFinder() {
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
 
-    const [configProgressBar, setConfigProgressBar] = React.useState({});
-
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
 
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
 
+    const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
+
     //====USE EFECT
+
     React.useEffect(() => {
-        if (!seleccionArtista1.id) {
+        if(seleccionArtista1.id){
+            getAllUniqueArtistSongs(seleccionArtista1.id, lleganCancionesDeArtista1)
+        }else{
             setCancionesArtista1([])
             setObjetosAudioFeatures1([])
+            setMostrarResultadoFinal(false)
         }
-        if (!seleccionArtista2.id) {
+    }, [seleccionArtista1])
+    React.useEffect(() => {
+        if(seleccionArtista2.id){
+            getAllUniqueArtistSongs(seleccionArtista2.id, lleganCancionesDeArtista2)
+        }else{
             setCancionesArtista2([])
             setObjetosAudioFeatures2([])
+            setMostrarResultadoFinal(false)
         }
-        actualizarInfoProgressBar();
-    }, [])
-
-    React.useEffect(() => {
-        if (seleccionArtista1.id) {
-            getAllUniqueArtistSongs(seleccionArtista1.id, lleganCancionesDeArtista1);
-        } else {
-            setCancionesArtista1([]);
-        }
-        actualizarInfoProgressBar();
-    }, [seleccionArtista1])
-
-    React.useEffect(() => {
-        if (seleccionArtista1.id && seleccionArtista2.id) {
-            setTextoBotonFinal('Cargando');
-        }
-        if (seleccionArtista2.id) {
-            getAllUniqueArtistSongs(seleccionArtista2.id, lleganCancionesDeArtista2);
-        } else {
-            setCancionesArtista2([]);
-        }
-        actualizarInfoProgressBar();
     }, [seleccionArtista2])
 
     React.useEffect(() => {
-        if (cancionesArtista1.length > 0) {
-            getAllAudioFeatures(cancionesArtista1, lleganAudioFeatures1);
-        } else {
-            setObjetosAudioFeatures1([]);
-        }
-        actualizarInfoProgressBar();
+        cancionesArtista1.length > 0 && getAllAudioFeatures(cancionesArtista1, lleganAudioFeatures1);
     }, [cancionesArtista1])
 
     React.useEffect(() => {
-        if (cancionesArtista2.length > 0) {
-            getAllAudioFeatures(cancionesArtista2, lleganAudioFeatures2);
-        } else {
-            setObjetosAudioFeatures2([]);
-        }
-        actualizarInfoProgressBar();
+        cancionesArtista2.length > 0 && getAllAudioFeatures(cancionesArtista2, lleganAudioFeatures2);
     }, [cancionesArtista2])
 
     React.useEffect(() => {
-        actualizarInfoProgressBar();
         if (objetosAudioFeatures1.length > 0 && objetosAudioFeatures2.length > 0) {
             obtenerResultadoFinal();
+            setMostrarResultadoFinal(true);
         }
-
     }, [objetosAudioFeatures1, objetosAudioFeatures2])
+
 
 
     //====FUNCIONES
@@ -115,19 +92,12 @@ export function ArtistMatchFinder() {
                 break;
         }
     };
-
     const userSelectsArtist1 = (artistSelected) => {
-        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
-        if (artistSelected.id) {
-            setSeleccionArtista1(artistSelected);
-        }
+        setSeleccionArtista1(artistSelected);
     }
 
     const userSelectsArtist2 = (artistSelected) => {
-        //a este metodo le puede llegar el array vacio asi que hay que controlarlo
-        if (artistSelected.id) {
-            setSeleccionArtista2(artistSelected);
-        }
+        setSeleccionArtista2(artistSelected);
     }
 
     const lleganCancionesDeArtista1 = (listaCanciones) => {
@@ -139,10 +109,12 @@ export function ArtistMatchFinder() {
     }
 
     const lleganAudioFeatures1 = (audio) => {
+        console.log('Ready 1')
         setObjetosAudioFeatures1(audio);
     }
 
     const lleganAudioFeatures2 = (audio) => {
+        console.log('Ready 2')
         setObjetosAudioFeatures2(audio);
     }
     const eliminarEleccion1 = () => { setSeleccionArtista1({}) }
@@ -387,20 +359,6 @@ export function ArtistMatchFinder() {
         }
         setResultadoFinal(() => { return arrayResultadosFinales })
     }
-    const actualizarInfoProgressBar = () => {
-        setConfigProgressBar({
-            tipo1: "artista",
-            tipo2: "artista",
-            canciones1: objetosAudioFeatures1.length || undefined,
-            canciones2: objetosAudioFeatures2.length || undefined,
-            titulo1: 'Artista 1',
-            titulo2: 'Artista 2',
-            primerPaso: seleccionArtista1 && seleccionArtista1.id ? true : false,
-            primeraCondicion: (cancionesArtista1.length > 0 && objetosAudioFeatures1.length > 0) ? true : false,
-            segundoPaso: seleccionArtista2 && seleccionArtista2.id ? true : false,
-            segundaCondicion: (cancionesArtista2.length > 0 && objetosAudioFeatures2.length > 0) ? true : false,
-        });
-    }
     //====RENDER PARTS
     const busquedaArtista1 = (
         <BusquedaArtista
@@ -412,7 +370,7 @@ export function ArtistMatchFinder() {
     )
     const busquedaArtista2 = (
         <BusquedaArtista
-            disabled={objetosAudioFeatures1.length > 0 ? false : true}
+            // disabled={objetosAudioFeatures1.length > 0 ? false : true}
             haySeleccion={seleccionArtista2.id ? true : false}
             titulo="2. Elige el segundo artista"
             callbackEleccion={userSelectsArtist2}
@@ -437,7 +395,7 @@ export function ArtistMatchFinder() {
                 <ul className="busqueda-lista">
                     <div className="">
                         <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
-                        {resultadoFinal.coincidencias.canciones.length===0 && <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
+                        {resultadoFinal.coincidencias.canciones.length === 0 && <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
                         {resultadoFinal.coincidencias.canciones.map((par, index) => {
                             return (
                                 <TarjetaCancionDoble
@@ -490,7 +448,16 @@ export function ArtistMatchFinder() {
             <h1 className="tool-titulo">{TITULO}</h1>
             <p className="tool-description text-center">{DESCRIPCION}</p>
             <ProgressBar
-                config={configProgressBar}
+                tipo1="artista"
+                tipo2="artista"
+                canciones1={objetosAudioFeatures1.length || undefined}
+                canciones2={objetosAudioFeatures2.length || undefined}
+                titulo1='Artista 1'
+                titulo2='Artista 2'
+                primerPaso={seleccionArtista1.id ? true : false}
+                primeraCondicion={objetosAudioFeatures1.length > 0 ? true : false}
+                segundoPaso={seleccionArtista2.id ? true : false}
+                segundaCondicion={objetosAudioFeatures2.length > 0 ? true : false}
             />
             <PreviewChoices
                 json1={seleccionArtista1}
@@ -501,11 +468,10 @@ export function ArtistMatchFinder() {
                 callbackCambiarEleccion2={eliminarEleccion2}
             />
 
-            {!seleccionArtista1.id ? busquedaArtista1 : ""}
-            {seleccionArtista1.id && !objetosAudioFeatures1.length > 0 ? <CustomSpinner /> : ""}
-            {!seleccionArtista2.id && objetosAudioFeatures1.length > 0 && !objetosAudioFeatures2.length > 0 ? busquedaArtista2 : ""}
-            {seleccionArtista2.id && !objetosAudioFeatures2.length > 0 ? <CustomSpinner /> : ""}
-            {objetosAudioFeatures1.length > 0 && objetosAudioFeatures2.length > 0 ? resultado : ""}
+            {!seleccionArtista1.id && busquedaArtista1}
+            {seleccionArtista1.id && !seleccionArtista2.id && busquedaArtista2}
+            {seleccionArtista1.id && seleccionArtista2.id && !mostrarResultadoFinal && <CustomSpinner />}
+            {mostrarResultadoFinal && resultado}
         </div>
     )
 }

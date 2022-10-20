@@ -15,7 +15,11 @@ export default function (props) {
 
     //cuando usuario hace click sobre una tarjeta se llama al callback del padre pasandole el json
     function handleEleccionTarjeta() {
-        selectionCallback(jsonData);
+        if(jsonData.id){
+            selectionCallback(jsonData);
+        }else{
+            selectionCallback({ error : "Unable to obtain data from TarjetaArtista" });
+        }
     }
 
     return (
