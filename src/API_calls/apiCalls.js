@@ -1,12 +1,18 @@
 //EN ESTE FICHERO ESTÁN ÚNICAMENTE LAS PETICIONES A LA API DE SPOTIFY
 //TODAS RECIBEN UN CALLBACK QUE SE EJECUTARÁ CUANDO LLEGUEN RESULTADOS
+
 import axios from "axios";
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
 import {esEnlaceDeSpotify, getIDFromURL} from '../helpers/StringURLMethods.js'
-// import { ClientId, ClientSecret } from "../api-credentials.js";
-const ClientId= 'ad9e75087eea487ab445f1ad9b610cab';
-const ClientSecret= 'f54517f6c44548a2873e07b23b100a35';
+import { ClientId, ClientSecret } from "../api-credentials.js";
+
+if(!ClientId || !ClientSecret){
+    //VARIABLES DE ENTORNO AGREGADAS EN VERCEL
+    ClientId = process.env.REACT_APP_CLIENT_ID
+    SecretId = process.env.REACT_APP_SECRET_ID
+}
+
 let cadenaCredentials = Utf8.parse(ClientId + ':' + ClientSecret)
 let cadenaB64 = Base64.stringify(cadenaCredentials);
 
