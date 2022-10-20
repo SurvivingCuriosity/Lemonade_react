@@ -5,13 +5,11 @@ import axios from "axios";
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
 import {esEnlaceDeSpotify, getIDFromURL} from '../helpers/StringURLMethods.js'
-import { ClientId, ClientSecret } from "../api-credentials.js";
 
-if(!ClientId || !ClientSecret){
-    //VARIABLES DE ENTORNO AGREGADAS EN VERCEL
-    ClientId = process.env.REACT_APP_CLIENT_ID
-    SecretId = process.env.REACT_APP_SECRET_ID
-}
+//VARIABLES DE ENTORNO AGREGADAS EN VERCEL
+const ClientId = process.env.REACT_APP_CLIENT_ID
+const ClientSecret = process.env.REACT_APP_SECRET_ID
+
 
 let cadenaCredentials = Utf8.parse(ClientId + ':' + ClientSecret)
 let cadenaB64 = Base64.stringify(cadenaCredentials);
