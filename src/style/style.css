@@ -1684,5 +1684,10 @@ input:focus {
     background-color: hsl(54, 32%, 74%);
   }
 }
-
+.flex-row-start{
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0.5em;
+  align-items: center;
+}
 /* FIN MEDIA QUERIES */

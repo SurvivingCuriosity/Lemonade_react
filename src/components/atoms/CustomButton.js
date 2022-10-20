@@ -1,9 +1,9 @@
 import React from "react";
 
-export function CustomButton(props){
-    const {textoBoton, onClickCallback, disabled} = props;
+export function CustomButton(props) {
+    const { textoBoton, onClickCallback, disabled } = props;
 
-    return(
+    return (
         <>
             <button
                 className="boton botonFinal zoom-on-click"
@@ -11,7 +11,7 @@ export function CustomButton(props){
                 onClick={onClickCallback}
                 value={textoBoton}
             >
-            {textoBoton}
+                {textoBoton}
             </button>
         </>
     )

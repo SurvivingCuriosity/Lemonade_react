@@ -69,7 +69,6 @@ export const buscarArtista = async (text, callback, offset=0) => {
     let limite=5;
     if(esEnlaceDeSpotify(text)){
         let id = getIDFromURL(text);
-        console.log(id);
         getToken().then((res)=>{
             axios(`https://api.spotify.com/v1/artists/${id}`, {
                 headers: {
@@ -164,7 +163,6 @@ export const get50ArtistAlbums = async (id, resolve, reject) => {
 }
 
 export const siguientePagina = async (url, resolve, reject) => {
-    console.log('En siguiente pagina: '+url);
     getToken().then((resToken)=>{
         axios(url, {
             headers: {

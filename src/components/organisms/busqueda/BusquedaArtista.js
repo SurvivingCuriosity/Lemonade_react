@@ -1,5 +1,5 @@
 import React from "react";
-import TarjetaArtista from "../../molecules/tarjetas/TarjetaArtista";
+import TarjetaArtista from "./TarjetaArtista";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { buscarArtista } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";

@@ -25,6 +25,8 @@ export function getStringFromNota(notaInt) {
             return "A#";
         case 11:
             return "B";
+        default:
+            return "Note unexpected";
     }
 }
 
@@ -41,16 +43,16 @@ export function getStringFromEscala(escalaInt) {
 }
 
 //Esto es un nombre largo -> Esto es...
-export function truncaNombreLargo(cadena, reducirInformacion, caracteresPermitidos=30){
+export function truncaNombreLargo(cadena, reducirInformacion, caracteresPermitidos = 30) {
     if (cadena.length > caracteresPermitidos) {
         cadena = cadena.substring(0, caracteresPermitidos) + "...";
     }
-    if(reducirInformacion) cadena = cadena.substring(0, 15) + "...";
+    if (reducirInformacion) cadena = cadena.substring(0, 15) + "...";
     return cadena;
 }
 
-export function formatearNombre(cadena){
-    if(cadena.indexOf('(') == -1){
+export function formatearNombre(cadena) {
+    if (cadena.indexOf('(') === -1) {
         return cadena;
     }
     else
@@ -65,20 +67,20 @@ export function milisegundosAString(ms) {
 }
 
 //[Hola, Adios, Buenas] -> 'Hola • Adios • Buenas'
-export function getCadenaArtistas(listaArtistas, mostrarSoloUno=false){
+export function getCadenaArtistas(listaArtistas, mostrarSoloUno = false) {
     let cadenaArtistas = "";
-    listaArtistas.map((artista,index)=>{
-        cadenaArtistas+=artista.name;
-        if(index+1!=listaArtistas.length){
-            cadenaArtistas+=" • "
+    listaArtistas.map((artista, index) => {
+        cadenaArtistas += artista.name;
+        if (index + 1 !== listaArtistas.length) {
+            cadenaArtistas += " • "
         }
     })
-    if(mostrarSoloUno) cadenaArtistas=listaArtistas[0].name;
+    if (mostrarSoloUno) cadenaArtistas = listaArtistas[0].name;
     return truncaNombreLargo(cadenaArtistas);
 }
 
 export function numberWithCommas(x) {
     let parts = x.toString().split(".");
-    parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return parts.join(",");
 }

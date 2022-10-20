@@ -5,7 +5,7 @@ import { KeyScaleSelect } from "../busqueda/KeyScaleSelect";
 import { CustomButton } from "../../atoms/CustomButton";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { ProgressBar } from "../../atoms/ProgressBar";
-import TarjetaCancion from "../../molecules/tarjetas/TarjetaCancion";
+import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 
 export function ArtistKeyFinder(){
@@ -237,13 +237,14 @@ const resultado = (
                 json2={undefined}
                 canciones1={cancionesArtista.length}
                 notaEscala={seleccionNotaEscala}
+                callbackCambiarEleccion1={() => { setSeleccionArtista([]) }}
                 callbackCambiarEscala={()=>{setSeleccionNotaEscala('')}}
             />
             <div className="tool-container">
                 {!seleccionArtista.id ? busquedaArtista : ""}
-                {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""}
-                {seleccionArtista.id && objetosAudioFeatures.length>0 && seleccionNotaEscala.nota===undefined && !seleccionNotaEscala.nota>-1 ? eleccionNota : ""}
-                {objetosAudioFeatures.length>0 ? resultado : ""}
+                {/* {seleccionArtista.id && !objetosAudioFeatures.length>0 ? <CustomSpinner /> : ""} */}
+                {seleccionArtista.id && !seleccionNotaEscala.nota>-1 ? eleccionNota : ""}
+                {seleccionArtista.id && seleccionNotaEscala.nota>-1 ? resultado : ""}
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ export function PreviewChoices(props){
     const {json1, json2, canciones1, canciones2, notaEscala, callbackCambiarEleccion1, callbackCambiarEleccion2, callbackCambiarEscala} = props;
 
     const tarjeta1 = (
-        json1!=undefined && json1.type=='artist' ? 
+        json1!==undefined && json1.type=='artist' ? 
             <TarjetaEleccionArtista 
                 json={json1} 
                 canciones={canciones1} 
@@ -17,7 +17,7 @@ export function PreviewChoices(props){
             <TarjetaEleccionCancion json={json1} callbackCambiarEleccion={callbackCambiarEleccion1}/>
     )
     const tarjeta2 = (
-        json2!=undefined && json2.type=='artist' ? 
+        json2!==undefined && json2.type=='artist' ? 
             <TarjetaEleccionArtista 
                 json={json2} 
                 canciones={canciones2}
@@ -29,9 +29,9 @@ export function PreviewChoices(props){
     
     return(
         <div className="preview-choices-div">
-            {json1!=undefined && json1.id ? tarjeta1 : ""}
-            {json2!=undefined && json2.id ? tarjeta2 : ""}
-            {notaEscala!=undefined && notaEscala.nota>-1 ? <TarjetaEleccionNotaEscala data={notaEscala} callbackCambiarEleccion={callbackCambiarEscala}/> : ""}
+            {json1!==undefined && json1.id ? tarjeta1 : ""}
+            {json2!==undefined && json2.id ? tarjeta2 : ""}
+            {notaEscala!==undefined && notaEscala.nota>-1 ? <TarjetaEleccionNotaEscala data={notaEscala} callbackCambiarEleccion={callbackCambiarEscala}/> : ""}
         </div>
     )
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import TarjetaCancion from "../../molecules/tarjetas/TarjetaCancion";
+import TarjetaCancion from "./TarjetaCancion";
 import { buscarCancion } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
 import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
