@@ -4,8 +4,9 @@ import axios from "axios";
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
 import {esEnlaceDeSpotify, getIDFromURL} from '../helpers/StringURLMethods.js'
-import { ClientId, ClientSecret } from "../api-credentials.js";
-
+// import { ClientId, ClientSecret } from "../api-credentials.js";
+const ClientId= 'ad9e75087eea487ab445f1ad9b610cab';
+const ClientSecret= 'f54517f6c44548a2873e07b23b100a35';
 let cadenaCredentials = Utf8.parse(ClientId + ':' + ClientSecret)
 let cadenaB64 = Base64.stringify(cadenaCredentials);
 
