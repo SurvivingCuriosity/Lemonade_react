@@ -1259,7 +1259,8 @@ input:focus {
 }
 
 .--tarjeta-img-ppal {
-  border-radius: 15%;
+  border-radius: 10%;
+  aspect-ratio: 1;
   margin: auto;
 }
 
@@ -1665,6 +1666,22 @@ input:focus {
 
   .tool-container {
     width: 40vw;
+  }
+}
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+.skeleton:hover {
+  cursor: progress; 
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(52, 63%, 67%);
+  }
+  100% {
+    background-color: hsl(54, 32%, 74%);
   }
 }
 

@@ -22,8 +22,6 @@ export function BusquedaArtista(props) {
     const [listaResultados, setListaResultados] = React.useState([]);
     const [resultadoBusqueda, setResultadoBusqueda] = React.useState({});
 
-    const [seleccion, setSeleccion] = React.useState({});
-
     const [linkNext, setLinkNext] = React.useState("");
     const [linkPrev, setLinkPrev] = React.useState("");
 
@@ -101,7 +99,6 @@ export function BusquedaArtista(props) {
 
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function handleEleccion(userSelection) {
-        setSeleccion(() => { return userSelection })
         setListaResultados(() => { return [] })
         callbackEleccion(userSelection, queArtistaEs);
     }

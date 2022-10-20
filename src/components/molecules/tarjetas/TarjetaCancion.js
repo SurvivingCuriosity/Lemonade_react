@@ -5,6 +5,7 @@ import icon_time from '../../../images/tarjeta/icon_time.svg'
 import icon_fuego from '../../../images/tarjeta/icon_fuego.svg'
 
 import { getStringFromEscala, getStringFromNota, getCadenaArtistas, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
+import { Image } from "../../atoms/Image";
 export default function (props){
     const tamanoImagen = '55'
     const tamanoIcono = '15'
@@ -44,8 +45,12 @@ export default function (props){
         //si es clickable, le anado la clase clickable (efectos para el hover)
         <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined }>
             <div className="--tarjeta-left">
-                {(imgCancion) && <img src={imgCancion} className="--tarjeta-img-ppal" style={{width: tamanoImagen + 'px'}} />}
-                
+                {/* {(imgCancion) && <img src={imgCancion} className="--tarjeta-img-ppal" style={{width: tamanoImagen + 'px'}} />} */}
+                <Image 
+                    className="--tarjeta-img-ppal"
+                    src={imgCancion} 
+                    alt='alt' 
+                    style={{width: tamanoImagen + 'px', aspectRatio:'1'}}/>
                 <div className="--tarjeta-datos">
                     {(nombreCancion) && <p className="--tarjeta-dato-nombre"><img src={icon_song} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreCancion, reducirInformacion)}</p>}
                     {(nombreArtista) && <p className="--tarjeta-dato1"><img src={icon_artist} className="--tarjeta-icono" style={{width: tamanoIcono + 'px'}}/>{truncaNombreLargo(nombreArtista, reducirInformacion)}</p>}

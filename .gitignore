@@ -3,6 +3,7 @@
 
 # dependencies
 /node_modules
+api-credentials.js
 /.pnp
 .pnp.js
 

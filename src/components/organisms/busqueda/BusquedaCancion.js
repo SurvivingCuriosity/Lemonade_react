@@ -24,8 +24,6 @@ export function BusquedaCancion(props) {
 
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
-    const [seleccion, setSeleccion] = React.useState({});
-
     const [linkNext, setLinkNext] = React.useState("");
     const [linkPrev, setLinkPrev] = React.useState("");
 
@@ -54,7 +52,6 @@ export function BusquedaCancion(props) {
         } else if (resultadoBusqueda.id) {
             getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
-        console.log(listaResultados);
     }, [resultadoBusqueda])
 
 
@@ -142,7 +139,6 @@ export function BusquedaCancion(props) {
 
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function mandarEleccionAlPadre(userSelection) {
-        setSeleccion(() => { return userSelection })
         setListaResultados(() => { return [] })
         callbackEleccion(userSelection);
     }
