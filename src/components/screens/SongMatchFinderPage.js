@@ -1,6 +1,6 @@
 import React from "react";
-import {SongMatchFinder} from '../lemonade-tools/SongMatchFinder'
-import { FixedTopNav } from "../navs/FixedTopNav";
+import {SongMatchFinder} from '../organisms/tools/SongMatchFinder'
+import { FixedTopNav } from "../molecules/navs/FixedTopNav";
 
 export function SongMatchFinderPage(){
     return(

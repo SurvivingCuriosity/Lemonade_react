@@ -4,7 +4,7 @@ import icon_artist from '../../../images/tarjeta/icon_artist.svg'
 import icon_time from '../../../images/tarjeta/icon_time.svg'
 import play from '../../../images/reproductor/play.svg'
 import stop from '../../../images/reproductor/stop.svg'
-import { Reproductor } from "../../custom-components/Reproductor";
+import { Reproductor } from "../../molecules/Reproductor";
 import { formatearNombre, getStringFromEscala, getStringFromNota, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
 
 export default function (props){

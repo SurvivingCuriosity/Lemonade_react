@@ -1,6 +1,6 @@
 import React from 'react'
-import logoInstagram from '../../images/logoInstagram.svg'
-import logoGitHub from '../../images/logoGitHub.svg'
+import logoInstagram from '../../../../images/logoInstagram.svg'
+import logoGitHub from '../../../../images/logoGitHub.svg'
 
 export function Contacto(){
     let tamanoIconosRedes=25;

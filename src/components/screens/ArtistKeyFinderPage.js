@@ -1,6 +1,6 @@
 import React from "react";
-import {ArtistKeyFinder} from '../lemonade-tools/ArtistKeyFinder'
-import { FixedTopNav } from "../navs/FixedTopNav";
+import {ArtistKeyFinder} from '../organisms/tools/ArtistKeyFinder'
+import { FixedTopNav } from "../molecules/navs/FixedTopNav";
 
 export function ArtistKeyFinderPage(){
     return(

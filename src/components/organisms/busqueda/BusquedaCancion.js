@@ -1,11 +1,11 @@
 import React from "react";
 
-import TarjetaCancion from "./TarjetaCancion";
+import TarjetaCancion from "../../molecules/tarjetas/TarjetaCancion";
 import { buscarCancion } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
 import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
-import { CustomSpinner } from "../../custom-components/CustomSpinner";
-import { TmpMessage } from "../../custom-components/TmpMessage";
+import { CustomSpinner } from "../../atoms/CustomSpinner";
+import { TmpMessage } from "../../atoms/TmpMessage";
 
 export function BusquedaCancion(props) {
     const { titulo, isSongKeyFinder, haySeleccion, callbackEleccion } = props;

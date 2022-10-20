@@ -1,9 +1,9 @@
 import React from "react";
-import TarjetaArtista from "./TarjetaArtista";
-import { CustomSpinner } from "../../custom-components/CustomSpinner";
+import TarjetaArtista from "../../molecules/tarjetas/TarjetaArtista";
+import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { buscarArtista } from "../../../API_calls/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
-import { TmpMessage } from "../../custom-components/TmpMessage";
+import { TmpMessage } from "../../atoms/TmpMessage";
 
 export function BusquedaArtista(props) {
     const { titulo, haySeleccion, callbackEleccion, queArtistaEs, disabled } = props;

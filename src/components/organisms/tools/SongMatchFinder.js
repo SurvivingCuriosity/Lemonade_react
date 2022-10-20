@@ -1,13 +1,13 @@
 import React from "react";
-import { getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
-import { getAllAudioFeatures } from "../../API_calls/apiCustomMethods";
-import { CustomButton } from "../custom-components/CustomButton";
-import { CustomSpinner } from "../custom-components/CustomSpinner";
-import {BusquedaArtista} from './Busqueda/BusquedaArtista'
-import {BusquedaCancion} from './Busqueda/BusquedaCancion'
-import TarjetaCancion from "./Busqueda/TarjetaCancion";
-import { PreviewChoices } from "./Busqueda/PreviewChoices";
-import { ProgressBar } from "../custom-components/ProgressBar";
+import { getAllUniqueArtistSongs } from "../../../API_calls/apiCustomMethods";
+import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
+import { CustomButton } from "../../atoms/CustomButton";
+import { CustomSpinner } from "../../atoms/CustomSpinner";
+import { ProgressBar } from "../../atoms/ProgressBar";
+import TarjetaCancion from "../../molecules/tarjetas/TarjetaCancion";
+import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
+import {BusquedaArtista} from '../../organisms/busqueda/BusquedaArtista'
+import {BusquedaCancion} from '../../organisms/busqueda/BusquedaCancion'
 
 export function SongMatchFinder(){
 //====PROPIEDADES Y CONSTANTES

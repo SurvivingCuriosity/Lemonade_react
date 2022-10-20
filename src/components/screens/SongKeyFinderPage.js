@@ -1,6 +1,6 @@
 import React from "react";
-import {SongKeyFinder} from '../lemonade-tools/SongKeyFinder'
-import { FixedTopNav } from "../navs/FixedTopNav";
+import {SongKeyFinder} from '../organisms/tools/SongKeyFinder'
+import { FixedTopNav } from "../molecules/navs/FixedTopNav";
 
 export function SongKeyFinderPage(){
     return(

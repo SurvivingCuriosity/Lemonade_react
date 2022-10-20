@@ -1,7 +1,7 @@
 import React from "react";
-import { CustomModal } from "../custom-components/CustomModal";
-import {ArtistMatchFinder} from '../lemonade-tools/ArtistMatchFinder'
-import { FixedTopNav } from "../navs/FixedTopNav";
+import { CustomModal } from "../atoms/CustomModal";
+import {ArtistMatchFinder} from '../organisms/tools/ArtistMatchFinder'
+import { FixedTopNav } from "../molecules/navs/FixedTopNav";
 
 export function ArtistMatchFinderPage(){
     return(

@@ -1,12 +1,12 @@
 import React from "react";
-import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../API_calls/apiCustomMethods";
-import { BusquedaArtista } from "./Busqueda/BusquedaArtista";
-import { KeyScaleSelect } from "./KeyScaleSelect";
-import { CustomButton } from "../custom-components/CustomButton";
-import TarjetaCancion from "./Busqueda/TarjetaCancion";
-import { CustomSpinner } from "../custom-components/CustomSpinner";
-import { PreviewChoices } from "./Busqueda/PreviewChoices";
-import { ProgressBar } from "../custom-components/ProgressBar";
+import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../API_calls/apiCustomMethods";
+import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
+import { KeyScaleSelect } from "../busqueda/KeyScaleSelect";
+import { CustomButton } from "../../atoms/CustomButton";
+import { CustomSpinner } from "../../atoms/CustomSpinner";
+import { ProgressBar } from "../../atoms/ProgressBar";
+import TarjetaCancion from "../../molecules/tarjetas/TarjetaCancion";
+import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 
 export function ArtistKeyFinder(){
 //====PROPIEDADES Y CONSTANTES

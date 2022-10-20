@@ -11,9 +11,6 @@ export function getIDFromURL(text){
 }
 
 export function generaListaCadenasIDs(listaCanciones=[]){
-    // if(listaCanciones.id){
-    //     return listaCanciones.id;
-    // }
     //debe devolver un array de cadenas de IDs(cada cadena son 50 IDs separados por comas)
     let arrayFinal=[];
     let cuantosGruposDe50 = Math.ceil(listaCanciones.length/50);

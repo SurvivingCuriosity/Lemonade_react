@@ -1,6 +1,5 @@
 import React from "react";
-import {BusquedaCancion} from '../lemonade-tools/Busqueda/BusquedaCancion'
-import { buscarCancion } from "../../API_calls/apiCalls";
+import {BusquedaCancion} from '../busqueda/BusquedaCancion'
 
 export function SongKeyFinder(){
 

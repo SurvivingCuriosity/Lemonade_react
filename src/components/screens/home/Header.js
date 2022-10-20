@@ -1,7 +1,7 @@
 import React from 'react'
-import lemon from '../../images/lemon.svg'
-import { HeaderToolsNav } from '../navs/HeaderToolsNav'
-import { HeaderBottomNav } from '../navs/HeaderBottomNav'
+import lemon from '../../../images/lemon.svg'
+import { HeaderToolsNav } from '../../molecules/navs/HeaderToolsNav'
+import { HeaderBottomNav } from '../../molecules/navs/HeaderBottomNav'
 
 export function Header(){
     return (
