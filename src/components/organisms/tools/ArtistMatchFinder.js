@@ -39,18 +39,20 @@ export function ArtistMatchFinder() {
     //====USE EFECT
 
     React.useEffect(() => {
-        if(seleccionArtista1.id){
+        //si hay artista elegido se obtienen todas sus canciones
+        if (seleccionArtista1.id) {
             getAllUniqueArtistSongs(seleccionArtista1.id, lleganCancionesDeArtista1)
-        }else{
+        } else {
+        //si no hay artista elegido (se ha borrado), se deja de mostrar el resultado final
             setCancionesArtista1([])
             setObjetosAudioFeatures1([])
             setMostrarResultadoFinal(false)
         }
     }, [seleccionArtista1])
     React.useEffect(() => {
-        if(seleccionArtista2.id){
+        if (seleccionArtista2.id) {
             getAllUniqueArtistSongs(seleccionArtista2.id, lleganCancionesDeArtista2)
-        }else{
+        } else {
             setCancionesArtista2([])
             setObjetosAudioFeatures2([])
             setMostrarResultadoFinal(false)
@@ -92,32 +94,20 @@ export function ArtistMatchFinder() {
                 break;
         }
     };
-    const userSelectsArtist1 = (artistSelected) => {
-        setSeleccionArtista1(artistSelected);
-    }
+    const userSelectsArtist1 = (artistSelected) => { setSeleccionArtista1(artistSelected); }
 
-    const userSelectsArtist2 = (artistSelected) => {
-        setSeleccionArtista2(artistSelected);
-    }
+    const userSelectsArtist2 = (artistSelected) => { setSeleccionArtista2(artistSelected); }
 
-    const lleganCancionesDeArtista1 = (listaCanciones) => {
-        setCancionesArtista1(listaCanciones);
-    }
+    const lleganCancionesDeArtista1 = (listaCanciones) => { setCancionesArtista1(listaCanciones); }
 
-    const lleganCancionesDeArtista2 = (listaCanciones) => {
-        setCancionesArtista2(listaCanciones);
-    }
+    const lleganCancionesDeArtista2 = (listaCanciones) => { setCancionesArtista2(listaCanciones); }
 
-    const lleganAudioFeatures1 = (audio) => {
-        console.log('Ready 1')
-        setObjetosAudioFeatures1(audio);
-    }
+    const lleganAudioFeatures1 = (audio) => { setObjetosAudioFeatures1(audio); }
 
-    const lleganAudioFeatures2 = (audio) => {
-        console.log('Ready 2')
-        setObjetosAudioFeatures2(audio);
-    }
+    const lleganAudioFeatures2 = (audio) => { setObjetosAudioFeatures2(audio); }
+
     const eliminarEleccion1 = () => { setSeleccionArtista1({}) }
+
     const eliminarEleccion2 = () => { setSeleccionArtista2({}) }
 
     const obtenerResultadoFinal = () => {
@@ -467,7 +457,6 @@ export function ArtistMatchFinder() {
                 callbackCambiarEleccion1={eliminarEleccion1}
                 callbackCambiarEleccion2={eliminarEleccion2}
             />
-
             {!seleccionArtista1.id && busquedaArtista1}
             {seleccionArtista1.id && !seleccionArtista2.id && busquedaArtista2}
             {seleccionArtista1.id && seleccionArtista2.id && !mostrarResultadoFinal && <CustomSpinner />}

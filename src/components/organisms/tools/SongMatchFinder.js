@@ -34,59 +34,43 @@ export function SongMatchFinder() {
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-    const [configProgressBar, setConfigProgressBar] = React.useState({});
+
+    const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
 
     //====USE EFFECT
-    React.useEffect(() => {
-        //compruebo que tienen valor preguntando por una propiedad que contienen
-        if (seleccionArtista.id && seleccionCancion.id) {
-            setTextoBotonFinal('Cargando');
-        }
-        formarResultadoFinal();
-        actualizarInfoProgressBar();
-    }, [seleccionArtista, seleccionCancion])
 
+    React.useEffect(() => {
+        if (!seleccionCancion.id) { 
+            setMostrarResultadoFinal(false); 
+        } else{
+            if (objetosAudioFeatures.length > 0) {
+                formarResultadoFinal();
+                setMostrarResultadoFinal(true);
+            }
+        }
+    }, [seleccionCancion])
 
     React.useEffect(() => {
         if (seleccionArtista.id) {
             getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones)
         } else {
-            setCancionesArtista([]);
+            setCancionesArtista([]);//hay que vaciarlo
+            setMostrarResultadoFinal(false);
         }
-        actualizarInfoProgressBar();
     }, [seleccionArtista])
 
     React.useEffect(() => {
-        if (cancionesArtista.length > 0) {
+        (cancionesArtista.length > 0) &&
             getAllAudioFeatures(cancionesArtista, lleganAudioFeatures);
-        } else {
-            setObjetosAudioFeatures([]);
-        }
-        actualizarInfoProgressBar();
     }, [cancionesArtista])
 
     React.useEffect(() => {
         if (objetosAudioFeatures.length > 0 && seleccionCancion.id) {
             formarResultadoFinal();
-            setDeshabilitarBotonFinal(() => { return false })
-            setTextoBotonFinal(() => { return TEXTO_BOTON_BUSCAR })
-        } else {
-            setDeshabilitarBotonFinal(() => { return true })
-            setTextoBotonFinal(() => { return TEXTO_BOTON_RELLENA_CAMPOS })
+            setMostrarResultadoFinal(true);
         }
-        actualizarInfoProgressBar();
     }, [objetosAudioFeatures])
 
-    React.useEffect(() => {
-        if (resultadoFinal.length > 0) {
-            setDeshabilitarBotonFinal(() => { return false })
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA })
-        } else {
-            setDeshabilitarBotonFinal(() => { return false })
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA })
-        }
-        actualizarInfoProgressBar();
-    }, [resultadoFinal])
 
     //====FUNCIONES
     const handleClickFinal = (e) => {
@@ -106,18 +90,19 @@ export function SongMatchFinder() {
 
     const formarResultadoFinal = () => {
         let arrayResultadosFinales = [];
-
         objetosAudioFeatures.map((obj) => {
-            if (obj.mode === notaEscalaDeCancion.escala
-                && obj.key === notaEscalaDeCancion.nota) {
-                cancionesArtista.map((cancion) => {
-                    if (cancion.id === obj.id) {
-                        cancion.mode = obj.mode;
-                        cancion.key = obj.key;
-                        cancion.bpm = obj.tempo;
-                        arrayResultadosFinales.push(cancion);
-                    }
-                })
+            if(obj!==null){
+                if (obj.mode === seleccionCancion.mode
+                    && obj.key === seleccionCancion.key) {
+                    cancionesArtista.map((cancion) => {
+                        if (cancion.id === obj.id) {
+                            cancion.mode = obj.mode;
+                            cancion.key = obj.key;
+                            cancion.bpm = obj.tempo;
+                            arrayResultadosFinales.push(cancion);
+                        }
+                    })
+                }
             }
         })
 
@@ -147,28 +132,12 @@ export function SongMatchFinder() {
         setSeleccionArtista(() => { return artistSelected });
     }
 
-    const lleganCanciones = (listaCancionesArtista) => {
-        setCancionesArtista(() => { return listaCancionesArtista });
-
-    }
+    const lleganCanciones = (listaCancionesArtista) => { setCancionesArtista(() => { return listaCancionesArtista }); }
 
     const lleganAudioFeatures = (audio) => {
         setObjetosAudioFeatures(audio);
     }
 
-    const actualizarInfoProgressBar = () => {
-        setConfigProgressBar({
-            tipo1: "cancion",
-            tipo2: "artista",
-            canciones2: cancionesArtista.length || undefined,
-            titulo1: 'Canción',
-            titulo2: 'Artista',
-            primerPaso: seleccionCancion.id ? true : false,
-            primeraCondicion: seleccionCancion.id ? true : false,
-            segundoPaso: seleccionArtista.id ? true : false,
-            segundaCondicion: seleccionCancion.id && seleccionArtista.id && objetosAudioFeatures.length > 0 ? true : false
-        });
-    }
     //====RENDER PARTS
     const eleccionCancion = (
         <BusquedaCancion
@@ -177,6 +146,7 @@ export function SongMatchFinder() {
             callbackEleccion={userSelectsSong}
         />
     )
+
     const eleccionArtista = (
         <BusquedaArtista
             haySeleccion={seleccionArtista.id ? true : false}
@@ -184,6 +154,7 @@ export function SongMatchFinder() {
             callbackEleccion={userSelectsArtist}
         />
     )
+
     const resultado = (
         <div className="busqueda-container">
             <h2 className="busqueda-titulo">3. Resultados</h2>
@@ -213,14 +184,23 @@ export function SongMatchFinder() {
             }
         </div>
     )
+
     //====RENDER
     return (
         <div className="tool-container">
             <h1 className="tool-titulo">{titulo}</h1>
             <p className="tool-description">{descripcion}</p>
             <ProgressBar
-                key={Math.random() * 1000}
-                config={configProgressBar}
+                tipo1="cancion"
+                tipo2="artista"
+                canciones1={undefined}
+                canciones2={objetosAudioFeatures.length || undefined}
+                titulo1='Canción 1'
+                titulo2='Artista 2'
+                primerPaso={seleccionCancion.id ? true : false}
+                primeraCondicion={seleccionCancion.id ? true : false}
+                segundoPaso={seleccionArtista.id ? true : false}
+                segundaCondicion={objetosAudioFeatures.length > 0 ? true : false}
             />
             <PreviewChoices
                 json1={seleccionCancion}
@@ -232,7 +212,8 @@ export function SongMatchFinder() {
 
             {!seleccionCancion.id ? eleccionCancion : ""}
             {seleccionCancion.id && !seleccionArtista.id ? eleccionArtista : ""}
-            {seleccionCancion.id && seleccionArtista.id ? resultado : ""}
+            {seleccionCancion.id && seleccionArtista.id && !mostrarResultadoFinal && <CustomSpinner />}
+            {mostrarResultadoFinal && resultado}
 
 
         </div>

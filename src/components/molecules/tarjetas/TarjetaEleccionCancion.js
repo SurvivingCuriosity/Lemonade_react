@@ -40,6 +40,9 @@ export function TarjetaEleccionCancion(props) {
                             <p>{truncaNombreLargo(nombreArtista, reducirInformacion)}</p>
                         </IconAndText>
                     }
+                    {
+                        <p>{`${songKey}${songMode}`}</p>
+                    }
                 </div>
 
             </div>
