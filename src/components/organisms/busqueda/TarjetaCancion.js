@@ -31,10 +31,10 @@ export default function (props) {
     }
 
     function handleEleccionTarjeta() {
-        if(jsonData.id){
+        if (jsonData.id) {
             selectionCallback(jsonData);
-        }else{
-            selectionCallback({ error : "Unable to obtain data from TarjetaArtista" });
+        } else {
+            selectionCallback({ error: "Unable to obtain data from TarjetaArtista" });
         }
     }
 
@@ -65,14 +65,14 @@ export default function (props) {
                     }
                 </div>
 
-                {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'}/>}
+                {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
             </div>
 
             <div className="--tarjeta-right">
-                <a href={link}>Ver en Spotify</a>
+                <a href={link} target='_blank'>Ver en Spotify</a>
                 <div className="--tarjeta-info-bpm-scale">
-                    {(songBPM) && <p>{Math.round(songBPM)} BPM</p>}
-                    {(songKey) && <p className="linea-flex-start">{`${songKey} ${songMode}`}</p>}
+                    {songBPM && <p>{Math.round(songBPM)} BPM</p>}
+                    {songKey && <p className="linea-flex-start">{`${songKey}${songMode}`}</p>}
                 </div>
             </div>
         </div>

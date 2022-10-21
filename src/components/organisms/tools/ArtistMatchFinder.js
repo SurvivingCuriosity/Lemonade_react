@@ -49,6 +49,7 @@ export function ArtistMatchFinder() {
             setMostrarResultadoFinal(false)
         }
     }, [seleccionArtista1])
+
     React.useEffect(() => {
         if (seleccionArtista2.id) {
             getAllUniqueArtistSongs(seleccionArtista2.id, lleganCancionesDeArtista2)
@@ -70,7 +71,6 @@ export function ArtistMatchFinder() {
     React.useEffect(() => {
         if (objetosAudioFeatures1.length > 0 && objetosAudioFeatures2.length > 0) {
             obtenerResultadoFinal();
-            setMostrarResultadoFinal(true);
         }
     }, [objetosAudioFeatures1, objetosAudioFeatures2])
 
@@ -114,11 +114,12 @@ export function ArtistMatchFinder() {
         //para evitar recorrer arrays dentro de arrays, creo un mapa con los audioFeatures con clave=id valor=elobjeto
         let audioFeatures1_conKey = new Map();
         let audioFeatures2_conKey = new Map();
-
+        console.log(objetosAudioFeatures1);
+        console.log(objetosAudioFeatures2);
         objetosAudioFeatures1.map((audioF) => {
             audioFeatures1_conKey.set(`${audioF.id}`, audioF);
         })
-
+        
         objetosAudioFeatures2.map((audioF) => {
             audioFeatures2_conKey.set(`${audioF.id}`, audioF);
         })
@@ -348,6 +349,7 @@ export function ArtistMatchFinder() {
             setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA });
         }
         setResultadoFinal(() => { return arrayResultadosFinales })
+        setMostrarResultadoFinal(true);
     }
     //====RENDER PARTS
     const busquedaArtista1 = (

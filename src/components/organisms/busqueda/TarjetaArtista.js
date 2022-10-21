@@ -58,7 +58,7 @@ export default function (props) {
             </div>
 
             <div className="--tarjeta-right">
-                <a href={link}>Ver en Spotify</a>
+                <a href={link} target='_blank'>Ver en Spotify</a>
             </div>
         </div>
     )

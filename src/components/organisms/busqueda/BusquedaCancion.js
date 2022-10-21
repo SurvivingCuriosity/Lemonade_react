@@ -143,13 +143,11 @@ export function BusquedaCancion(props) {
         callbackEleccion(userSelection);
     }
 
-    function borrarSeleccion() {
-        setListaResultados(() => { return [] });
-        callbackEleccion([]);
-    }
-
     //funcion que se ejecuta cuando llegan los resultados
     function lleganResultadosDeBusqueda(resultados) {
+        if(resultados.err.message){
+            console.log('Error de red');
+        }
         setResultadoBusqueda(resultados);
     }
 

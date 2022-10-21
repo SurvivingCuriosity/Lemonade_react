@@ -103,30 +103,28 @@ export function BusquedaArtista(props) {
         setListaResultados(() => { return [] })
     }
 
-    function borrarSeleccion() {
-        setListaResultados([]);
-        callbackEleccion(listaResultados);
-    }
-
     //funcion que se ejecuta cuando llegan los resultados
-    function miCallback(params) {
+    function miCallback(resultado) {
+        if(resultado.err.message){
+            return console.log('Error de red');
+        }
         setIsLoading(false);
-        setResultadoBusqueda(params);
+        setResultadoBusqueda(resultado);
         //llega una lista
-        if (params.artists) {
+        if (resultado.artists) {
             //no hay resultados parala busqueda
-            if (params.artists && params.artists.total === 0) {
+            if (resultado.artists && resultado.artists.total === 0) {
                 return;
             } else {
-                setLinkNext(() => { return params.artists.next });
-                setLinkPrev(() => { return params.artists.previous });
+                setLinkNext(() => { return resultado.artists.next });
+                setLinkPrev(() => { return resultado.artists.previous });
             }
-            setResultadoBusqueda(() => { return params });
-            setListaResultados(() => { return params.artists.items })
+            setResultadoBusqueda(() => { return resultado });
+            setListaResultados(() => { return resultado.artists.items })
             //llega solo uno
         } else {
-            setResultadoBusqueda(() => { return [params] });
-            setListaResultados(() => { return [params] })
+            setResultadoBusqueda(() => { return [resultado] });
+            setListaResultados(() => { return [resultado] })
         }
     }
 

@@ -29,12 +29,10 @@ export function SongMatchFinder() {
     const [cancionesArtista, setCancionesArtista] = React.useState([]);
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
-    const [notaEscalaDeCancion, setNotaEscalaDeCancion] = React.useState({});
-
-    const [resultadoFinal, setResultadoFinal] = React.useState([]);
     const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
     const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-
+    
+    const [resultadoFinal, setResultadoFinal] = React.useState([]);
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
 
     //====USE EFFECT
@@ -51,9 +49,11 @@ export function SongMatchFinder() {
     }, [seleccionCancion])
 
     React.useEffect(() => {
+        //si hay seleccion
         if (seleccionArtista.id) {
             getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones)
         } else {
+        // si se borra la seleccion
             setCancionesArtista([]);//hay que vaciarlo
             setMostrarResultadoFinal(false);
         }
@@ -120,23 +120,13 @@ export function SongMatchFinder() {
         setResultadoFinal(arrayResultadosFinales);
     }
 
-    const userSelectsSong = (songSelected) => {
-        setSeleccionCancion(songSelected);
-        setNotaEscalaDeCancion({
-            nota: songSelected.key,
-            escala: songSelected.mode
-        })
-    }
+    const userSelectsSong = (songSelected) => { setSeleccionCancion(songSelected); }
 
-    const userSelectsArtist = (artistSelected) => {
-        setSeleccionArtista(() => { return artistSelected });
-    }
+    const userSelectsArtist = (artistSelected) => { setSeleccionArtista(() => { return artistSelected }); }
 
     const lleganCanciones = (listaCancionesArtista) => { setCancionesArtista(() => { return listaCancionesArtista }); }
 
-    const lleganAudioFeatures = (audio) => {
-        setObjetosAudioFeatures(audio);
-    }
+    const lleganAudioFeatures = (audio) => { setObjetosAudioFeatures(audio); }
 
     //====RENDER PARTS
     const eleccionCancion = (
