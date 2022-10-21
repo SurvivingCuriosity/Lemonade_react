@@ -45,10 +45,10 @@ export function BusquedaCancion(props) {
             if (resultadoBusqueda.tracks.items.length > 0) {
                 getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
             } else {
-                setTemporalMsgConfig(()=>{return {msg:'No hay resultados', type:'error'}})
+                setTemporalMsgConfig(() => { return { msg: 'No hay resultados', type: 'error' } })
                 setIsLoading(false)
             }
-        //llega uno
+            //llega uno
         } else if (resultadoBusqueda.id) {
             getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
@@ -65,7 +65,7 @@ export function BusquedaCancion(props) {
             //anado a las canciones la informacion que necesito de las audioFeatures y las anado a su categoria
             resultadoBusqueda.tracks.items.map((cancion) => {
                 if ((audioFeatures_conKey).get(cancion.id)) {
-                    cancion.key =  (audioFeatures_conKey).get(cancion.id).key;
+                    cancion.key = (audioFeatures_conKey).get(cancion.id).key;
                     cancion.bpm = (audioFeatures_conKey).get(cancion.id).tempo;
                     cancion.mode = (audioFeatures_conKey).get(cancion.id).mode;
                 }
@@ -145,7 +145,7 @@ export function BusquedaCancion(props) {
 
     //funcion que se ejecuta cuando llegan los resultados
     function lleganResultadosDeBusqueda(resultados) {
-        if(resultados.err.message){
+        if (resultados.err?.message) {
             console.log('Error de red');
         }
         setResultadoBusqueda(resultados);
@@ -193,7 +193,7 @@ export function BusquedaCancion(props) {
             {isLoading && <CustomSpinner />}
 
             {resultadoBusqueda.tracks && <TmpMessage config={temporalMsgConfig} />}
-            
+
             {listaResultados.length > 0 && !haySeleccion ? renderListaResultados : ''}
         </div>
     )

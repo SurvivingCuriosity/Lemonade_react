@@ -13,8 +13,8 @@ export function BusquedaArtista(props) {
     const [text, setText] = React.useState("");
 
     const [temporalMsgConfig, setTemporalMsgConfig] = React.useState({
-        msg:'',
-        type:''
+        msg: '',
+        type: ''
     });
 
 
@@ -43,11 +43,11 @@ export function BusquedaArtista(props) {
         setIsLoading(false);
         //si resultadoBusqueda.artists significa que se ha realizado una busqueda
         if (resultadoBusqueda.artists) {
-            if(listaResultados.length > 0 ){
+            if (listaResultados.length > 0) {
                 setLinkNext(resultadoBusqueda.artists.next)
                 setLinkPrev(resultadoBusqueda.artists.previous)
-            }else{
-                setTemporalMsgConfig(()=>{return {msg:'No hay resultados', type:'error'}})
+            } else {
+                setTemporalMsgConfig(() => { return { msg: 'No hay resultados', type: 'error' } })
             }
         }
     }, [resultadoBusqueda, listaResultados])
@@ -105,7 +105,7 @@ export function BusquedaArtista(props) {
 
     //funcion que se ejecuta cuando llegan los resultados
     function miCallback(resultado) {
-        if(resultado.err.message){
+        if (resultado.err?.message) {
             return console.log('Error de red');
         }
         setIsLoading(false);
@@ -143,26 +143,26 @@ export function BusquedaArtista(props) {
     return (
         <div className="fade-in enter-zoom-in busqueda-container">
             <h2 className="busqueda-titulo">{titulo}</h2>
-            
-            <form onSubmit={handleSubmit} className="linea-flex-start">
-                        <span className="input_and_button">
-                            <input
-                                className={`input_artista_${queArtistaEs}`}
-                                autoFocus
-                                type="search"
-                                disabled={disabled}
-                                value={text}
-                                placeholder={`Introduce artista...`}
-                                onChange={(e) => setText(() => { return e.target.value })}
-                            />
-                            <button
-                                type="submit"
-                                className="busqueda-boton-buscar boton"
-                                disabled={text === "" ? true : false}
 
-                            >Buscar
-                            </button>
-                        </span>
+            <form onSubmit={handleSubmit} className="linea-flex-start">
+                <span className="input_and_button">
+                    <input
+                        className={`input_artista_${queArtistaEs}`}
+                        autoFocus
+                        type="search"
+                        disabled={disabled}
+                        value={text}
+                        placeholder={`Introduce artista...`}
+                        onChange={(e) => setText(() => { return e.target.value })}
+                    />
+                    <button
+                        type="submit"
+                        className="busqueda-boton-buscar boton"
+                        disabled={text === "" ? true : false}
+
+                    >Buscar
+                    </button>
+                </span>
             </form>
 
             {isLoading && <CustomSpinner />}
