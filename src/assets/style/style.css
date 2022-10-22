@@ -27,7 +27,7 @@ html {
   --negroConTransparencia: rgb(36, 36, 36);
   --colorConTransparencia: #e6b846;
   --error: rgb(255, 75, 75);
-  --fondoError: rgba(255, 0, 0, 0.3);
+  --fondoError: rgba(179, 43, 43, 0.9);
 }
 
 input,
@@ -1696,14 +1696,15 @@ input:focus {
 .aviso-error-internet{
   position: absolute;
   top: 1em;
-  right: 1em;
+  right: 50%;
   z-index: 999;
-  font-size: 0.7em;
-  padding: 0.7em;
+  font-size: 0.85em;
+  padding: 1em;
   background-color: var(--fondoError);
   border: 2px solid var(--error);
   box-shadow: 0px 0px 30px 15px var(--fondo);
   animation: appearFromAbove 0.5s ease-in-out;
+  transform: translate(50%, 0);
 }
 @keyframes appearFromAbove {
   0%{
