@@ -1,6 +1,5 @@
 import React from "react";
-import { getAllUniqueArtistSongs } from "../../../API_calls/apiCustomMethods";
-import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
+import { getAllUniqueArtistSongs, getAllAudioFeatures } from "../../../api/apiCustomMethods";
 import { CustomButton } from "../../atoms/CustomButton";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { ProgressBar } from "../../atoms/ProgressBar";
@@ -10,15 +9,6 @@ import { BusquedaArtista } from '../../organisms/busqueda/BusquedaArtista'
 import { BusquedaCancion } from '../../organisms/busqueda/BusquedaCancion'
 
 export function SongMatchFinder() {
-    //====PROPIEDADES Y CONSTANTES
-    let titulo = "Song Match Finder"
-    let descripcion = "Obten una lista de canciones de un artista elegido, compatibles con la cancion introducida"
-
-    const TEXTO_BOTON_BUSCAR = "Buscar";
-    const TEXTO_BOTON_RELLENA_CAMPOS = "Rellena los campos";
-    const TEXTO_BOTON_NUEVA_BUSQUEDA = "Nueva búsqueda"
-    const TEXTO_BOTON_CARGANDO = "Cargando"
-
     //====ESTADO
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -29,18 +19,15 @@ export function SongMatchFinder() {
     const [cancionesArtista, setCancionesArtista] = React.useState([]);
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
-    const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
-    const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-    
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
 
     //====USE EFFECT
 
     React.useEffect(() => {
-        if (!seleccionCancion.id) { 
-            setMostrarResultadoFinal(false); 
-        } else{
+        if (!seleccionCancion.id) {
+            setMostrarResultadoFinal(false);
+        } else {
             if (objetosAudioFeatures.length > 0) {
                 formarResultadoFinal();
                 setMostrarResultadoFinal(true);
@@ -53,7 +40,7 @@ export function SongMatchFinder() {
         if (seleccionArtista.id) {
             getAllUniqueArtistSongs(seleccionArtista.id, lleganCanciones)
         } else {
-        // si se borra la seleccion
+            // si se borra la seleccion
             setCancionesArtista([]);//hay que vaciarlo
             setMostrarResultadoFinal(false);
         }
@@ -73,25 +60,10 @@ export function SongMatchFinder() {
 
 
     //====FUNCIONES
-    const handleClickFinal = (e) => {
-        switch (e.target.textContent) {
-            case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setSeleccionArtista(() => { return {} })
-                setSeleccionCancion(() => { return [] })
-                setResultadoFinal(() => { return [] })
-                setTextoBotonFinal(() => { return TEXTO_BOTON_RELLENA_CAMPOS })
-                setDeshabilitarBotonFinal(() => { return true })
-                break;
-            case TEXTO_BOTON_RELLENA_CAMPOS:
-                break;
-            case TEXTO_BOTON_BUSCAR:
-        }
-    };
-
     const formarResultadoFinal = () => {
         let arrayResultadosFinales = [];
         objetosAudioFeatures.map((obj) => {
-            if(obj!==null){
+            if (obj !== null) {
                 if (obj.mode === seleccionCancion.mode
                     && obj.key === seleccionCancion.key) {
                     cancionesArtista.map((cancion) => {
@@ -109,13 +81,9 @@ export function SongMatchFinder() {
         if (arrayResultadosFinales.length === 0) {
             setMsgResultadoClass("error")
             setMsgResultado(`No hay canciones de ${seleccionArtista.name} en la misma escala que ${seleccionCancion.name}`)
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA })
-            setDeshabilitarBotonFinal(() => { return false })
         } else {
             setMsgResultadoClass("success")
             setMsgResultado(`Canciones de  '${seleccionArtista.name}' en la misma escala que '${seleccionCancion.name}'`)
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA })
-            setDeshabilitarBotonFinal(() => { return false })
         }
         setResultadoFinal(arrayResultadosFinales);
     }
@@ -147,14 +115,6 @@ export function SongMatchFinder() {
 
     const resultado = (
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">3. Resultados</h2>
-
-            <CustomButton
-                textoBoton={textoBotonFinal}
-                disabled={deshabilitarBotonFinal}
-                onClickCallback={handleClickFinal}
-            />
-
             {resultadoFinal.length > 0
                 ?
                 <ul className="busqueda-lista">
@@ -177,9 +137,7 @@ export function SongMatchFinder() {
 
     //====RENDER
     return (
-        <div className="tool-container">
-            <h1 className="tool-titulo">{titulo}</h1>
-            <p className="tool-description">{descripcion}</p>
+        <>
             <ProgressBar
                 tipo1="cancion"
                 tipo2="artista"
@@ -204,9 +162,7 @@ export function SongMatchFinder() {
             {seleccionCancion.id && !seleccionArtista.id ? eleccionArtista : ""}
             {seleccionCancion.id && seleccionArtista.id && !mostrarResultadoFinal && <CustomSpinner />}
             {mostrarResultadoFinal && resultado}
-
-
-        </div>
+        </>
     )
 
 

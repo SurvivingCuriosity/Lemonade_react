@@ -1,5 +1,5 @@
 import React from 'react'
-import flecha from '../../images/flecha.svg'
+import flecha from '../../assets/images/flecha.svg'
 
 export function ScrollToTop(){
     let tamanoImagen = '40'

@@ -1,6 +1,6 @@
 import React from "react";
-import icon_artist from '../../../images/tarjeta/icon_artist.svg'
-import icon_followers from '../../../images/tarjeta/icon_followers.svg'
+import icon_artist from '../../../assets/images/tarjeta/icon_artist.svg'
+import icon_followers from '../../../assets/images/tarjeta/icon_followers.svg'
 import { Image } from "../../atoms/Image";
 import { truncaNombreLargo, numberWithCommas } from "../../../helpers/FormatingData";
 import { IconAndText } from "../../containers/IconAndText";

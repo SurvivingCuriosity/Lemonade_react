@@ -6,11 +6,12 @@ export const TmpMessage = ({ config }) => {
 
   useEffect(() => {
     setShowing(true)
-    let timer1 = setTimeout(() => setShowing(false), 5000);
-
+    let timer1 = !config?.remain && setTimeout(() => setShowing(false), 5000);
+    config?.remain && setShowing(true);
     return () => {
       clearTimeout(timer1);
     };
+
   }, [config]);
 
   return (

@@ -1,12 +1,10 @@
 import React from "react";
 import {SongMatchFinder} from '../organisms/tools/SongMatchFinder'
-import { FixedTopNav } from "../molecules/navs/FixedTopNav";
-
+import { ToolPage } from "../containers/ToolPage";
 export function SongMatchFinderPage(){
     return(
-        <div className="toolPage">
-            <FixedTopNav />
+        <ToolPage titulo='SongMatchFinder' descripcion=''>
             <SongMatchFinder />
-        </div>
+        </ToolPage>
     )
 }

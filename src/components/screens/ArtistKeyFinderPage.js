@@ -1,12 +1,11 @@
 import React from "react";
 import {ArtistKeyFinder} from '../organisms/tools/ArtistKeyFinder'
-import { FixedTopNav } from "../molecules/navs/FixedTopNav";
+import { ToolPage } from "../containers/ToolPage";
 
 export function ArtistKeyFinderPage(){
     return(
-        <div className="toolPage">
-            <FixedTopNav />
+        <ToolPage titulo='ArtistKeyFinder' descripcion=''>            
             <ArtistKeyFinder />
-        </div>
+        </ToolPage>
     )
 }

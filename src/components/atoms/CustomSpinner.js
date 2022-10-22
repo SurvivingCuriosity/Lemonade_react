@@ -1,5 +1,5 @@
 import React from "react";
-import lemon from '../../images/lemon.svg'
+import lemon from '../../assets/images/lemon.svg'
 export function CustomSpinner(props){
     let tamanoSpinner=40
     let textoSpinner='Cargando'

@@ -2,29 +2,41 @@
 export function getStringFromNota(notaInt) {
     switch (notaInt) {
         case 0:
-            return "C";
+            return "Do";
+            // return "C";
         case 1:
-            return "C#";
+            return "Do#";
+            // return "C#";
         case 2:
-            return "D";
+            return "Re";
+            // return "D";
         case 3:
-            return "D#";
+            return "Re#";
+            // return "D#";
         case 4:
-            return "E";
+            return "Mi";
+            // return "E";
         case 5:
-            return "F";
+            return "Fa";
+            // return "F";
         case 6:
-            return "F#";
+            return "Fa#";
+            // return "F#";
         case 7:
-            return "G";
+            return "Sol";
+            // return "G";
         case 8:
-            return "G#";
+            return "Sol#";
+            // return "G#";
         case 9:
-            return "A";
+            return "La";
+            // return "A";
         case 10:
-            return "A#";
+            return "La#";
+            // return "A#";
         case 11:
-            return "B";
+            return "Si";
+            // return "B";
         default:
             return "Note unexpected";
     }
@@ -34,7 +46,7 @@ export function getStringFromNota(notaInt) {
 export function getStringFromEscala(escalaInt) {
     switch (escalaInt) {
         case 0:
-            return "m"
+            return " m"
         case 1:
             return ""
         default:

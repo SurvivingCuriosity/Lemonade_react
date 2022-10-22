@@ -1,21 +1,13 @@
 import React from "react";
-import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../API_calls/apiCustomMethods";
+import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../api/apiCustomMethods";
 import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "../busqueda/KeyScaleSelect";
 import { CustomButton } from "../../atoms/CustomButton";
-import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { ProgressBar } from "../../atoms/ProgressBar";
 import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 
 export function ArtistKeyFinder() {
-    //====PROPIEDADES Y CONSTANTES
-    let titulo = "Artist Key Finder"
-    let descripcion = "Encuentra canciones de un artista en una escala"
-    const TEXTO_BOTON_BUSCAR = "Buscar";
-    const TEXTO_BOTON_CARGANDO = "Cargando";
-    const TEXTO_BOTON_RELLENA_CAMPOS = "Rellena los campos";
-    const TEXTO_BOTON_NUEVA_BUSQUEDA = "Nueva búsqueda"
 
     //====ESTADO 
     const [msgResultado, setMsgResultado] = React.useState("");
@@ -29,9 +21,6 @@ export function ArtistKeyFinder() {
 
     const [mostrando, setMostrando] = React.useState(true);
 
-
-    const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-    const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
 
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
@@ -74,25 +63,6 @@ export function ArtistKeyFinder() {
     const userSelectsArtist = (artistSelected) => { setSeleccionArtista(artistSelected); }
 
     const userSelectsScale = (objNotaEscala) => { setSeleccionNotaEscala(objNotaEscala); }
-
-    const handleClickFinal = (e) => {
-        switch (e.target.textContent) {
-            case TEXTO_BOTON_BUSCAR:
-                obtenerResultadoFinal();
-                break;
-            case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setSeleccionArtista(() => { return {} })
-                setSeleccionNotaEscala(() => { return {} })
-                setResultadoFinal(() => { return [] })
-                setMostrando(() => { return false })
-                setMsgResultado("");
-                break;
-            case TEXTO_BOTON_RELLENA_CAMPOS:
-            default:
-                break;
-        }
-
-    };
 
     const obtenerResultadoFinal = () => {
         let arrayResultadosFinales = [];
@@ -159,14 +129,8 @@ export function ArtistKeyFinder() {
 
     const resultado = (
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">3. Resultados</h2>
             <KeyScaleSelect
                 callbackEleccion={userSelectsScale}
-            />
-            <CustomButton
-                textoBoton={textoBotonFinal}
-                disabled={deshabilitarBotonFinal}
-                onClickCallback={handleClickFinal}
             />
 
             <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
@@ -190,9 +154,7 @@ export function ArtistKeyFinder() {
     )
     //====RENDER
     return (
-        <div className="tool-container">
-            <h1 className="tool-titulo" >{titulo}</h1>
-            <p className="text-center">{descripcion}</p>
+        <>
             <ProgressBar
                 tipo1="artista"
                 tipo2="nota"
@@ -213,12 +175,11 @@ export function ArtistKeyFinder() {
                 callbackCambiarEleccion1={() => { setSeleccionArtista([]) }}
                 callbackCambiarEscala={() => { setSeleccionNotaEscala('') }}
             />
-            <div className="tool-container">
-                {!seleccionArtista.id && busquedaArtista}
-                {seleccionArtista.id && !seleccionNotaEscala.nota > -1 && !mostrarResultadoFinal && eleccionNota}
-                {mostrarResultadoFinal && resultado}
-            </div>
-        </div>
+            {!seleccionArtista.id && busquedaArtista}
+            {seleccionArtista.id && !seleccionNotaEscala.nota > -1 && !mostrarResultadoFinal && eleccionNota}
+            {mostrarResultadoFinal && resultado}
+        </>
+
     )
 
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './style/reset.css';
-import './style/style.css';
-import './style/reproductor.css';
-import './style/progressBar.css';
+import './assets/style/reset.css';
+import './assets/style/style.css';
+import './assets/style/reproductor.css';
+import './assets/style/progressBar.css';
 import App from './App';
 // import reportWebVitals from './test/reportWebVitals';
 

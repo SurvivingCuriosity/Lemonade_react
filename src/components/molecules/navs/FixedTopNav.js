@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import lemon from '../../../images/lemon.svg'
+import lemon from '../../../assets/images/lemon.svg'
 export function FixedTopNav(){
     const tamanoImagen = '25';
     return (

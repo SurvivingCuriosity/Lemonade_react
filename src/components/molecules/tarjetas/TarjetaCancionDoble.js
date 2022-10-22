@@ -1,9 +1,9 @@
 import React from "react";
-import icon_song from '../../../images/tarjeta/icon_song.svg'
-import icon_artist from '../../../images/tarjeta/icon_artist.svg'
-import icon_time from '../../../images/tarjeta/icon_time.svg'
-import play from '../../../images/reproductor/play.svg'
-import stop from '../../../images/reproductor/stop.svg'
+import icon_song from '../../../assets/images/tarjeta/icon_song.svg'
+import icon_artist from '../../../assets/images/tarjeta/icon_artist.svg'
+import icon_time from '../../../assets/images/tarjeta/icon_time.svg'
+import play from '../../../assets/images/reproductor/play.svg'
+import stop from '../../../assets/images/reproductor/stop.svg'
 import { Reproductor } from "../../molecules/Reproductor";
 import { formatearNombre, getStringFromEscala, getStringFromNota, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
 

@@ -1,8 +1,8 @@
 import React from "react";
-import icon_song from '../../../images/tarjeta/icon_song.svg'
-import icon_artist from '../../../images/tarjeta/icon_artist.svg'
-import icon_time from '../../../images/tarjeta/icon_time.svg'
-import icon_fuego from '../../../images/tarjeta/icon_fuego.svg'
+import icon_song from '../../../assets/images/tarjeta/icon_song.svg'
+import icon_artist from '../../../assets/images/tarjeta/icon_artist.svg'
+import icon_time from '../../../assets/images/tarjeta/icon_time.svg'
+import icon_fuego from '../../../assets/images/tarjeta/icon_fuego.svg'
 import { getStringFromEscala, getStringFromNota, getCadenaArtistas, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
 import { Image } from "../../atoms/Image";
 import { IconAndText } from "../../containers/IconAndText";
@@ -64,8 +64,6 @@ export default function (props) {
                         </IconAndText>
                     }
                 </div>
-
-                {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
             </div>
 
             <div className="--tarjeta-right">
@@ -73,6 +71,7 @@ export default function (props) {
                 <div className="--tarjeta-info-bpm-scale">
                     {songBPM && <p>{Math.round(songBPM)} BPM</p>}
                     {songKey && <p className="linea-flex-start">{`${songKey}${songMode}`}</p>}
+                    {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
                 </div>
             </div>
         </div>

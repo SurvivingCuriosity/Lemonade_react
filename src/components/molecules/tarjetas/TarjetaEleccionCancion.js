@@ -1,6 +1,6 @@
 import React from "react";
-import icon_song from '../../../images/tarjeta/icon_song.svg'
-import icon_artist from '../../../images/tarjeta/icon_artist.svg'
+import icon_song from '../../../assets/images/tarjeta/icon_song.svg'
+import icon_artist from '../../../assets/images/tarjeta/icon_artist.svg'
 import { truncaNombreLargo } from "../../../helpers/FormatingData";
 import { getStringFromEscala } from "../../../helpers/FormatingData";
 import { getStringFromNota } from "../../../helpers/FormatingData";

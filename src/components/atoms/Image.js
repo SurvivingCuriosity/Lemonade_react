@@ -10,7 +10,7 @@ export const Image = ({ src, alt, size, className = '' }) => {
                 setTam(15);
                 break;
             case 'S':
-                setTam(20);
+                setTam(25);
                 break;
             case 'M':
                 setTam(50);

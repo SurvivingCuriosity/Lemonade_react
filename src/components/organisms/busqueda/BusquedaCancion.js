@@ -1,14 +1,12 @@
 import React from "react";
-
 import TarjetaCancion from "./TarjetaCancion";
-import { buscarCancion } from "../../../API_calls/apiCalls";
-import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
-import { getAllAudioFeatures } from "../../../API_calls/apiCustomMethods";
+import { buscarCancion, getPaginaSiguienteOAnterior } from "../../../api/apiCalls";
+import { getAllAudioFeatures } from "../../../api/apiCustomMethods";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { TmpMessage } from "../../atoms/TmpMessage";
 
 export function BusquedaCancion(props) {
-    const { titulo, isSongKeyFinder, haySeleccion, callbackEleccion } = props;
+    const { titulo, isSongKeyFinder, haySeleccion, callbackEleccion, getRandomOnInit } = props;
     const [isLoading, setIsLoading] = React.useState(false);
     //texto buscado por el usuario
     const [text, setText] = React.useState("");
@@ -27,6 +25,8 @@ export function BusquedaCancion(props) {
     const [linkNext, setLinkNext] = React.useState("");
     const [linkPrev, setLinkPrev] = React.useState("");
 
+
+
     let handleSubmit = async (e) => {
         e.preventDefault();
         setText("");
@@ -37,7 +37,12 @@ export function BusquedaCancion(props) {
             buscarCancion(text, lleganResultadosDeBusqueda);
         }
     };
-
+    React.useEffect(() => {
+        if(getRandomOnInit){
+            buscarCancion('a', lleganResultadosDeBusqueda)
+        }
+    }, []);
+    
     //se ejecuta cada vez que resultadoBusqueda cambia
     React.useEffect(() => {
         //llegan varios
@@ -146,8 +151,11 @@ export function BusquedaCancion(props) {
     //funcion que se ejecuta cuando llegan los resultados
     function lleganResultadosDeBusqueda(resultados) {
         if (resultados.err?.message) {
-            console.log('Error de red');
+            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error' , remain:true} })
+            setIsLoading(false)
+            return;
         }
+        setTemporalMsgConfig(() => { return {} }) //para borrar mensaje anterior
         setResultadoBusqueda(resultados);
     }
 
@@ -191,9 +199,9 @@ export function BusquedaCancion(props) {
             </form>
 
             {isLoading && <CustomSpinner />}
-
-            {resultadoBusqueda.tracks && <TmpMessage config={temporalMsgConfig} />}
-
+            
+            <TmpMessage config={temporalMsgConfig} />
+            
             {listaResultados.length > 0 && !haySeleccion ? renderListaResultados : ''}
         </div>
     )

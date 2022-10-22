@@ -1,10 +1,10 @@
 import React from "react";
-import play from '../../images/reproductor/play.svg'
-import pause from '../../images/reproductor/pause.svg'
-import volume from '../../images/reproductor/volume.svg'
-import adelante from '../../images/reproductor/adelante.svg'
-import atras from '../../images/reproductor/atras.svg'
-import volumeoff from '../../images/reproductor/volumeoff.svg'
+import play from '../../assets/images/reproductor/play.svg'
+import pause from '../../assets/images/reproductor/pause.svg'
+import volume from '../../assets/images/reproductor/volume.svg'
+import adelante from '../../assets/images/reproductor/adelante.svg'
+import atras from '../../assets/images/reproductor/atras.svg'
+import volumeoff from '../../assets/images/reproductor/volumeoff.svg'
 
 export function Reproductor(props){
 

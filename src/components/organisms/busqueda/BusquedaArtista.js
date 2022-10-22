@@ -1,8 +1,8 @@
 import React from "react";
 import TarjetaArtista from "./TarjetaArtista";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
-import { buscarArtista } from "../../../API_calls/apiCalls";
-import { getPaginaSiguienteOAnterior } from "../../../API_calls/apiCalls";
+import { buscarArtista } from "../../../api/apiCalls";
+import { getPaginaSiguienteOAnterior } from "../../../api/apiCalls";
 import { TmpMessage } from "../../atoms/TmpMessage";
 
 export function BusquedaArtista(props) {
@@ -106,8 +106,11 @@ export function BusquedaArtista(props) {
     //funcion que se ejecuta cuando llegan los resultados
     function miCallback(resultado) {
         if (resultado.err?.message) {
-            return console.log('Error de red');
+            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error', remain:true } })
+            setIsLoading(false)
+            return;
         }
+        setTemporalMsgConfig(() => { return {} }) //para borrar mensaje anterior
         setIsLoading(false);
         setResultadoBusqueda(resultado);
         //llega una lista

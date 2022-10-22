@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../API_calls/apiCustomMethods";
+import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../api/apiCustomMethods";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { CustomButton } from "../../atoms/CustomButton";
 import { ProgressBar } from "../../atoms/ProgressBar";
@@ -9,14 +9,6 @@ import TarjetaCancionDoble from "../../molecules/tarjetas/TarjetaCancionDoble";
 import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
 
 export function ArtistMatchFinder() {
-    //====PROPIEDADES Y CONSTANTES
-    const TITULO = "Artist Match Finder"
-    const DESCRIPCION = "Obten una lista de parejas de canciones compatibles a partir de dos artistas"
-
-    const TEXTO_BOTON_BUSCAR = "Buscar";
-    const TEXTO_BOTON_RELLENA_CAMPOS = "Rellena los campos";
-    const TEXTO_BOTON_NUEVA_BUSQUEDA = "Nueva búsqueda"
-
     //====ESTADO
     const [seleccionArtista1, setSeleccionArtista1] = React.useState({});
     const [cancionesArtista1, setCancionesArtista1] = React.useState([]);
@@ -31,9 +23,6 @@ export function ArtistMatchFinder() {
 
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
 
-    const [textoBotonFinal, setTextoBotonFinal] = React.useState(TEXTO_BOTON_RELLENA_CAMPOS);
-    const [deshabilitarBotonFinal, setDeshabilitarBotonFinal] = React.useState(true);
-
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
 
     //====USE EFECT
@@ -43,7 +32,7 @@ export function ArtistMatchFinder() {
         if (seleccionArtista1.id) {
             getAllUniqueArtistSongs(seleccionArtista1.id, lleganCancionesDeArtista1)
         } else {
-        //si no hay artista elegido (se ha borrado), se deja de mostrar el resultado final
+            //si no hay artista elegido (se ha borrado), se deja de mostrar el resultado final
             setCancionesArtista1([])
             setObjetosAudioFeatures1([])
             setMostrarResultadoFinal(false)
@@ -77,23 +66,6 @@ export function ArtistMatchFinder() {
 
 
     //====FUNCIONES
-    const handleClickFinal = (e) => {
-        switch (e.target.textContent) {
-            case TEXTO_BOTON_NUEVA_BUSQUEDA:
-                setSeleccionArtista1(() => { return {} })
-                setSeleccionArtista2(() => { return {} })
-                setResultadoFinal(() => { return [] })
-                setTextoBotonFinal(() => { return TEXTO_BOTON_RELLENA_CAMPOS })
-                setDeshabilitarBotonFinal(() => { return true })
-                break;
-            case TEXTO_BOTON_RELLENA_CAMPOS:
-
-                break;
-            case TEXTO_BOTON_BUSCAR:
-
-                break;
-        }
-    };
     const userSelectsArtist1 = (artistSelected) => { setSeleccionArtista1(artistSelected); }
 
     const userSelectsArtist2 = (artistSelected) => { setSeleccionArtista2(artistSelected); }
@@ -119,7 +91,7 @@ export function ArtistMatchFinder() {
         objetosAudioFeatures1.map((audioF) => {
             audioFeatures1_conKey.set(`${audioF.id}`, audioF);
         })
-        
+
         objetosAudioFeatures2.map((audioF) => {
             audioFeatures2_conKey.set(`${audioF.id}`, audioF);
         })
@@ -340,13 +312,9 @@ export function ArtistMatchFinder() {
             setMsgResultadoClass("error")
             setMsgResultado("No se encontraron coincidencias")
 
-            setDeshabilitarBotonFinal(() => { return false });
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA });
         } else {
             setMsgResultadoClass("success")
             // setMsgResultado(`Canciones de  '${seleccionArtista1.name}'' en la misma escala que '${seleccionCancion.name}'`)
-            setDeshabilitarBotonFinal(() => { return false });
-            setTextoBotonFinal(() => { return TEXTO_BOTON_NUEVA_BUSQUEDA });
         }
         setResultadoFinal(() => { return arrayResultadosFinales })
         setMostrarResultadoFinal(true);
@@ -372,14 +340,6 @@ export function ArtistMatchFinder() {
 
     const resultado = (
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">3. Resultados</h2>
-
-            <CustomButton
-                disabled={deshabilitarBotonFinal}
-                textoBoton={textoBotonFinal}
-                onClickCallback={handleClickFinal}
-            />
-
             <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
 
             {resultadoFinal.length > 0
@@ -436,9 +396,7 @@ export function ArtistMatchFinder() {
     )
     //====RENDER 
     return (
-        <div className="tool-container">
-            <h1 className="tool-titulo">{TITULO}</h1>
-            <p className="tool-description text-center">{DESCRIPCION}</p>
+        <>
             <ProgressBar
                 tipo1="artista"
                 tipo2="artista"
@@ -463,6 +421,7 @@ export function ArtistMatchFinder() {
             {seleccionArtista1.id && !seleccionArtista2.id && busquedaArtista2}
             {seleccionArtista1.id && seleccionArtista2.id && !mostrarResultadoFinal && <CustomSpinner />}
             {mostrarResultadoFinal && resultado}
-        </div>
+        </>
+
     )
 }

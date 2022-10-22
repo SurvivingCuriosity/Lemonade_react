@@ -1,6 +1,7 @@
 import React from 'react'
-import logoInstagram from '../../../../images/logoInstagram.svg'
-import logoGitHub from '../../../../images/logoGitHub.svg'
+import logoInstagram from '../../../../assets/images/logoInstagram.svg'
+import logoGitHub from '../../../../assets/images/logoGitHub.svg'
+import { Image } from '../../../atoms/Image';
 
 export function Contacto(){
     let tamanoIconosRedes=25;
@@ -11,7 +12,7 @@ export function Contacto(){
                 <h3>¡Siguenos en instagram!</h3>
                     <div className="linea-flex-center">
                         <a href="https://www.instagram.com/lemonade.tools/" target='blank' className="boton_redes instagram">
-                            <img alt='icono instagram' src={logoInstagram} style={{width: tamanoIconosRedes + 'px'}}/>
+                            <Image alt='icono instagram' src={logoInstagram} size='S'/>
                             Instagram
                         </a>
                     </div>
@@ -19,7 +20,7 @@ export function Contacto(){
                 <div className="subSection">
                 <h3>Mira el código en Github</h3>
                     <a href="https://github.com/SurvivingCuriosity/Lemonade_react" target='blank' className="boton_redes github">
-                        <img alt='icono twitter' src={logoGitHub} style={{width: tamanoIconosRedes + 'px'}}/>
+                        <Image alt='icono github' src={logoGitHub} size='S'/>
                         Github
                     </a>
                 </div>
