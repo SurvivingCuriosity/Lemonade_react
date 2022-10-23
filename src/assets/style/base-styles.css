@@ -1,0 +1,220 @@
+* {
+    box-sizing: border-box;
+    -webkit-text-stroke: 0.01px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+html {
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
+    font-size: 0.65em;
+    /*Smaller letter on phone*/
+}
+
+:root {
+    --negro: #151515;
+    --negro2: #222;
+    --negro3: #333;
+
+    --gris: #777;
+
+    --blanco: rgb(215, 215, 215);
+    --blanco2: #CCC;
+    --blanco3: #AAA;
+
+    --color: #FFCC4D;
+
+    --error: rgb(255, 75, 75);
+    --fondoError: rgba(179, 43, 43, 0.9);
+}
+
+input,
+textarea,
+button,
+select,
+a {
+    /* Elimina cuadro azul en movil */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+[data-theme="dark"] {
+    --fondo: var(--negro);
+    --fondo2: var(--negro2);
+    --fondo3: var(--negro3);
+
+    --textoSobreFondo: var(--blanco);
+    --textoSobreNoFondo: var(--negro);
+
+    --colorEnlaces: var(--color);
+}
+
+
+::-moz-selection {
+    /* Code for Firefox */
+    color: var(--fondo);
+    background: var(--color);
+}
+
+::selection {
+    color: var(--fondo);
+    background: var(--color);
+}
+
+body {
+    background-color: var(--fondo2);
+    color: var(--color);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+
+    /* min-height: -webkit-fill-available; */
+}
+
+/* ELEMENTOS SUELTOS */
+
+h1 {
+    font-size: 4em;
+    color: var(--color);
+}
+
+h1.titulo-main {
+    background-color: var(--color);
+    color: var(--fondo);
+}
+
+h1.tool-titulo {
+    text-align: center;
+    font-size: 3em;
+    color: var(--color);
+}
+
+.tituloTopNav {
+    color: var(--blanco3);
+    font-size: 1.75em;
+}
+
+h2 {
+    padding: 0.25em;
+    color: var(--color);
+    font-size: 3.5em;
+}
+
+h3 {
+    font-size: 2.25em;
+    color: var(--gris);
+}
+
+h4 {
+    font-size: 2em;
+}
+
+p {
+    font-size: 1.25em;
+}
+
+h5 {
+    font-size: 1.25em;
+}
+
+a {
+    color: var(--colorEnlaces);
+    text-decoration: none;
+}
+
+hr {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--colorTextoColor);
+}
+
+
+/*BOTONES*/
+button,
+input[type=submit],
+input[type=button] {
+    color: var(--color);
+    background-color: var(--fondo);
+    padding: 0.2em 0.9em;
+    border: 2px solid var(--color);
+    border-radius: 5px;
+}
+
+button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+    cursor: pointer;
+}
+
+button:disabled,
+input[type=submit]:disabled,
+input[type=button]:disabled {
+    color: var(--gris);
+    background-color: var(--fondo);
+    border: 2px solid var(--gris);
+}
+
+button:disabled:hover,
+input[type=submit]:disabled:hover,
+input[type=button]:disabled:hover {
+    cursor: pointer;
+}
+
+.boton_link {
+    border: none;
+    background-color: transparent;
+}
+
+/*FIN BOTONES*/
+
+/*TEXT INPUTS*/
+input[type="search"],
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.6em;
+    border: 2px solid var(--gris);
+    border-radius: 4px;
+    font-weight: 500;
+    background-color: var(--fondo);
+    color: var(--gris);
+
+}
+
+input[type="search"]:disabled,
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled {
+    background-color: var(--fondo);
+    border: 2px solid var(--gris);
+    color: var(--gris);
+}
+
+input[type="search"]:hover,
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover {
+    cursor: text !important;
+}
+
+input[type="search"]:disabled:hover,
+input[type="text"]:disabled:hover,
+input[type="password"]:disabled:hover,
+input[type="email"]:disabled:hover {
+    cursor: not-allowed !important;
+}
+
+
+select:focus,
+input:focus {
+    outline: none;
+}
+
+form {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+}
+
+/*FIN INPUTS Y BOTONES DE FORMULARIOS*/

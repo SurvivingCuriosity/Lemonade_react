@@ -46,7 +46,7 @@ export function TarjetaEleccionCancion(props) {
                 </div>
 
             </div>
-            <button className='botonCambiarPreview boton2' onClick={callbackCambiarEleccion}>Cambiar canción</button>
+            <button className='botonCambiarPreview boton_link' onClick={callbackCambiarEleccion}>Cambiar canción</button>
         </div>
     )
 

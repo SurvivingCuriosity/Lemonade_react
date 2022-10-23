@@ -7,6 +7,7 @@
     align-items: center;
     position: relative;
     transition: width 1s ease-in-out;
+    color: var(--blanco);
 }
 
 .progress-bar-bola{
@@ -42,7 +43,7 @@
 }
 
 .progress-bar-barra{
-    background-color: var(--fondo4);
+    background-color: var(--gris);
     width: inherit;
     height: 1em;
     z-index: -1;
@@ -51,7 +52,7 @@
 }
 .progress-bar-bola-completa{
     background-color: var(--color)!important;
-    border: 0.33em solid var(--fondo4) !important;
+    border: 0.33em solid var(--gris) !important;
 }
 
 .progress-bar-progress{

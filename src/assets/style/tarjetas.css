@@ -1,0 +1,402 @@
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #c0c0c0 #808080;
+}
+
+/*================================TARJETAS COMO RESULTADO DE BUSQUEDA*/
+.clickable {
+    transition: transform 0.5s;
+}
+
+.clickable:hover {
+    background-color: var(--fondo3);
+    box-shadow: 0px 0px 10px 0px var(--fondo3);
+    cursor: pointer;
+    border: 2px solid var(--color);
+}
+
+.tarjeta {
+    padding: 0.5em 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    background-color: var(--fondo3);
+    color: var(--blanco2);
+    border-radius: 10px;
+    font-size: 0.8em;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.--tarjeta-left {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+    align-items: flex-start;
+}
+
+.--tarjeta-right {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    align-items: flex-end;
+    position: relative;
+}
+
+.--tarjeta-datos {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.--tarjeta-info-bpm-scale {
+    background-color: var(--color);
+    border-radius: 8px;
+    padding: 0.25em 0.5em;
+    color: var(--fondo);
+    min-width: 7em;
+    font-size: 1.25em;
+    position: relative;
+}
+
+.--tarjeta-info-bpm-scale p {
+    font-weight: 500;
+    color: var(--fondo);
+}
+
+.--tarjeta-img-fuego {
+    position: absolute;
+    top: 50%;
+    left: -2.5em;
+    transform: translate(0, -50%);
+    filter: drop-shadow(5px 5px 15px #000000);
+    -webkit-filter: drop-shadow(5px 5px 15px #000000);
+    -moz-filter: drop-shadow(5px 5px 15px #000000);
+}
+
+/*FIN TARJETAS COMO RESULTADO DE BUSQUEDA*/
+
+/*================================TARJETAS PREVIEW CHOICE*/
+.preview-choices-div {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-around;
+    margin: 1em auto;
+    gap: 0.25em;
+}
+
+.preview-choices-div .tarjeta {
+    width: 50%;
+}
+
+/*FIN TARJETAS PREVIEW CHOICE*/
+
+
+
+/*================================TARJETAS DOBLE*/
+.--tarjetaDoble .--tarjeta-left2 button {
+    margin-right: auto;
+}
+
+.--tarjetaDoble .--tarjeta-right button {
+    margin-left: auto;
+}
+
+.--tarjetaDoble-canciones {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.--tarjetaDoble-reproductores {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+}
+
+.--tarjetaDoble {
+    margin: 2em 1em;
+    position: relative;
+    border-radius: 10px;
+    border: 2px solid var(--gris);
+    box-shadow: 0px 0px 10px var(--gris);
+    overflow: hidden;
+}
+
+.--tarjetaDoble .--tarjeta-left2 .--tarjeta-datos {
+    margin: auto;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 15px;
+}
+
+.--tarjetaDoble .--tarjeta-right .--tarjeta-datos {
+    margin: auto;
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 15px;
+
+}
+
+.--tarjetaDoble .--tarjeta-left2 .--tarjeta-datos,
+.--tarjetaDoble .--tarjeta-right .--tarjeta-datos {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 1em;
+    z-index: 2;
+    margin-top: 0;
+}
+
+/*FIN TARJETAS DOBLE*/
+
+.resultado-left {
+    width: 50%;
+    float: left;
+    font-size: 0.8em;
+}
+
+.resultado-right {
+    width: 50%;
+    float: right;
+    font-size: 0.8em;
+}
+
+.resultado-left,
+.resultado-right {
+    max-height: 10em;
+    overflow-y: scroll;
+}
+
+
+
+/*================================ Chrome, Edge, and Safari */
+.resultado-left::-webkit-scrollbar,
+.resultado-right::-webkit-scrollbar {
+    width: 0.7em;
+}
+
+.resultado-right::-webkit-scrollbar-track,
+.resultado-left::-webkit-scrollbar-track {
+    background: #808080;
+
+}
+
+.resultado-left::-webkit-scrollbar-thumb,
+.resultado-right::-webkit-scrollbar-thumb {
+    background-color: var(--colorTextoColor);
+    border-radius: 42px;
+    border: 3px none #400040;
+    height: 10px;
+    box-shadow: 0px 0px 20px 3px black;
+}
+
+.resultado-left .tarjeta,
+.resultado-right .tarjeta {
+    margin: 0.5em 0.25em;
+    height: max-content;
+    padding: 0.5em;
+    box-shadow: none;
+}
+
+.resultado-left .tarjeta .--tarjeta-img-ppal,
+.resultado-right .tarjeta .--tarjeta-img-ppal {
+    height: 5em !important;
+    width: 5em !important;
+}
+
+.resultado-left .tarjeta .--tarjeta-info-bpm-scale,
+.resultado-right .tarjeta .--tarjeta-info-bpm-scale {
+    width: max-content;
+    margin: auto 0.5em;
+}
+
+.resultado-left .tarjeta a,
+.resultado-right .tarjeta a {
+    display: none;
+}
+
+
+.resultado-left .tarjeta .--tarjeta-datos,
+.resultado-right .tarjeta .--tarjeta-datos {
+    font-size: 0.9em;
+}
+
+
+
+
+
+
+/*================================ datos del 2 */
+
+
+.--tarjeta-datos .--tarjeta-right,
+.--tarjeta-datos .--tarjeta-left2 {
+    position: relative;
+    z-index: 5;
+}
+
+/*================================ datos del 2 */
+.--tarjetaDoble .--tarjeta-right .--tarjeta-datos p {
+    flex-flow: row-reverse;
+    align-self: flex-end;
+    width: max-content;
+}
+
+.--tarjetaDoble .--tarjeta-left2 .--tarjeta-datos p {
+    flex-flow: row;
+    align-self: flex-start;
+    width: max-content;
+}
+
+.--bpm-scale-doble {
+    font-size: 1.25em;
+    width: 7em;
+    position: absolute;
+    left: calc(50% - 3.5em);
+    background-color: var(--colorTextoColor);
+    color: var(--fondo);
+    padding: 0.5em;
+    display: flex;
+    flex-flow: column;
+    top: 2.5em;
+    align-items: center;
+    border-radius: 11px;
+    font-weight: 500;
+    z-index: 4;
+    box-shadow: 0px 0px 30px 15px var(--negro);
+}
+
+.--tarjetaDoble-img1 {
+    width: 17em !important;
+    position: absolute;
+    top: -1em;
+    left: 0;
+    opacity: 0.5 !important;
+    bottom: auto;
+}
+
+.--tarjetaDoble-img2 {
+    width: 17em !important;
+    position: absolute;
+    top: -1em;
+    right: 0;
+    opacity: 0.5 !important;
+    bottom: auto;
+}
+
+
+
+.tarjetaElegida {
+    padding: 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    background-color: var(--fondo3);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px black;
+    font-size: 0.8em;
+    border: 1px solid var(--colorTextoColor);
+    width: 100%;
+}
+
+.botonCambiarPreview {
+    white-space: pre;
+    position: absolute;
+    bottom: -2em;
+    left: 0;
+    background: transparent;
+}
+
+.tarjeta p,
+.tarjetaElegida p {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 0.25em;
+    align-items: center;
+}
+
+.--tarjeta-center {
+    position: absolute;
+    left: 50%;
+}
+
+
+
+.--tarjeta-left2 {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    align-items: flex-start;
+    position: relative;
+}
+
+
+.--tarjeta-img-info {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+}
+
+.--tarjeta-play-preview-button {
+    border: none;
+    width: 35px;
+    height: 35px;
+    background-color: transparent;
+    color: var(--fondo);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+    padding: 0.5em;
+    align-items: center;
+    font-size: 2em;
+    box-shadow: 0px 0px 5px 1px var(--blanco3);
+}
+
+
+
+.hidden-audio {
+    display: none;
+}
+
+
+.--tarjeta-img-ppal {
+    border-radius: 10%;
+    aspect-ratio: 1;
+    margin: auto;
+}
+
+
+.enlaceLeftTarjeta {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+}
+
+
+
+
+.displayEleccion1,
+.displayEleccion2 {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+.btn_borrar_todo {
+    position: absolute;
+    bottom: 0;
+    margin: 1em;
+}
+
+.icono_tarjeta {
+    width: 1.5em;
+    background-color: var(--negro2);
+    padding: 0.2em;
+}
+
+/*FIN TARJETAS */

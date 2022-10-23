@@ -14,7 +14,6 @@ function App() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
-    console.log(isOnline);
     // Update network status
     const handleStatusChange = () => { setIsOnline(navigator.onLine); };
 
