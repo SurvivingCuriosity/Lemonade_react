@@ -4,7 +4,6 @@ import logoGitHub from '../../../../assets/images/logoGitHub.svg'
 import { Image } from '../../../atoms/Image';
 
 export function Contacto(){
-    let tamanoIconosRedes=25;
     return (
         <section id="contacto" className="section-comunidad container_start">
             <h2>Contacto</h2>

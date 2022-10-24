@@ -4,7 +4,7 @@ export function SobreElProyecto() {
 
     return (
         <>
-            <h2>Sobre el proyecto</h2>
+            <h2 style={{position:'sticky', top:'1em'}}>Sobre el proyecto</h2>
                 <div className='subSection'>
                     <h3>Idea original</h3>
                     <p>La idea de este proyecto surge tras descubrir las posibilidades que ofrece el API de Spotify y como un reto personal para mi.</p>
