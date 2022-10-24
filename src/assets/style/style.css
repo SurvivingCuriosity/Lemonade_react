@@ -63,13 +63,14 @@ main section {
 }
 
 .subSection {
-  width: 80%;
   display: flex;
   gap: 1em;
   margin-bottom: 2em;
   flex-flow: column nowrap;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
+  color: var(--blanco);
+  width: 80vw;
 }
 
 .container {
