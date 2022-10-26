@@ -1041,3 +1041,30 @@ footer {
   padding: 0.4em;
   margin-top: 0.5em;
 }
+.translation-button{
+  position: absolute;
+  top: calc(0% - 35px);
+  right: 1em;
+  height: 70px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  background: transparent;
+  background-color: var(--negro);
+  padding: 0.25em 0.5em;
+  border-radius: 10px;
+  z-index: 5;
+}
+.translation-button button{
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+.gira180{
+  transform: rotate(180deg);
+  transition: transform 0.2s ease-in-out;
+}
+.gira-180{
+  transform: rotate(0deg);
+  transition: transform 0.2s ease-in-out;
+}

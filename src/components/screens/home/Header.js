@@ -3,8 +3,12 @@ import lemon from '../../../assets/images/lemon.svg'
 import { HeaderToolsNav } from '../../molecules/navs/HeaderToolsNav'
 import { HeaderBottomNav } from '../../molecules/navs/HeaderBottomNav'
 
-export function Header() {
+import {useTranslation} from 'react-i18next'
 
+export function Header() {
+    const texto = 'Por productores, para productores...'
+    const [t, i18n] = useTranslation('global');
+    
     return (
 
         <header id="header">
@@ -13,7 +17,7 @@ export function Header() {
                 <span>
                     <h1 className="titulo-main">Lemonade</h1>
                     <br></br>
-                    <p>Por productores, para productores...</p>
+                    <p>{t('header.hello-world')}</p>
                 </span>
                 <HeaderToolsNav />
                 <HeaderBottomNav />

@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 
-export const Image = ({ src, alt, size, className = '', estilo }) => {
+export const Image = ({ src, alt, size, className = '', onClick}) => {
 
     const [tam, setTam] = useState(20);
 
@@ -9,12 +9,19 @@ export const Image = ({ src, alt, size, className = '', estilo }) => {
             case 'icon':
                 setTam(15);
                 break;
-            case 'S':
+            case 'XS':
+            case 'xs':
                 setTam(25);
                 break;
+            case 'S':
+            case 's':
+                setTam(30);
+                break;
+            case 'M':
             case 'M':
                 setTam(50);
                 break;
+            case 'l':
             case 'L':
                 setTam(70);
                 break;
@@ -39,6 +46,7 @@ export const Image = ({ src, alt, size, className = '', estilo }) => {
                 src={src}
                 alt={alt || 'imagen sin texto alternativo'}
                 style={{ ...style, display: loaded ? 'block' : 'none' }}
+                onClick={onClick}
                 onLoad={handleImageLoaded}>
             </img>
         </>
