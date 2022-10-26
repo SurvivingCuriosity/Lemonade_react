@@ -1,17 +1,17 @@
 import React from "react";
 import lemon from '../../assets/images/lemon.svg'
-export function CustomSpinner(props){
-    let tamanoSpinner=40
-    let textoSpinner='Cargando'
+export function CustomSpinner({ size }) {
+    let tamanoSpinner = 40
+    let textoSpinner = 'Cargando'
 
-    if(props.size=="s"){
-        tamanoSpinner=20
-        textoSpinner=''
+    if (size == "s") {
+        tamanoSpinner = 20
+        textoSpinner = ''
     }
 
-    return(
+    return (
         <div className="loading-spinner">
-            <img src={lemon} style={{width: tamanoSpinner + 'px', margin:'0'}}/>
+            <img src={lemon} style={{ width: tamanoSpinner + 'px', margin: '0' }} />
             <p>{textoSpinner}</p>
         </div>
     )

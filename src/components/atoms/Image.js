@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 
-export const Image = ({ src, alt, size, className = '' }) => {
+export const Image = ({ src, alt, size, className = '', estilo }) => {
 
     const [tam, setTam] = useState(20);
 

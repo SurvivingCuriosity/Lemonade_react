@@ -62,7 +62,7 @@ a {
 
 body {
     background-color: var(--fondo2);
-    color: var(--color);
+    color: var(--blanco);
     position: absolute;
     top: 0;
     width: 100%;

@@ -9,26 +9,24 @@ import { IconAndText } from "../../containers/IconAndText";
 
 export default function (props) {
     const { isClickable, selectionCallback, jsonData, reducirInformacion } = props;
-
+    
     //extraigo los datos que quiero mostrar del json
-    const songKey = getStringFromNota(jsonData.key);
-    const songMode = getStringFromEscala(jsonData.mode);
-    const songBPM = jsonData.bpm
-    let imgCancion = (jsonData.album.images[0]) ? (jsonData.album.images[0].url) : jsonData.images[0].url
-    let nombreArtista = getCadenaArtistas(jsonData.artists);
-    const nombreCancion = jsonData.name
-    const duracionCancion = milisegundosAString(jsonData.duration_ms);
-    const link = jsonData.external_urls.spotify
-    const popularity = jsonData.popularity;
+    const songKey = getStringFromNota(jsonData.key) || 'Sin definir';
+    const songMode = getStringFromEscala(jsonData.mode) || '';
+    const songBPM = Math.round(jsonData.bpm) || 'Sin definir';
+    const duracionCancion = milisegundosAString(jsonData.duration_ms) || 'Sin definir';
+    const link = jsonData.external_urls.spotify || 'Sin definir'
+    const popularity = jsonData.popularity || 'Sin definir';
 
-    //si no llega imagen, usamos la de por defecto
-    if (imgCancion === null) {
-        imgCancion = icon_artist
-    }
+    const imgCancion = (jsonData.album.images[0]) ? (jsonData.album.images[0].url) : icon_artist;
 
-    if (reducirInformacion) {
-        nombreArtista = getCadenaArtistas(jsonData.artists, true);
-    }
+    let nombreArtista = getCadenaArtistas(jsonData.artists) || 'Sin definir';
+    nombreArtista=truncaNombreLargo(nombreArtista, reducirInformacion);
+
+    let nombreCancion = jsonData.name || 'Sin definir';
+    nombreCancion= truncaNombreLargo(nombreCancion, reducirInformacion)
+
+
 
     function handleEleccionTarjeta() {
         if (jsonData.id) {
@@ -45,32 +43,29 @@ export default function (props) {
                 <Image src={imgCancion} alt='Carátula del album' size='M' />
 
                 <div className="--tarjeta-datos">
-                    {nombreCancion &&
                         <IconAndText>
                             <Image src={icon_song} alt='Carátula del album' size='icon' />
-                            <p>{truncaNombreLargo(nombreCancion, reducirInformacion)}</p>
+                            <p>{nombreCancion}</p>
                         </IconAndText>
-                    }
-                    {nombreArtista &&
+
                         <IconAndText>
                             <Image src={icon_artist} alt='Carátula del album' size='icon' />
-                            <p>{truncaNombreLargo(nombreArtista, reducirInformacion)}</p>
+                            <p>{nombreArtista}</p>
                         </IconAndText>
-                    }
-                    {duracionCancion &&
+
                         <IconAndText>
                             <Image src={icon_time} alt='Carátula del album' size='icon' />
                             <p>{duracionCancion}</p>
                         </IconAndText>
-                    }
+                    
                 </div>
             </div>
 
             <div className="--tarjeta-right">
                 <a href={link} target='_blank'>Ver en Spotify</a>
                 <div className="--tarjeta-info-bpm-scale">
-                    {songBPM && <p>{Math.round(songBPM)} BPM</p>}
-                    {songKey && <p className="linea-flex-start">{`${songKey}${songMode}`}</p>}
+                    <p>{songBPM} BPM</p>
+                    <p className="linea-flex-start">{`${songKey}${songMode}`}</p>
                     {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
                 </div>
             </div>

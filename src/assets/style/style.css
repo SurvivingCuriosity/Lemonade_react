@@ -318,18 +318,12 @@ footer {
 .boton_redes {
   padding: 0.8em 0.6em;
   border: none;
-  display: block;
   margin: 0.5em;
   border-radius: 18px;
-  font-size: 1.25em;
-  display: flex;
-  align-items: center;
+  font-size: 1.5em;
   min-width: 170px;
 }
 
-.boton_redes img {
-  margin-right: 1em;
-}
 
 .instagram {
   background: rgb(253, 89, 73);
@@ -1032,3 +1026,18 @@ footer {
   }
 }
 /* FIN MEDIA QUERIES */
+
+.scroll-down-arrow{
+  transform: scaleX(1.2)rotate(45deg);
+  border-bottom: 2px solid var(--blanco3);
+  border-right: 2px solid var(--blanco3);
+  padding: 0.7em;
+  margin-top: 3em;
+}
+.scroll-up-arrow{
+  transform: scaleX(1.2) rotate(225deg);
+  border-bottom: 3px solid var(--negro);
+  border-right: 3px solid var(--negro);
+  padding: 0.4em;
+  margin-top: 0.5em;
+}

@@ -1,13 +1,11 @@
 import React from 'react'
-import flecha from '../../assets/images/flecha.svg'
 
 export function ScrollToTop(){
-    let tamanoImagen = '40'
     return (
         <nav className="fixed-bottom-nav">
 
             <a className="backToTop" href="#top" aria-label="Icono moverse arriba">
-                <img src={flecha} style={{width: tamanoImagen + 'px'}}/>
+                <div className='scroll-up-arrow' onClick={()=>{window.scrollTo(0,0)}}></div>
             </a>
 
         </nav>

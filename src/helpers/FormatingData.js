@@ -3,40 +3,40 @@ export function getStringFromNota(notaInt) {
     switch (notaInt) {
         case 0:
             return "Do";
-            // return "C";
+        // return "C";
         case 1:
             return "Do#";
-            // return "C#";
+        // return "C#";
         case 2:
             return "Re";
-            // return "D";
+        // return "D";
         case 3:
             return "Re#";
-            // return "D#";
+        // return "D#";
         case 4:
             return "Mi";
-            // return "E";
+        // return "E";
         case 5:
             return "Fa";
-            // return "F";
+        // return "F";
         case 6:
             return "Fa#";
-            // return "F#";
+        // return "F#";
         case 7:
             return "Sol";
-            // return "G";
+        // return "G";
         case 8:
             return "Sol#";
-            // return "G#";
+        // return "G#";
         case 9:
             return "La";
-            // return "A";
+        // return "A";
         case 10:
             return "La#";
-            // return "A#";
+        // return "A#";
         case 11:
             return "Si";
-            // return "B";
+        // return "B";
         default:
             return "Note unexpected";
     }
@@ -46,7 +46,7 @@ export function getStringFromNota(notaInt) {
 export function getStringFromEscala(escalaInt) {
     switch (escalaInt) {
         case 0:
-            return " m"
+            return "m"
         case 1:
             return ""
         default:
@@ -55,7 +55,8 @@ export function getStringFromEscala(escalaInt) {
 }
 
 //Esto es un nombre largo -> Esto es...
-export function truncaNombreLargo(cadena, reducirInformacion, caracteresPermitidos = 30) {
+export function truncaNombreLargo(cadena, reducirInformacion = false) {
+    const caracteresPermitidos = 30;
     if (cadena.length > caracteresPermitidos) {
         cadena = cadena.substring(0, caracteresPermitidos) + "...";
     }

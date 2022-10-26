@@ -1,9 +1,10 @@
 import { React, useState, useEffect } from 'react'
 import { HomePage } from './components/screens/home/HomePage'
-import { ArtistMatchFinderPage } from './components/screens/ArtistMatchFinderPage'
-import { SongMatchFinderPage } from './components/screens/SongMatchFinderPage'
-import { ArtistKeyFinderPage } from './components/screens/ArtistKeyFinderPage'
-import { SongKeyFinderPage } from './components/screens/SongKeyFinderPage'
+import { ArtistMatchFinderPage } from './components/screens/tools/ArtistMatchFinderPage'
+import { SongMatchFinderPage } from './components/screens/tools/SongMatchFinderPage'
+import { ArtistKeyFinderPage } from './components/screens/tools/ArtistKeyFinderPage'
+import { SongKeyFinderPage } from './components/screens/tools/SongKeyFinderPage'
+import { PageNotFound } from './components/screens/PageNotFound'
 import { Footer } from './components/screens/home/Footer'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/SongMatchFinder" element={<SongMatchFinderPage />} />
           <Route exact path="/ArtistKeyFinder" element={<ArtistKeyFinderPage />} />
           <Route exact path="/SongKeyFinder" element={<SongKeyFinderPage />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
       <Footer />

@@ -2,13 +2,20 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 export function HeaderToolsNav(){
+
+    const links = [
+        {label:'ArtistMatch', path:'/ArtistMatchFinder'},
+        {label:'SongMatch', path:'/SongMatchFinder'},
+        {label:'ArtistKey', path:'/ArtistKeyFinder'},
+        {label:'SongKey', path:'/SongKeyFinder'}
+    ]
+
     return (
         <nav className="header-main-nav">
             <ul>
-                <li><Link to="/ArtistMatchFinder">ArtistMatch</Link></li>
-                <li><Link to="/SongMatchFinder">SongMatch</Link></li>
-                <li><Link to="/ArtistKeyFinder">ArtistKey</Link></li>
-                <li> <Link to="/SongKeyFinder">SongKey</Link></li>
+                {links.map((link, index)=>{return(
+                    <li key={index}><Link to={link.path}>{link.label}</Link></li>
+                )})}
             </ul>
         </nav>
     )
