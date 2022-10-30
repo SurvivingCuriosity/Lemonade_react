@@ -1,5 +1,47 @@
 {
     "header" : {
-        "hello-world":"Hello world"
+        "welcome-message":"Por productores, para productores...",
+        "bottom-menu":{
+            "tutorial":"Tutorial",
+            "proyecto":"Proyecto",
+            "contacto": "Contacto"
+        },
+        "tutorial":{
+            "encabezado": "Tutorial",
+            "artistmatchfinder":{
+                "descripcion":"Introduce dos artistas y obtén una lista de parejas de canciones compuestas en la misma escala y al mismo tempo."
+            },
+            "songmatchfinder":{
+                "descripcion":"Introduce una canción y un artista para encontrar canciones de ese artista compuestas en la misma escala que la canción introducida."
+            },
+            "artistkeyfinder":{
+                "descripcion":"Obtén las canciones de un artista compuestas en la escala que elijas."
+            },
+            "songkeyfinder":{
+                "descripcion":"Busca una canción para obtener su escala y tempo."
+            },
+            "prueba":"Prueba"
+        },
+        "proyecto":{
+            "encabezado" : "About this project",
+            "idea":{
+                "titulo": "Idea original",
+                "texto": "La idea de este proyecto surge tras descubrir las posibilidades que ofrece el API de Spotify y como un reto personal para mi.",
+                "texto2": "Empecé el desarrollo de Lemonade con Javascript puro, pero rápidamente me di cuenta de que una aplicación de estas características requería de alguna librería o framework para que fuera viable y más sostenible. Por eso aprendí React y me puse manos a la obra."
+            },
+            "desarrollo":{
+                "titulo": "Desarrollo",
+                "texto": "Esta aplicación ha sido desarrollada durante los meses de abril y mayo del 2022 durante mi estancia en Polonia, primero como proyecto personal y segundo como anexo a mi proyecto final del grado superior de Desarrollo de Aplicaciones Web"
+            },
+            "futuro":{
+                "titulo": "Líneas de desarrollo futuras",
+                "texto": "Se pretende implementar un backend que permita a los usuarios registrarse y poder guardar ciertas búsquedas."
+            }
+        },
+        "contacto":{
+            "encabezado": "Contacto",
+            "ig":"¡Siguenos en Instagram!",
+            "git":"¡Código en Github!"
+        }
     }
 }

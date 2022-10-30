@@ -37,7 +37,6 @@ function App() {
       </div>}
 
       <div className="footerStickTop">
-        <TranslateButton />
         <Routes>
           <Route index exact path="/" element={<HomePage />} />
           <Route exact path="/ArtistMatchFinder" element={<ArtistMatchFinderPage />} />

@@ -1,11 +1,12 @@
 import React from 'react'
-
+import {useTranslation} from 'react-i18next'
 export function HeaderBottomNav(){
+    const [t, i18n] = useTranslation('global');
 
     const links = [
-        {label:'Tutorial', path:'#tutorial'},
-        {label:'Proyecto', path:'#proyecto'},
-        {label:'Contacto', path:'#contacto'}
+        {label:t("header.bottom-menu.tutorial"), path:'#tutorial'},
+        {label:t("header.bottom-menu.proyecto"), path:'#proyecto'},
+        {label:t("header.bottom-menu.contacto"), path:'#contacto'}
     ]
 
     return (

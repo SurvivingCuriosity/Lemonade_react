@@ -17,7 +17,7 @@ export function Header() {
                 <span>
                     <h1 className="titulo-main">Lemonade</h1>
                     <br></br>
-                    <p>{t('header.hello-world')}</p>
+                    <p>{t('header.welcome-message')}</p>
                 </span>
                 <HeaderToolsNav />
                 <HeaderBottomNav />

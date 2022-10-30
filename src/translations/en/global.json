@@ -1,5 +1,47 @@
 {
     "header" : {
-        "hello-world":"Hola mundo"
+        "welcome-message":"For producers, by producers...",
+        "bottom-menu":{
+            "tutorial":"Tutorial",
+            "proyecto":"Project",
+            "contacto": "Contact"
+        },
+        "tutorial":{
+            "encabezado": "Tutorial",
+            "artistmatchfinder":{
+                "descripcion":"Choose two artists and get a list of pairs of songs sharing scale and tempo."
+            },
+            "songmatchfinder":{
+                "descripcion":"Choose a song and an artist and get a list of songs of that artist sharing scale with chosen song."
+            },
+            "artistkeyfinder":{
+                "descripcion":"Chose an artist and a scale and see songs in that scale."
+            },
+            "songkeyfinder":{
+                "descripcion":"Look for a song to get its scale and tempo."
+            },
+            "prueba":"Try"
+        },
+        "proyecto":{
+            "encabezado" : "About this project",
+            "idea":{
+                "titulo": "Original idea",
+                "texto": "Translation pending",
+                "texto2": "Translation pending"
+            },
+            "desarrollo":{
+                "titulo": "Development",
+                "texto": "Translation pending"
+            },
+            "futuro":{
+                "titulo": "Future development plan",
+                "texto": "Translation pending"
+            }
+        },
+        "contacto":{
+            "encabezado": "Contact",
+            "ig":"Follow Lemonade on Instagram!",
+            "git":"Code on Github!"
+        }
     }
 }

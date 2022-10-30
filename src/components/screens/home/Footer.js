@@ -1,8 +1,9 @@
 import React from 'react'
-
+import { TranslateButton } from '../../atoms/TranslateButton'
 export function Footer() {
     return (
         <footer>
+            <TranslateButton />
             <span>
                 <a href="https://iconscout.com/icons/lemon" target="_blank">Lemon Emoji Icon</a> on <a href="https://iconscout.com" target='_blank'>Iconscout</a>
             </span>

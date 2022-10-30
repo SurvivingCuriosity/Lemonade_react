@@ -4,11 +4,10 @@ import es from '../../assets/images/flags/es.png'
 import { Image } from './Image'
 import { useTranslation } from 'react-i18next'
 
-const DEFAULT_LANG = 'es'
+const DEFAULT_LANG = 'en'
 
 export const TranslateButton = () => {
     const [t, i18n] = useTranslation('global');
-    const [clase, setClase] = React.useState('');
 
     const [lang, setLang] = React.useState(localStorage.getItem('lang') || DEFAULT_LANG);
 
@@ -18,23 +17,32 @@ export const TranslateButton = () => {
     }, [lang])
 
     function translateToEnglish() {
-        setClase('gira-180');
         setLang('en')
     }
     function translateToSpanish() {
-        setClase('gira180');
         setLang('es')
     }
 
     return (
-        <div className={`translation-button ${clase}`} style={{ transform: lang === 'es' && 'rotate(180deg)' }}>
-            <button>
-                    <Image src={es} alt='translate-spanish' size='S' onClick={translateToEnglish} />
-            </button>
+        <div className={`translation-button`}>
+            {lang === 'en'
+                ?
+                <button>
+                    <div onClick={translateToSpanish} style={{display:'flex', alignItems:'center', gap:'0.5em'}}>
+                        <Image src={es} alt='translate-spanish' size='S'  />
+                        <p style={{color:'var(--blanco2)'}}>Traducir a español</p>
+                    </div>
+                </button>
+                :
+                <button>
+                    <div onClick={translateToEnglish} style={{display:'flex', alignItems:'center', gap:'0.5em'}}>
+                        <Image src={en} alt='translate-english' size='S'  />
+                        <p style={{color:'var(--blanco2)'}}>Translate to english</p>
+                    </div>
+                </button>
+            }
 
-            <button>
-                <Image src={en} alt='translate-english' size='S' onClick={translateToSpanish} />
-            </button>
+
         </div>
     )
 }
