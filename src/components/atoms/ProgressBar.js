@@ -1,6 +1,7 @@
 import React from "react";
-
+import {useTranslation} from 'react-i18next'
 export function ProgressBar(props){
+    const [t, i18n] = useTranslation('global');
     const {
         primerPaso, //se pinta la primera bola
         primeraCondicion, //se pinta la mitad de la barra
@@ -57,7 +58,7 @@ export function ProgressBar(props){
 
             {/* Bola 3 */}
             <div className={`progress-bar-bola ${primeraCondicion && segundaCondicion && segundoPaso && "progress-bar-bola-completa"}`}>
-                <div className={`progress-bar-titulo-step ${primeraCondicion && segundoPaso && segundaCondicion && "color"}`}><p >Resultados</p></div>
+                <div className={`progress-bar-titulo-step ${primeraCondicion && segundoPaso && segundaCondicion && "color"}`}><p >{t('tools.results')}</p></div>
             </div>
 
 

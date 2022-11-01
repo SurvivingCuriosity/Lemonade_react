@@ -7,8 +7,9 @@ import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import { BusquedaArtista } from '../../organisms/busqueda/BusquedaArtista'
 import { BusquedaCancion } from '../../organisms/busqueda/BusquedaCancion'
-
+import { useTranslation } from "react-i18next";
 export function SongMatchFinder() {
+    const [t, i18n] = useTranslation('global')
     //====ESTADO
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -100,7 +101,7 @@ export function SongMatchFinder() {
     const eleccionCancion = (
         <BusquedaCancion
             haySeleccion={seleccionCancion.id ? true : false}
-            titulo="1. Elige una canción"
+            titulo={t('tools.intro-song')}
             callbackEleccion={userSelectsSong}
         />
     )
@@ -108,7 +109,7 @@ export function SongMatchFinder() {
     const eleccionArtista = (
         <BusquedaArtista
             haySeleccion={seleccionArtista.id ? true : false}
-            titulo="2. Elige un artista"
+            titulo={t('tools.intro-artist')}
             callbackEleccion={userSelectsArtist}
         />
     )

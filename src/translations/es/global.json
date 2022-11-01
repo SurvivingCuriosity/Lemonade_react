@@ -1,47 +1,68 @@
 {
-    "header" : {
-        "welcome-message":"Por productores, para productores...",
-        "bottom-menu":{
-            "tutorial":"Tutorial",
-            "proyecto":"Proyecto",
+    "header": {
+        "welcome-message": "Por productores, para productores...",
+        "home-btn": "Ir a inicio",
+        "bottom-menu": {
+            "tutorial": "Tutorial",
+            "proyecto": "Proyecto",
             "contacto": "Contacto"
         },
-        "tutorial":{
+        "tutorial": {
             "encabezado": "Tutorial",
-            "artistmatchfinder":{
-                "descripcion":"Introduce dos artistas y obtén una lista de parejas de canciones compuestas en la misma escala y al mismo tempo."
+            "artistmatchfinder": {
+                "descripcion": "Introduce dos artistas y obtén una lista de parejas de canciones compuestas en la misma escala y al mismo tempo."
             },
-            "songmatchfinder":{
-                "descripcion":"Introduce una canción y un artista para encontrar canciones de ese artista compuestas en la misma escala que la canción introducida."
+            "songmatchfinder": {
+                "descripcion": "Introduce una canción y un artista para encontrar canciones de ese artista compuestas en la misma escala que la canción introducida."
             },
-            "artistkeyfinder":{
-                "descripcion":"Obtén las canciones de un artista compuestas en la escala que elijas."
+            "artistkeyfinder": {
+                "descripcion": "Obtén las canciones de un artista compuestas en la escala que elijas."
             },
-            "songkeyfinder":{
-                "descripcion":"Busca una canción para obtener su escala y tempo."
+            "songkeyfinder": {
+                "descripcion": "Busca una canción para obtener su escala y tempo."
             },
-            "prueba":"Prueba"
+            "prueba": "Prueba"
         },
-        "proyecto":{
-            "encabezado" : "About this project",
-            "idea":{
+        "proyecto": {
+            "encabezado": "About this project",
+            "idea": {
                 "titulo": "Idea original",
                 "texto": "La idea de este proyecto surge tras descubrir las posibilidades que ofrece el API de Spotify y como un reto personal para mi.",
                 "texto2": "Empecé el desarrollo de Lemonade con Javascript puro, pero rápidamente me di cuenta de que una aplicación de estas características requería de alguna librería o framework para que fuera viable y más sostenible. Por eso aprendí React y me puse manos a la obra."
             },
-            "desarrollo":{
+            "desarrollo": {
                 "titulo": "Desarrollo",
                 "texto": "Esta aplicación ha sido desarrollada durante los meses de abril y mayo del 2022 durante mi estancia en Polonia, primero como proyecto personal y segundo como anexo a mi proyecto final del grado superior de Desarrollo de Aplicaciones Web"
             },
-            "futuro":{
+            "futuro": {
                 "titulo": "Líneas de desarrollo futuras",
                 "texto": "Se pretende implementar un backend que permita a los usuarios registrarse y poder guardar ciertas búsquedas."
             }
         },
-        "contacto":{
+        "contacto": {
             "encabezado": "Contacto",
-            "ig":"¡Siguenos en Instagram!",
-            "git":"¡Código en Github!"
+            "ig": "¡Siguenos en Instagram!",
+            "git": "¡Código en Github!"
         }
+    },
+    "tools": {
+        "loading": "Cargando...",
+        "button-text": "Buscar",
+        "artist-placeholder": "Introduce artista...",
+        "artist": "Artista",
+        "song": "Canción",
+        "spotify-text":"Ver en Spotify",
+        "results": "Resultados",
+        "intro-artist": "Introduce un artista",
+        "intro-song": "Introduce una canción",
+        "intro-scale": "Elige una escala",
+        "next-page": "Siguiente página",
+        "prev-page": "Pagina anterior",
+        "first-artist": "Introduce el primer artista",
+        "second-artist": "Introduce segundo artista"
+    },
+    "footer": {
+        "lemon-icon": "Icono del Limón en Iconscout",
+        "github-icon": "Icono github creado por Dave Gandy - Flaticon"
     }
 }

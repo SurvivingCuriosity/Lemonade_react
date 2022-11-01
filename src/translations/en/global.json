@@ -1,47 +1,68 @@
 {
-    "header" : {
-        "welcome-message":"For producers, by producers...",
-        "bottom-menu":{
-            "tutorial":"Tutorial",
-            "proyecto":"Project",
+    "header": {
+        "welcome-message": "For producers, by producers...",
+        "home-btn": "Go home",
+        "bottom-menu": {
+            "tutorial": "Tutorial",
+            "proyecto": "Project",
             "contacto": "Contact"
         },
-        "tutorial":{
+        "tutorial": {
             "encabezado": "Tutorial",
-            "artistmatchfinder":{
-                "descripcion":"Choose two artists and get a list of pairs of songs sharing scale and tempo."
+            "artistmatchfinder": {
+                "descripcion": "Choose two artists and get a list of pairs of songs sharing scale and tempo."
             },
-            "songmatchfinder":{
-                "descripcion":"Choose a song and an artist and get a list of songs of that artist sharing scale with chosen song."
+            "songmatchfinder": {
+                "descripcion": "Choose a song and an artist and get a list of songs of that artist sharing scale with chosen song."
             },
-            "artistkeyfinder":{
-                "descripcion":"Chose an artist and a scale and see songs in that scale."
+            "artistkeyfinder": {
+                "descripcion": "Chose an artist and a scale and see songs in that scale."
             },
-            "songkeyfinder":{
-                "descripcion":"Look for a song to get its scale and tempo."
+            "songkeyfinder": {
+                "descripcion": "Look for a song to get its scale and tempo."
             },
-            "prueba":"Try"
+            "prueba": "Try"
         },
-        "proyecto":{
-            "encabezado" : "About this project",
-            "idea":{
+        "proyecto": {
+            "encabezado": "About this project",
+            "idea": {
                 "titulo": "Original idea",
                 "texto": "Translation pending",
                 "texto2": "Translation pending"
             },
-            "desarrollo":{
+            "desarrollo": {
                 "titulo": "Development",
                 "texto": "Translation pending"
             },
-            "futuro":{
+            "futuro": {
                 "titulo": "Future development plan",
                 "texto": "Translation pending"
             }
         },
-        "contacto":{
+        "contacto": {
             "encabezado": "Contact",
-            "ig":"Follow Lemonade on Instagram!",
-            "git":"Code on Github!"
+            "ig": "Follow Lemonade on Instagram!",
+            "git": "Code on Github!"
         }
+    },
+    "tools": {
+        "loading": "Loading...",
+        "button-text": "Search",
+        "artist-placeholder": "Type name of artist...",
+        "artist": "Artist",
+        "song": "Song",
+        "spotify-text": "Listen on Spotify",
+        "results": "Results",
+        "intro-artist": "Select an artist",
+        "intro-song": "Select a song",
+        "intro-scale": "Select a scale",
+        "next-page": "Next page",
+        "prev-page": "Previous page",
+        "first-artist": "Choose first artist",
+        "second-artist": "Choose second artist"
+    },
+    "footer": {
+        "lemon-icon": "Lemon icon on Iconscout",
+        "github-icon": "Github icon created by Dave Gandy - Flaticon"
     }
 }

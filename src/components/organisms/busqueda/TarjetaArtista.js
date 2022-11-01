@@ -4,8 +4,10 @@ import icon_followers from '../../../assets/images/tarjeta/icon_followers.svg'
 import { Image } from "../../atoms/Image";
 import { truncaNombreLargo, numberWithCommas } from "../../../helpers/FormatingData";
 import { IconAndText } from "../../containers/IconAndText";
+import { useTranslation } from "react-i18next";
 
 export default function (props) {
+    const {t} = useTranslation('global')
     const { isClickable, selectionCallback, jsonData } = props;
     let imgArtista = (jsonData.images[0]) ? (jsonData.images[0].url) : icon_artist
     let nombreArtista = truncaNombreLargo(jsonData.name) || 'Sin definir'
@@ -43,7 +45,7 @@ export default function (props) {
             </div>
 
             <div className="--tarjeta-right">
-                <a href={link} target='_blank'>Ver en Spotify</a>
+                <a href={link} target='_blank'>{t('tools.spotify-text')}</a>
             </div>
         </div>
     )

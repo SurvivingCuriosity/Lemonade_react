@@ -6,14 +6,18 @@ import icon_fuego from '../../../assets/images/tarjeta/icon_fuego.svg'
 import { getStringFromEscala, getStringFromNota, getCadenaArtistas, truncaNombreLargo, milisegundosAString } from "../../../helpers/FormatingData";
 import { Image } from "../../atoms/Image";
 import { IconAndText } from "../../containers/IconAndText";
+import { useTranslation } from "react-i18next";
 
 export default function (props) {
     const { isClickable, selectionCallback, jsonData, reducirInformacion } = props;
-    
+    const { t } = useTranslation('global')
     //extraigo los datos que quiero mostrar del json
     const songKey = getStringFromNota(jsonData.key) || 'Sin definir';
     const songMode = getStringFromEscala(jsonData.mode) || '';
-    const songBPM = Math.round(jsonData.bpm) || 'Sin definir';
+React.useEffect(() => {
+    console.log(jsonData);
+}, []);
+    const songBPM = Math.round(jsonData.bpm)>1 ? Math.round(jsonData.bpm) : '0';
     const duracionCancion = milisegundosAString(jsonData.duration_ms) || 'Sin definir';
     const link = jsonData.external_urls.spotify || 'Sin definir'
     const popularity = jsonData.popularity || 'Sin definir';
@@ -21,10 +25,10 @@ export default function (props) {
     const imgCancion = (jsonData.album.images[0]) ? (jsonData.album.images[0].url) : icon_artist;
 
     let nombreArtista = getCadenaArtistas(jsonData.artists) || 'Sin definir';
-    nombreArtista=truncaNombreLargo(nombreArtista, reducirInformacion);
+    nombreArtista = truncaNombreLargo(nombreArtista, reducirInformacion);
 
     let nombreCancion = jsonData.name || 'Sin definir';
-    nombreCancion= truncaNombreLargo(nombreCancion, reducirInformacion)
+    nombreCancion = truncaNombreLargo(nombreCancion, reducirInformacion)
 
 
 
@@ -43,26 +47,26 @@ export default function (props) {
                 <Image src={imgCancion} alt='Carátula del album' size='M' />
 
                 <div className="--tarjeta-datos">
-                        <IconAndText>
-                            <Image src={icon_song} alt='Carátula del album' size='icon' />
-                            <p>{nombreCancion}</p>
-                        </IconAndText>
+                    <IconAndText>
+                        <Image src={icon_song} alt='Carátula del album' size='icon' />
+                        <p>{nombreCancion}</p>
+                    </IconAndText>
 
-                        <IconAndText>
-                            <Image src={icon_artist} alt='Carátula del album' size='icon' />
-                            <p>{nombreArtista}</p>
-                        </IconAndText>
+                    <IconAndText>
+                        <Image src={icon_artist} alt='Carátula del album' size='icon' />
+                        <p>{nombreArtista}</p>
+                    </IconAndText>
 
-                        <IconAndText>
-                            <Image src={icon_time} alt='Carátula del album' size='icon' />
-                            <p>{duracionCancion}</p>
-                        </IconAndText>
-                    
+                    <IconAndText>
+                        <Image src={icon_time} alt='Carátula del album' size='icon' />
+                        <p>{duracionCancion}</p>
+                    </IconAndText>
+
                 </div>
             </div>
 
             <div className="--tarjeta-right">
-                <a href={link} target='_blank'>Ver en Spotify</a>
+                <a href={link} target='_blank'>{t('tools.spotify-text')}</a>
                 <div className="--tarjeta-info-bpm-scale">
                     <p>{songBPM} BPM</p>
                     <p className="linea-flex-start">{`${songKey}${songMode}`}</p>

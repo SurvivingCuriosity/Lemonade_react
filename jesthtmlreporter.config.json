@@ -1,0 +1,5 @@
+{
+	"pageTitle": "HTML Report for MyApp",
+	"outputPath": "test-report/report.html",
+	"includeFailureMsg": true
+  }

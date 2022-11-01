@@ -1,10 +1,14 @@
 import React from "react";
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react';
-import TarjetaCancion from "./TarjetaCancion";
-import { getCadenaArtistas, getStringFromEscala, getStringFromNota, truncaNombreLargo } from "../../../helpers/FormatingData";
+import TarjetaCancion from '../components/organisms/busqueda/TarjetaCancion';
+import { getCadenaArtistas, getStringFromEscala, getStringFromNota, truncaNombreLargo } from "../helpers/FormatingData";
+import {globals_en} from '../translations/en/global.json'
+import {globals_es} from '../translations/es/global.json'
 
-test('should render content', () => {
+test('Should render right content', () => {
+    tr_en = JSON.parse(globals_en)
+    tr_es = JSON.parse(globals_es)
     const songTestData = {
         "album": {
             "album_type": "album",
@@ -469,5 +473,7 @@ test('should render content', () => {
     component.getByText(expectedBPM);
 
     //Shows a Link with the correct href
-    expect(component.getByText('Ver en Spotify')).toHaveAttribute('href', songTestData.external_urls.spotify)
+    console.warn(tr_en.tools['spotify-text'], tr_es.tools['spotify-text']);
+    const linkText = tr_en.tools['spotify-text'] || tr_es.tools['spotify-text']
+    expect(component.getByText(linkText)).toHaveAttribute('href', songTestData.external_urls.spotify)
 })

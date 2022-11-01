@@ -7,8 +7,10 @@ import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import TarjetaCancionDoble from "../../molecules/tarjetas/TarjetaCancionDoble";
 import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
+import { useTranslation } from 'react-i18next'
 
 export function ArtistMatchFinder() {
+    const [t, i18n] = useTranslation('global')
     //====ESTADO
     const [seleccionArtista1, setSeleccionArtista1] = React.useState({});
     const [cancionesArtista1, setCancionesArtista1] = React.useState([]);
@@ -323,7 +325,7 @@ export function ArtistMatchFinder() {
     const busquedaArtista1 = (
         <BusquedaArtista
             haySeleccion={seleccionArtista1.id ? true : false}
-            titulo="1. Elige el primer artista"
+            titulo={t('tools.first-artist')}
             callbackEleccion={userSelectsArtist1}
             queArtistaEs={1}
         />
@@ -332,7 +334,7 @@ export function ArtistMatchFinder() {
         <BusquedaArtista
             // disabled={objetosAudioFeatures1.length > 0 ? false : true}
             haySeleccion={seleccionArtista2.id ? true : false}
-            titulo="2. Elige el segundo artista"
+            titulo={t('tools.second-artist')}
             callbackEleccion={userSelectsArtist2}
             queArtistaEs={2}
         />
@@ -402,8 +404,8 @@ export function ArtistMatchFinder() {
                 tipo2="artista"
                 canciones1={objetosAudioFeatures1.length || undefined}
                 canciones2={objetosAudioFeatures2.length || undefined}
-                titulo1='Artista 1'
-                titulo2='Artista 2'
+                titulo1={`${t('tools.artist')} 1`}
+                titulo2={`${t('tools.artist')} 2`}
                 primerPaso={seleccionArtista1.id ? true : false}
                 primeraCondicion={objetosAudioFeatures1.length > 0 ? true : false}
                 segundoPaso={seleccionArtista2.id ? true : false}

@@ -4,8 +4,10 @@ import { buscarCancion, getPaginaSiguienteOAnterior } from "../../../api/apiCall
 import { getAllAudioFeatures } from "../../../api/apiCustomMethods";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { TmpMessage } from "../../atoms/TmpMessage";
+import {useTranslation} from 'react-i18next'
 
 export function BusquedaCancion(props) {
+    const [t, i18n] = useTranslation('global');
     const { titulo, isSongKeyFinder, haySeleccion, callbackEleccion, getRandomOnInit } = props;
     const [isLoading, setIsLoading] = React.useState(false);
     //texto buscado por el usuario
@@ -38,15 +40,18 @@ export function BusquedaCancion(props) {
         }
     };
     React.useEffect(() => {
-        if(getRandomOnInit){
+        if (getRandomOnInit) {
             buscarCancion('a', lleganResultadosDeBusqueda)
         }
     }, []);
-    
+
     //se ejecuta cada vez que resultadoBusqueda cambia
     React.useEffect(() => {
         //llegan varios
         if (resultadoBusqueda.tracks) {
+
+
+            
             if (resultadoBusqueda.tracks.items.length > 0) {
                 getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
             } else {
@@ -75,10 +80,7 @@ export function BusquedaCancion(props) {
                     cancion.mode = (audioFeatures_conKey).get(cancion.id).mode;
                 }
             })
-            if (resultadoBusqueda.tracks) {
-                setLinkNext(resultadoBusqueda.tracks.next)
-                setLinkPrev(resultadoBusqueda.tracks.previous)
-            }
+
             setListaResultados(resultadoBusqueda.tracks.items);
         } else {
             if (resultadoBusqueda.id) {
@@ -88,30 +90,32 @@ export function BusquedaCancion(props) {
                 setListaResultados(resultadoBusqueda);
             }
         }
+
+        //control enlaces next prev
+        if (resultadoBusqueda.tracks?.items.length < 5) {
+            setLinkNext(null)
+        }else{
+            setLinkNext(resultadoBusqueda.tracks?.next)
+        }
+        
         setIsLoading(false);
     }, [objetosAudioFeatures])
 
     const renderButtonsPrevNext = (
         <div>
-            {linkNext !== null
-                ?
+            {linkNext !== null &&
                 <button
                     className="boton_link botonPaginaSiguiente"
                     onClick={getPaginaSiguiente}
-                >Siguiente página
+                >{t('tools.next-page')}
                 </button>
-                :
-                ""
             }
-            {linkPrev !== null
-                ?
+            {linkPrev !== null &&
                 <button
                     className="boton_link botonPaginaAnterior"
                     onClick={getPaginaAnterior}
-                >Página anterior
+                >{t('tools.prev-page')}
                 </button>
-                :
-                ""
             }
         </div>
     )
@@ -151,7 +155,7 @@ export function BusquedaCancion(props) {
     //funcion que se ejecuta cuando llegan los resultados
     function lleganResultadosDeBusqueda(resultados) {
         if (resultados.err?.message) {
-            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error' , remain:true} })
+            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error', remain: true } })
             setIsLoading(false)
             return;
         }
@@ -164,6 +168,7 @@ export function BusquedaCancion(props) {
     }
 
     function getPaginaSiguiente() {
+        console.log(resultadoBusqueda.tracks);
         setIsLoading(true);
         let url = resultadoBusqueda.tracks.next;
         getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
@@ -185,7 +190,7 @@ export function BusquedaCancion(props) {
                         autoFocus
                         type="search"
                         value={text}
-                        placeholder={`Introduce canción...`}
+                        placeholder={t('tools.intro-song')}
                         onChange={(e) => setText(e.target.value)}
                     />
                     <button
@@ -193,15 +198,15 @@ export function BusquedaCancion(props) {
                         className="busqueda-boton-buscar boton zoom-on-click"
                         disabled={text === "" ? true : false}
 
-                    >Buscar
+                    >{t('tools.button-text')}
                     </button>
                 </span>
             </form>
 
             {isLoading && <CustomSpinner />}
-            
+
             <TmpMessage config={temporalMsgConfig} />
-            
+
             {listaResultados.length > 0 && !haySeleccion ? renderListaResultados : ''}
         </div>
     )

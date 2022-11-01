@@ -6,9 +6,10 @@ import { CustomButton } from "../../atoms/CustomButton";
 import { ProgressBar } from "../../atoms/ProgressBar";
 import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
+import { useTranslation } from "react-i18next";
 
 export function ArtistKeyFinder() {
-
+    const [t, i18n] = useTranslation('global');
     //====ESTADO 
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -110,7 +111,7 @@ export function ArtistKeyFinder() {
     const busquedaArtista = (
         <BusquedaArtista
             haySeleccion={seleccionArtista.id ? true : false}
-            titulo="1. Elige un artista"
+            titulo={t('tools.intro-artist')}
             callbackEleccion={userSelectsArtist}
             mostrando={mostrando}
         />
@@ -118,7 +119,7 @@ export function ArtistKeyFinder() {
 
     const eleccionNota = (
         <div className="busqueda-container">
-            <h2 className="busqueda-titulo">2. Elige una nota y escala</h2>
+            <h2 className="busqueda-titulo">{t('tools.intro-scale')}</h2>
             <div className="linea-flex-center">
                 <KeyScaleSelect
                     callbackEleccion={userSelectsScale}

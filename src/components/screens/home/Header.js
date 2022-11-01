@@ -6,7 +6,6 @@ import { HeaderBottomNav } from '../../molecules/navs/HeaderBottomNav'
 import {useTranslation} from 'react-i18next'
 
 export function Header() {
-    const texto = 'Por productores, para productores...'
     const [t, i18n] = useTranslation('global');
     
     return (

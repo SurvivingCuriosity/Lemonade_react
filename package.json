@@ -20,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "report":"jest ./src/tests/TarjetaArtista.test.js",
+    "test:CI": "set CI=true &&react-scripts test --env=jsdom --testResultsProcessor=./node_modules/jest-html-reporter"
   },
   "eslintConfig": {
     "extends": [
@@ -28,6 +30,11 @@
       "react-app/jest"
     ]
   },
+  "jest-html-reporter": {
+    "pageTitle": "Unit Tests",
+    "outputPath": "./test-report.html",
+    "includeFailureMsg": true
+    },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -41,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^13.4.0"
+    "@testing-library/react": "^13.4.0",
+    "jest-html-reporter": "^3.7.0"
   }
 }

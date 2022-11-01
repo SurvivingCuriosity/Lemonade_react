@@ -17,7 +17,7 @@ export function Tutorial() {
         <ScrollContainer snap='none'>
             <h2 id="tutorial" style={{ position: 'sticky', top: '1em' }}>{t('header.tutorial.encabezado')}</h2>
             <ScrollPage page={0} key={0}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={0}>
+                <Animator animation={FadeUp} key={0}>
                     <div className="subSection">
                         <h3 id="artist-match-finder">Artist Match Finder</h3>
                         <p>{t('header.tutorial.artistmatchfinder.descripcion')}</p>
@@ -59,7 +59,10 @@ export function Tutorial() {
                     </div>
                 </Animator>
             </ScrollPage>
+
             <h2 id="proyecto" style={{ position: 'sticky', top: '1em', background: 'var(--fondo)' }}>{t('header.proyecto.encabezado')}</h2>
+
+
             <ScrollPage page={4} key={4}>
                 <Animator animation={FadeUp} style={{ width: '100%' }} key={4}>
                     <div className='subSection'>
@@ -89,10 +92,10 @@ export function Tutorial() {
             </ScrollPage>
 
             <ScrollPage page={7} key={7}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={0}>
-                    {/* hace falta poner esta pagina vacia para que no oculte a la seccion de contacto */}
+                <Animator animation={FadeUp} style={{ width: '100%' }} key={7}>
                 </Animator>
             </ScrollPage>
+            
         </ScrollContainer>
     )
 }

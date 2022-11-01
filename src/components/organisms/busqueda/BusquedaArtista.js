@@ -4,8 +4,10 @@ import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { buscarArtista } from "../../../api/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../api/apiCalls";
 import { TmpMessage } from "../../atoms/TmpMessage";
+import {useTranslation} from 'react-i18next'
 
 export function BusquedaArtista(props) {
+    const [t, i18n] = useTranslation('global');
     const { titulo, haySeleccion, callbackEleccion, queArtistaEs, disabled } = props;
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -59,7 +61,7 @@ export function BusquedaArtista(props) {
                 <button
                     className="boton_link botonPaginaSiguiente"
                     onClick={getPaginaSiguiente}
-                >Siguiente página
+                >{t('tools.next-page')}
                 </button>
                 :
                 ""
@@ -69,7 +71,7 @@ export function BusquedaArtista(props) {
                 <button
                     className="boton_link botonPaginaAnterior"
                     onClick={getPaginaAnterior}
-                >Página anterior
+                >{t('tools.prev-page')}
                 </button>
                 :
                 ""
@@ -155,7 +157,7 @@ export function BusquedaArtista(props) {
                         type="search"
                         disabled={disabled}
                         value={text}
-                        placeholder={`Introduce artista...`}
+                        placeholder={t('tools.artist-placeholder')}
                         onChange={(e) => setText(() => { return e.target.value })}
                     />
                     <button
@@ -163,7 +165,7 @@ export function BusquedaArtista(props) {
                         className="busqueda-boton-buscar boton"
                         disabled={text === "" ? true : false}
 
-                    >Buscar
+                    >{t('tools.button-text')}
                     </button>
                 </span>
             </form>

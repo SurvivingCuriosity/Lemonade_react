@@ -9,21 +9,9 @@ import './assets/style/progressBar.css';
 import App from './App';
 import { I18nextProvider } from 'react-i18next'
 import i18next from 'i18next'
-import global_es from './translations/es/global.json'
-import global_en from './translations/en/global.json'
+import {i18n} from './translations/i18n.config'
 
-i18next.init({
-  interpolation: { escapeValue: false },
-  lng: localStorage.getItem('lang') || 'es',
-  resources: {
-    es: {
-      global: global_es
-    },
-    en: {
-      global: global_en
-    },
-  }
-})
+i18next.init(i18n)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
