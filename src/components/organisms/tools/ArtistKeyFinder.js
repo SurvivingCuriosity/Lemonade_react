@@ -2,11 +2,11 @@ import React from "react";
 import { getAllAudioFeatures, getAllUniqueArtistSongs } from "../../../api/apiCustomMethods";
 import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
 import { KeyScaleSelect } from "../busqueda/KeyScaleSelect";
-import { CustomButton } from "../../atoms/CustomButton";
 import { ProgressBar } from "../../atoms/ProgressBar";
 import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import { useTranslation } from "react-i18next";
+import { eliminaElementosConNameRepetido } from "../../../helpers/FilteringArrays";
 
 export function ArtistKeyFinder() {
     const [t, i18n] = useTranslation('global');
@@ -82,10 +82,7 @@ export function ArtistKeyFinder() {
             }
         })
 
-        arrayResultadosFinales = Array.from(new Set(arrayResultadosFinales.map(a => a.name)))
-            .map(name => {
-                return arrayResultadosFinales.find(a => a.name === name)
-            })
+        eliminaElementosConNameRepetido(arrayResultadosFinales)
 
         if (arrayResultadosFinales.length === 0 && seleccionNotaEscala.nota > -1) {
             setMsgResultadoClass("error")
@@ -157,12 +154,9 @@ export function ArtistKeyFinder() {
     return (
         <>
             <ProgressBar
-                tipo1="artista"
-                tipo2="nota"
+                tipo="ArtistKeyFinder"
                 canciones1={undefined}
                 canciones2={objetosAudioFeatures.length || undefined}
-                titulo1='Artista'
-                titulo2='Escala'
                 primerPaso={seleccionArtista.id ? true : false}
                 primeraCondicion={objetosAudioFeatures.length > 0 ? true : false}
                 segundoPaso={seleccionNotaEscala.nota > -1 ? true : false}

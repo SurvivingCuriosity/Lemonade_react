@@ -1,6 +1,5 @@
 import React from "react";
 import { getAllUniqueArtistSongs, getAllAudioFeatures } from "../../../api/apiCustomMethods";
-import { CustomButton } from "../../atoms/CustomButton";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { ProgressBar } from "../../atoms/ProgressBar";
 import TarjetaCancion from "../busqueda/TarjetaCancion";
@@ -9,7 +8,7 @@ import { BusquedaArtista } from '../../organisms/busqueda/BusquedaArtista'
 import { BusquedaCancion } from '../../organisms/busqueda/BusquedaCancion'
 import { useTranslation } from "react-i18next";
 export function SongMatchFinder() {
-    const [t, i18n] = useTranslation('global')
+    const {t} = useTranslation('global')
     //====ESTADO
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -72,6 +71,7 @@ export function SongMatchFinder() {
                             cancion.mode = obj.mode;
                             cancion.key = obj.key;
                             cancion.bpm = obj.tempo;
+                            //TODO: Obtener coincidencias exactas (bpm coincide tb)
                             arrayResultadosFinales.push(cancion);
                         }
                     })
@@ -140,12 +140,9 @@ export function SongMatchFinder() {
     return (
         <>
             <ProgressBar
-                tipo1="cancion"
-                tipo2="artista"
+                tipo="SongMatchFinder"
                 canciones1={undefined}
                 canciones2={objetosAudioFeatures.length || undefined}
-                titulo1='Canción 1'
-                titulo2='Artista 2'
                 primerPaso={seleccionCancion.id ? true : false}
                 primeraCondicion={seleccionCancion.id ? true : false}
                 segundoPaso={seleccionArtista.id ? true : false}

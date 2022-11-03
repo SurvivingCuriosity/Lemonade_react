@@ -1,45 +1,69 @@
 import React from "react";
-import {useTranslation} from 'react-i18next'
-export function ProgressBar(props){
-    const [t, i18n] = useTranslation('global');
+import { useTranslation } from 'react-i18next'
+export function ProgressBar(props) {
+    const { t } = useTranslation('global');
     const {
         primerPaso, //se pinta la primera bola
         primeraCondicion, //se pinta la mitad de la barra
         segundoPaso,  //se pinta la bola del medio
         segundaCondicion, //se pinta toda la barra
-        titulo1, titulo2, 
-        canciones1, canciones2, 
-        tipo1, tipo2} = props;
+        canciones1, canciones2,
+        tipo } = props;
+
     let mensajesCondicion1 = "";
     let mensajesCondicion2 = "";
-    
+
     const [porcentaje, setPorcentaje] = React.useState(0);
 
-    if(tipo2==='nota'){ mensajesCondicion2=`` }
+
+    let tipo1, tipo2;
+    let titulo1 = 'a', titulo2 = 'b';
+    switch (tipo) {
+        case 'ArtistMatchFinder':
+            tipo1 = 'artist'
+            titulo1 = t('tools.artist')+' 1'
+            tipo2 = 'artist'
+            titulo2 = t('tools.artist')+' 2'
+            break;
+        case 'SongMatchFinder':
+            tipo1 = 'song'
+            titulo1 = t('tools.song')
+            tipo2 = 'artist'
+            titulo2 = t('tools.artist')
+            break;
+        case 'ArtistKeyFinder':
+            tipo1 = 'artist'
+            titulo1 = t('tools.song')
+            tipo2 = 'nota'
+            titulo2 = t('tools.scale')
+            break;
+    }
+    
 
     React.useEffect(() => {
-        if(primerPaso){
+        if (primerPaso) {
             setPorcentaje(25)
-            mensajesCondicion1=`Analizando canciones`;
-            if(primeraCondicion){
+            mensajesCondicion1 = `Analizando canciones`;
+            if (primeraCondicion) {
                 setPorcentaje(50)
-                mensajesCondicion1=`Analizadas ${canciones1} canciones`;
-                if(segundoPaso){
-                    mensajesCondicion2=`Analizando canciones`;
+                mensajesCondicion1 = `Analizadas ${canciones1} canciones`;
+                if (segundoPaso) {
+                    mensajesCondicion2 = `Analizando canciones`;
                     setPorcentaje(75)
-                    if(segundaCondicion){
+                    if (segundaCondicion) {
                         setPorcentaje(100);
-                        mensajesCondicion2=`Analizadas ${canciones2} canciones`;
+                        mensajesCondicion2 = `Analizadas ${canciones2} canciones`;
                     }
                 }
             }
-        }else{
+        } else {
             setPorcentaje(0)
         }
+        if (tipo2 === 'nota') { mensajesCondicion2 = `` }
     }, [primerPaso, primeraCondicion, segundoPaso, segundaCondicion]);
 
 
-    return(
+    return (
         <div className='progress-bar'>
 
             {/* Bola 1 */}
@@ -64,10 +88,10 @@ export function ProgressBar(props){
 
 
             {/* Barra coloreada */}
-            <div  className={`progress-bar-progress`} style={{width: porcentaje + '%'}}></div>
+            <div className={`progress-bar-progress`} style={{ width: porcentaje + '%' }}></div>
 
             {/* Container */}
-            <div  className='progress-bar-barra'></div>
+            <div className='progress-bar-barra'></div>
         </div>
     )
 
