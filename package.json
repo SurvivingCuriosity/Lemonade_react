@@ -21,8 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "report":"jest ./src/tests/TarjetaArtista.test.js",
-    "test:CI": "set CI=true &&react-scripts test --env=jsdom --testResultsProcessor=./node_modules/jest-html-reporter"
+    "test:CI": "set CI=true &&react-scripts test --env=jsdom --testResultsProcessor=./node_modules/jest-html-reporter",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -30,11 +30,6 @@
       "react-app/jest"
     ]
   },
-  "jest-html-reporter": {
-    "pageTitle": "Unit Tests",
-    "outputPath": "./test-report.html",
-    "includeFailureMsg": true
-    },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,7 +43,17 @@
     ]
   },
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^13.0.3",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",
+    "@cucumber/cucumber": "^8.7.0",
     "@testing-library/react": "^13.4.0",
+    "cypress": "^10.11.0",
+    "cypress-cucumber-preprocessor": "^4.3.1",
+    "esbuild": "^0.15.13",
     "jest-html-reporter": "^3.7.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true,
+    "stepDefinitions": "cypress/e2e/step_definitions/*.js"
   }
 }

@@ -187,6 +187,7 @@ export function BusquedaCancion(props) {
             <form onSubmit={handleSubmit} className="linea-flex-start">
                 <span className="input_and_button">
                     <input
+                        id="input_artista"
                         autoFocus
                         type="search"
                         value={text}
@@ -194,10 +195,10 @@ export function BusquedaCancion(props) {
                         onChange={(e) => setText(e.target.value)}
                     />
                     <button
+                        id="submit_artista"
                         type="submit"
                         className="busqueda-boton-buscar boton zoom-on-click"
                         disabled={text === "" ? true : false}
-
                     >{t('tools.button-text')}
                     </button>
                 </span>

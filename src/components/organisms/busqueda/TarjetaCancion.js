@@ -10,13 +10,11 @@ import { useTranslation } from "react-i18next";
 
 export default function (props) {
     const { isClickable, selectionCallback, jsonData, reducirInformacion } = props;
-    const { t } = useTranslation('global')
+    const [t, i18n] = useTranslation('global')
     //extraigo los datos que quiero mostrar del json
     const songKey = getStringFromNota(jsonData.key) || 'Sin definir';
     const songMode = getStringFromEscala(jsonData.mode) || '';
-React.useEffect(() => {
-    console.log(jsonData);
-}, []);
+
     const songBPM = Math.round(jsonData.bpm)>1 ? Math.round(jsonData.bpm) : '0';
     const duracionCancion = milisegundosAString(jsonData.duration_ms) || 'Sin definir';
     const link = jsonData.external_urls.spotify || 'Sin definir'
@@ -42,7 +40,7 @@ React.useEffect(() => {
 
     return (
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
+        <div className={`tarjeta_res tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
             <div className="--tarjeta-left">
                 <Image src={imgCancion} alt='Carátula del album' size='M' />
 

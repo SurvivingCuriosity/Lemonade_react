@@ -7,7 +7,7 @@ import { IconAndText } from "../../containers/IconAndText";
 import { useTranslation } from "react-i18next";
 
 export default function (props) {
-    const {t} = useTranslation('global')
+    const [t, i18n] = useTranslation('global')
     const { isClickable, selectionCallback, jsonData } = props;
     let imgArtista = (jsonData.images[0]) ? (jsonData.images[0].url) : icon_artist
     let nombreArtista = truncaNombreLargo(jsonData.name) || 'Sin definir'
@@ -25,7 +25,7 @@ export default function (props) {
 
 
     return (
-        <div className={`tarjeta ${isClickable && "clickable"}`} onClick={isClickable && handleEleccionTarjeta}>
+        <div className={`tarjeta_res tarjeta ${isClickable && "clickable"}`} onClick={isClickable && handleEleccionTarjeta}>
             <div className="--tarjeta-left">
 
                 <Image src={imgArtista} alt='Imagen del artista' size='M' />
