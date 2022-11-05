@@ -7,6 +7,5 @@ Feature: ArtistMatchFinder
 
     Scenario: After selecting two artists, results are displayed in the screen.
         Given user selects first artist
-        And user selects second artist
-        When results are ready
+        When user selects second artist
         Then results are displayed in the screen

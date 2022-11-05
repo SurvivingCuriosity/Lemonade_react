@@ -16,7 +16,7 @@ export function TarjetaEleccionCancion(props) {
     if (json) {
         songKey = getStringFromNota(json.key);
         songMode = getStringFromEscala(json.mode);
-        songBPM = json.bpm
+        songBPM = Math.round(json.bpm)
         imgCancion = (json.album.images[0]) ? (json.album.images[0].url) : json.images[0].url
         nombreArtista = getCadenaArtistas(json.artists);
         nombreCancion = json.name
@@ -24,7 +24,7 @@ export function TarjetaEleccionCancion(props) {
     function handleEleccionTarjeta() { }
     return (
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta ${isClickable ? "clickable" : ""} borde`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
+        <div className={`tarjeta ${isClickable ? "clickable" : ""} borde fade-in-appear`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
             <div className="--tarjeta-left">
                 <Image src={imgCancion} alt='Carátula del album' size='M' />
                 <div className="--tarjeta-datos">
@@ -41,7 +41,7 @@ export function TarjetaEleccionCancion(props) {
                         </IconAndText>
                     }
                     {
-                        <p>{`${songKey}${songMode}`}</p>
+                        <p>{`${songKey}${songMode} ${songBPM}BPM`}</p>
                     }
                 </div>
 

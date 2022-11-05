@@ -3,6 +3,7 @@ class ArtistMatchFinder {
         artistInput: () => cy.get('input[type=search]'),
         artistSubmit: () => cy.get('button[type=submit]'),
         resultArtist: () => cy.get(".tarjeta_res"),
+        finalResult: () => cy.get("#final-result-container"),
     };
 
     fillArtistForm(userInput) {
@@ -15,7 +16,7 @@ class ArtistMatchFinder {
         ?
         this.elements.resultArtist().first().click()
         :
-        this.elements.resultArtist().last().click()
+        this.elements.resultArtist().first().click()
     }
 }
 

@@ -9,6 +9,8 @@ const createEsbuildPlugin =
 
 module.exports = defineConfig({
   e2e: {
+    baseUrl: 'http://localhost:8080',
+  
     async setupNodeEvents(on, config) {
       const bundler = createBundler({
         plugins: [createEsbuildPlugin(config)],
@@ -20,7 +22,7 @@ module.exports = defineConfig({
       return config;
     },
     specPattern: "cypress/e2e/features/*.feature",
-    baseUrl: "https://www.lemonade-pi.vercel.app",
+    baseUrl: "http://localhost:3000",
     chromeWebSecurity: false,
   },
 });

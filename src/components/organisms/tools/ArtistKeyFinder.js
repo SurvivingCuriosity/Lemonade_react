@@ -7,6 +7,7 @@ import TarjetaCancion from "../busqueda/TarjetaCancion";
 import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import { useTranslation } from "react-i18next";
 import { eliminaElementosConNameRepetido } from "../../../helpers/FilteringArrays";
+import { FinalResult } from "../../containers/FinalResult";
 
 export function ArtistKeyFinder() {
     const [t, i18n] = useTranslation('global');
@@ -20,11 +21,10 @@ export function ArtistKeyFinder() {
     const [cancionesArtista, setCancionesArtista] = React.useState([]);
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
-    const [mostrando, setMostrando] = React.useState(true);
-
+    const [resultadoFinal, setResultadoFinal] = React.useState([]);
 
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
-    const [resultadoFinal, setResultadoFinal] = React.useState([]);
+    const [hayResultadoFinal, setHayResultadoFinal] = React.useState(false);
 
     //====USEEFFECT
 
@@ -39,12 +39,13 @@ export function ArtistKeyFinder() {
     }, [seleccionArtista])
 
     React.useEffect(() => {
-        if (seleccionNotaEscala.nota > -1) {
+        if (seleccionNotaEscala.nota > -1 && seleccionNotaEscala.escala>-1) {
             if (objetosAudioFeatures.length > 0) {
-                obtenerResultadoFinal();
+                const resultado = obtenerResultadoFinal();
+                setResultadoFinal(()=>{return resultado})
+            }else{
+                setMostrarResultadoFinal(false);
             }
-        } else {
-            setMostrarResultadoFinal(false);
         }
     }, [seleccionNotaEscala])
 
@@ -54,10 +55,20 @@ export function ArtistKeyFinder() {
 
     React.useEffect(() => {
         //compruebo que tienen valor preguntando por una propiedad que contienen
-        if (objetosAudioFeatures.length > 0 && seleccionNotaEscala.nota > -1) {
-            obtenerResultadoFinal();
+        if (objetosAudioFeatures.length > 0 && seleccionNotaEscala.nota > -1 && seleccionNotaEscala.escala > -1) {
+            const resultado = obtenerResultadoFinal();
+            setResultadoFinal(resultado)
         }
     }, [objetosAudioFeatures])
+
+    React.useEffect(()=>{
+        if (resultadoFinal.length > 0) {
+            setHayResultadoFinal(() => { return true });
+            setMostrarResultadoFinal(() => { return true });
+        } else {
+            setHayResultadoFinal(() => { return false })
+        }
+    },[resultadoFinal])
 
 
     //====FUNCIONES
@@ -96,8 +107,7 @@ export function ArtistKeyFinder() {
             setMsgResultadoClass("success")
             setMsgResultado(`Canciones de  ${seleccionArtista.name} en ${seleccionNotaEscala.notaLabel} ${seleccionNotaEscala.escalaLabel}`)
         }
-        setResultadoFinal(() => { return arrayResultadosFinales });
-        setMostrarResultadoFinal(true);
+        return arrayResultadosFinales;
     }
 
     const lleganCanciones = (canciones) => { setCancionesArtista(() => { return canciones }) }
@@ -110,7 +120,6 @@ export function ArtistKeyFinder() {
             haySeleccion={seleccionArtista.id ? true : false}
             titulo={t('tools.intro-artist')}
             callbackEleccion={userSelectsArtist}
-            mostrando={mostrando}
         />
     )
 
@@ -125,31 +134,6 @@ export function ArtistKeyFinder() {
         </div>
     )
 
-    const resultado = (
-        <div className="busqueda-container">
-            <KeyScaleSelect
-                callbackEleccion={userSelectsScale}
-            />
-
-            <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
-
-            {resultadoFinal.length > 0
-                ?
-                <ul className="busqueda-lista">
-                    {resultadoFinal.map((item) => {
-                        return (
-                            <TarjetaCancion
-                                key={item.id}
-                                jsonData={item}
-                            />
-                        );
-                    })}
-                </ul>
-                :
-                ""
-            }
-        </div>
-    )
     //====RENDER
     return (
         <>
@@ -171,8 +155,28 @@ export function ArtistKeyFinder() {
                 callbackCambiarEscala={() => { setSeleccionNotaEscala('') }}
             />
             {!seleccionArtista.id && busquedaArtista}
-            {seleccionArtista.id && !seleccionNotaEscala.nota > -1 && !mostrarResultadoFinal && eleccionNota}
-            {mostrarResultadoFinal && resultado}
+            {seleccionArtista.id && eleccionNota}
+            
+            {!hayResultadoFinal && <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>}
+            
+            <FinalResult mostrarResultado={mostrarResultadoFinal}>
+
+                {hayResultadoFinal
+                    &&
+                    <ul className="busqueda-lista">
+                        <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+                        {resultadoFinal.map((item) => {
+                            return (
+                                <TarjetaCancion
+                                    key={item.id}
+                                    jsonData={item}
+                                />
+                            );
+                        })}
+                    </ul>
+                
+                }
+            </FinalResult>
         </>
 
     )

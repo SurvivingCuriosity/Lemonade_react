@@ -30,7 +30,7 @@ export const Image = ({ src, alt, size, className = '', onClick}) => {
         }
     }, []);
 
-    const style = { margin: 'auto', aspectRatio: 1, width: `${tam}px` }
+    const style = { aspectRatio: 1, width: `${tam}px` }
 
     const [loaded, setLoaded] = useState(false);
 

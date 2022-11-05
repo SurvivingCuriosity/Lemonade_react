@@ -5,11 +5,10 @@ import { truncaNombreLargo } from "../../../helpers/FormatingData";
 import { numberWithCommas } from "../../../helpers/FormatingData";
 import { Image } from "../../atoms/Image";
 import { IconAndText } from "../../containers/IconAndText";
-
+import { CustomSpinner } from '../../atoms/CustomSpinner'
 export function TarjetaEleccionArtista(props) {
 
     const { json, callbackCambiarEleccion, canciones } = props;
-
     let imgArtista = "", nombreArtista = "", seguidoresArtista = "", link = ""
     if (json) {
         imgArtista = (json.images[0]) ? (json.images[0].url) : icon_artist
@@ -18,7 +17,7 @@ export function TarjetaEleccionArtista(props) {
         link = json.external_urls.spotify
     }
     return (
-        <div className={`tarjeta borde`}>
+        <div className={`tarjeta borde fade-in-appear`}>
             <div className="--tarjeta-left">
 
                 <Image src={imgArtista} alt='Imagen del artista' size='M' />
@@ -36,7 +35,12 @@ export function TarjetaEleccionArtista(props) {
                             <p>{numberWithCommas(seguidoresArtista)}</p>
                         </IconAndText>
                     }
-                    <p>{`${canciones} canciones obtenidas`}</p>
+                    {canciones > 0
+                        ?
+                        <p>{`Obtenidas ${canciones} canciones`}</p>
+                        :
+                        <CustomSpinner size='s' textCanciones/>
+                    }
                 </div>
 
             </div>

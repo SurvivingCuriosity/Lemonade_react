@@ -14,6 +14,7 @@ export function ProgressBar(props) {
     let mensajesCondicion2 = "";
 
     const [porcentaje, setPorcentaje] = React.useState(0);
+    const [pintarUltimo, setPintarUltimo] = React.useState(false);
 
 
     let tipo1, tipo2;
@@ -62,6 +63,15 @@ export function ProgressBar(props) {
         if (tipo2 === 'nota') { mensajesCondicion2 = `` }
     }, [primerPaso, primeraCondicion, segundoPaso, segundaCondicion]);
 
+    React.useEffect(()=>{
+        if(porcentaje===100){
+            setTimeout(() => {
+                setPintarUltimo(()=>{return true});
+            }, 800);
+        }else{
+            setPintarUltimo(()=>{return false});
+        }
+    },[porcentaje])
 
     return (
         <div className='progress-bar'>
@@ -81,8 +91,8 @@ export function ProgressBar(props) {
 
 
             {/* Bola 3 */}
-            <div className={`progress-bar-bola ${primeraCondicion && segundaCondicion && segundoPaso && "progress-bar-bola-completa"}`}>
-                <div className={`progress-bar-titulo-step ${primeraCondicion && segundoPaso && segundaCondicion && "color"}`}><p >{t('tools.results')}</p></div>
+            <div className={`progress-bar-bola ${pintarUltimo && "progress-bar-bola-completa"}`}>
+                <div className={`progress-bar-titulo-step ${pintarUltimo && "color"}`}><p >{t('tools.results')}</p></div>
             </div>
 
 

@@ -49,9 +49,6 @@ export function BusquedaCancion(props) {
     React.useEffect(() => {
         //llegan varios
         if (resultadoBusqueda.tracks) {
-
-
-            
             if (resultadoBusqueda.tracks.items.length > 0) {
                 getAllAudioFeatures(resultadoBusqueda.tracks.items, lleganAudioFeatures);
             } else {
@@ -59,9 +56,17 @@ export function BusquedaCancion(props) {
                 setIsLoading(false)
             }
             //llega uno
+            //control next prev
+            if(resultadoBusqueda?.tracks.previous===null){
+                setLinkPrev(null)
+            }else{
+                setLinkPrev(resultadoBusqueda.tracks.previous)
+            }
         } else if (resultadoBusqueda.id) {
             getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
+
+        
     }, [resultadoBusqueda])
 
 
@@ -102,20 +107,27 @@ export function BusquedaCancion(props) {
     }, [objetosAudioFeatures])
 
     const renderButtonsPrevNext = (
-        <div>
-            {linkNext !== null &&
+        <div className="tarjetas-container-header">
+            {linkNext !== null 
+            ?
                 <button
                     className="boton_link botonPaginaSiguiente"
                     onClick={getPaginaSiguiente}
                 >{t('tools.next-page')}
                 </button>
+            :
+                <div></div>
             }
-            {linkPrev !== null &&
+            {isLoading && <CustomSpinner size='s' textCanciones/>}
+            {linkPrev !== null 
+            ?
                 <button
                     className="boton_link botonPaginaAnterior"
                     onClick={getPaginaAnterior}
                 >{t('tools.prev-page')}
                 </button>
+                :
+                <div></div>
             }
         </div>
     )
@@ -160,7 +172,7 @@ export function BusquedaCancion(props) {
             return;
         }
         setTemporalMsgConfig(() => { return {} }) //para borrar mensaje anterior
-        setResultadoBusqueda(resultados);
+        setResultadoBusqueda(()=>{return resultados});
     }
 
     function lleganAudioFeatures(audio) {
@@ -168,7 +180,6 @@ export function BusquedaCancion(props) {
     }
 
     function getPaginaSiguiente() {
-        console.log(resultadoBusqueda.tracks);
         setIsLoading(true);
         let url = resultadoBusqueda.tracks.next;
         getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
@@ -204,7 +215,7 @@ export function BusquedaCancion(props) {
                 </span>
             </form>
 
-            {isLoading && <CustomSpinner />}
+            {/* {isLoading && <CustomSpinner size='s' textCanciones/>} */}
 
             <TmpMessage config={temporalMsgConfig} />
 

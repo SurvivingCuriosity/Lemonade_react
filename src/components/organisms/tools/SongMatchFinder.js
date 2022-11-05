@@ -7,6 +7,7 @@ import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import { BusquedaArtista } from '../../organisms/busqueda/BusquedaArtista'
 import { BusquedaCancion } from '../../organisms/busqueda/BusquedaCancion'
 import { useTranslation } from "react-i18next";
+import { FinalResult } from "../../containers/FinalResult";
 export function SongMatchFinder() {
     const {t} = useTranslation('global')
     //====ESTADO
@@ -20,18 +21,21 @@ export function SongMatchFinder() {
     const [objetosAudioFeatures, setObjetosAudioFeatures] = React.useState([]);
 
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
+    
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
+    const [hayResultadoFinal, setHayResultadoFinal] = React.useState(false);
+    
 
     //====USE EFFECT
 
     React.useEffect(() => {
-        if (!seleccionCancion.id) {
-            setMostrarResultadoFinal(false);
-        } else {
+        if (seleccionCancion.id) {
             if (objetosAudioFeatures.length > 0) {
-                formarResultadoFinal();
-                setMostrarResultadoFinal(true);
+                const resultado = formarResultadoFinal();
+                setResultadoFinal(resultado);
             }
+        } else {
+            setMostrarResultadoFinal(false);
         }
     }, [seleccionCancion])
 
@@ -53,11 +57,26 @@ export function SongMatchFinder() {
 
     React.useEffect(() => {
         if (objetosAudioFeatures.length > 0 && seleccionCancion.id) {
-            formarResultadoFinal();
-            setMostrarResultadoFinal(true);
+            const resultado = formarResultadoFinal();
+            setResultadoFinal(resultado);
         }
     }, [objetosAudioFeatures])
 
+    React.useEffect(() => {
+        if (resultadoFinal.length > 0) {
+            setHayResultadoFinal(() => { return true });
+            const timeout = setTimeout(() => {
+                setMostrarResultadoFinal(() => { return true });
+            }, 2000);
+
+            return (()=>{
+                clearTimeout(timeout);
+            })
+        } else {
+            setMostrarResultadoFinal(() => { return false })
+            setHayResultadoFinal(() => { return false })
+        }
+    }, [resultadoFinal])
 
     //====FUNCIONES
     const formarResultadoFinal = () => {
@@ -86,7 +105,7 @@ export function SongMatchFinder() {
             setMsgResultadoClass("success")
             setMsgResultado(`Canciones de  '${seleccionArtista.name}' en la misma escala que '${seleccionCancion.name}'`)
         }
-        setResultadoFinal(arrayResultadosFinales);
+        return arrayResultadosFinales;
     }
 
     const userSelectsSong = (songSelected) => { setSeleccionCancion(songSelected); }
@@ -114,8 +133,31 @@ export function SongMatchFinder() {
         />
     )
 
-    const resultado = (
-        <div className="busqueda-container">
+    //====RENDER
+    return (
+        <>
+            <ProgressBar
+                tipo="SongMatchFinder"
+                canciones1={undefined}
+                canciones2={objetosAudioFeatures.length || undefined}
+                primerPaso={seleccionCancion.id ? true : false}
+                primeraCondicion={seleccionCancion.id ? true : false}
+                segundoPaso={seleccionArtista.id ? true : false}
+                segundaCondicion={hayResultadoFinal}
+            />
+            <PreviewChoices
+                json1={seleccionCancion}
+                json2={seleccionArtista}
+                canciones2={cancionesArtista.length}
+                callbackCambiarEleccion1={() => { setSeleccionCancion([]) }}
+                callbackCambiarEleccion2={() => { setSeleccionArtista([]) }}
+            />
+
+            {!seleccionCancion.id ? eleccionCancion : ""}
+            {seleccionCancion.id && !seleccionArtista.id ? eleccionArtista : ""}
+            {seleccionCancion.id && seleccionArtista.id && hayResultadoFinal && !mostrarResultadoFinal && <CustomSpinner textPreparando/>}
+            
+            <FinalResult mostrarResultado={mostrarResultadoFinal}>
             {resultadoFinal.length > 0
                 ?
                 <ul className="busqueda-lista">
@@ -133,33 +175,7 @@ export function SongMatchFinder() {
                 :
                 <p className={`text-center small-text ${msgResultadoClass}`}>{msgResultado}</p>
             }
-        </div>
-    )
-
-    //====RENDER
-    return (
-        <>
-            <ProgressBar
-                tipo="SongMatchFinder"
-                canciones1={undefined}
-                canciones2={objetosAudioFeatures.length || undefined}
-                primerPaso={seleccionCancion.id ? true : false}
-                primeraCondicion={seleccionCancion.id ? true : false}
-                segundoPaso={seleccionArtista.id ? true : false}
-                segundaCondicion={objetosAudioFeatures.length > 0 ? true : false}
-            />
-            <PreviewChoices
-                json1={seleccionCancion}
-                json2={seleccionArtista}
-                canciones2={cancionesArtista.length}
-                callbackCambiarEleccion1={() => { setSeleccionCancion([]) }}
-                callbackCambiarEleccion2={() => { setSeleccionArtista([]) }}
-            />
-
-            {!seleccionCancion.id ? eleccionCancion : ""}
-            {seleccionCancion.id && !seleccionArtista.id ? eleccionArtista : ""}
-            {seleccionCancion.id && seleccionArtista.id && !mostrarResultadoFinal && <CustomSpinner />}
-            {mostrarResultadoFinal && resultado}
+        </FinalResult>
         </>
     )
 

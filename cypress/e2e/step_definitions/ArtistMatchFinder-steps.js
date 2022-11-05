@@ -6,19 +6,15 @@ Given("user is at ArtistMatchFinder page", function () {
 });
 
 Given("user selects first artist", function () {
-    page.fillArtistForm('hola');
+    page.fillArtistForm('ctangana');
     page.selectArtist(1);
 });
 
-Given("user selects second artist", function () {
-    page.fillArtistForm('qwe');
+When("user selects second artist", function () {
+    page.fillArtistForm('FXY');
     page.selectArtist(2);
 });
 
-When("results are ready", function () {
-
-});
-
 Then("results are displayed in the screen", function () {
-
+    page.elements.finalResult().should('exist')
 });

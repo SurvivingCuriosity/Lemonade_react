@@ -8,6 +8,7 @@ import TarjetaCancionDoble from "../../molecules/tarjetas/TarjetaCancionDoble";
 import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
 import { getResultadoFinalArtistMatchFinder } from "../../../helpers/Tools";
 import { useTranslation } from 'react-i18next'
+import { FinalResult } from "../../containers/FinalResult";
 
 export function ArtistMatchFinder() {
     const { t } = useTranslation('global')
@@ -25,6 +26,7 @@ export function ArtistMatchFinder() {
 
     const [resultadoFinal, setResultadoFinal] = React.useState([]);
 
+    const [hayResultadoFinal, setHayResultadoFinal] = React.useState(false);
     const [mostrarResultadoFinal, setMostrarResultadoFinal] = React.useState(false);
 
     //====USE EFECT
@@ -37,7 +39,7 @@ export function ArtistMatchFinder() {
             //si no hay artista elegido (se ha borrado), se deja de mostrar el resultado final
             setCancionesArtista1([])
             setObjetosAudioFeatures1([])
-            setMostrarResultadoFinal(false)
+            setResultadoFinal(() => { return [] })
         }
     }, [seleccionArtista1])
 
@@ -47,7 +49,7 @@ export function ArtistMatchFinder() {
         } else {
             setCancionesArtista2([])
             setObjetosAudioFeatures2([])
-            setMostrarResultadoFinal(false)
+            setResultadoFinal(() => { return [] })
         }
     }, [seleccionArtista2])
 
@@ -61,14 +63,27 @@ export function ArtistMatchFinder() {
 
     React.useEffect(() => {
         if (objetosAudioFeatures1.length > 0 && objetosAudioFeatures2.length > 0) {
-            console.log(cancionesArtista1);
             const resultado = getResultadoFinalArtistMatchFinder(cancionesArtista1, cancionesArtista2, objetosAudioFeatures1, objetosAudioFeatures2)
             setResultadoFinal(resultado);
-            window.setTimeout(()=>{
-                resultado.length > 0 && setMostrarResultadoFinal(true);
-            },2000)
         }
     }, [objetosAudioFeatures1, objetosAudioFeatures2])
+
+    React.useEffect(() => {
+        if (resultadoFinal.length > 0) {
+            setHayResultadoFinal(() => { return true });
+            const timeout = setTimeout(() => {
+                setMostrarResultadoFinal(() => { return true });
+            }, 2000);
+
+            return (()=>{
+                clearTimeout(timeout);
+            })
+        } else {
+            setMostrarResultadoFinal(() => { return false })
+            setHayResultadoFinal(() => { return false })
+        }
+    }, [resultadoFinal])
+
 
 
 
@@ -81,7 +96,7 @@ export function ArtistMatchFinder() {
 
     const lleganCancionesDeArtista2 = (listaCanciones) => { setCancionesArtista2(listaCanciones); }
 
-    const lleganAudioFeatures1 = (audio) => { console.log(audio); setObjetosAudioFeatures1(audio); }
+    const lleganAudioFeatures1 = (audio) => { setObjetosAudioFeatures1(audio); }
 
     const lleganAudioFeatures2 = (audio) => { setObjetosAudioFeatures2(audio); }
 
@@ -108,86 +123,87 @@ export function ArtistMatchFinder() {
         />
     )
 
-    const resultado = (
-        <div className="busqueda-container">
-            <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
-
-            {resultadoFinal.length > 0
-                ?
-                <ul className="busqueda-lista">
-                    <div className="">
-                        <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
-                        {resultadoFinal.coincidencias.length === 0 && <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
-                        {resultadoFinal.coincidencias.map((par, index) => {
-                            return (
-                                <TarjetaCancionDoble
-                                    key={index + '-' + par.cancion1.name + '-' + par.cancion2.name}
-                                    jsonData1={par.cancion1}
-                                    jsonData2={par.cancion2}
-                                />
-                            )
-                        })}
-                    </div>
-                    {resultadoFinal.map((conjunto, index) => {
-                        return (
-                            <div key={index}>
-                                <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
-                                <div className="resultado-left">
-                                    {conjunto.canciones.cancionesDe1.map((cancion, index) => {
-                                        return (
-                                            <TarjetaCancion
-                                                key={index + Math.random() * 1000 + cancion.id}
-                                                jsonData={cancion}
-                                                reducirInformacion={true}
-                                            />
-
-                                        )
-                                    })}
-                                </div>
-                                <div className="resultado-right">
-                                    {conjunto.canciones.cancionesDe2.map((cancion, index) => {
-                                        return (
-                                            <TarjetaCancion
-                                                key={index + Math.random() * 1000 + conjunto.titulo + '' + cancion.id}
-                                                jsonData={cancion}
-                                                reducirInformacion={true}
-                                            />
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )
-                    })}
-                </ul>
-                :
-                ""
-            }
-        </div>
-    )
     //====RENDER 
     return (
         <>
             <ProgressBar
                 tipo="ArtistMatchFinder"
-                canciones1={objetosAudioFeatures1.length || undefined}
-                canciones2={objetosAudioFeatures2.length || undefined}
-                primerPaso={seleccionArtista1.id ? true : false}
-                primeraCondicion={objetosAudioFeatures1.length > 0 ? true : false}
-                segundoPaso={seleccionArtista2.id ? true : false}
-                segundaCondicion={objetosAudioFeatures2.length > 0 ? true : false}
+                canciones1={objetosAudioFeatures1?.length}
+                canciones2={objetosAudioFeatures2?.length}
+                primerPaso={seleccionArtista1?.id}
+                primeraCondicion={objetosAudioFeatures1?.length > 0}
+                segundoPaso={seleccionArtista2?.id}
+                segundaCondicion={objetosAudioFeatures1?.length && objetosAudioFeatures2?.length}
+                hayResultado={hayResultadoFinal}
             />
             <PreviewChoices
                 json1={seleccionArtista1}
-                canciones1={cancionesArtista1.length}
+                canciones1={objetosAudioFeatures1.length}
                 json2={seleccionArtista2}
-                canciones2={cancionesArtista2.length}
+                canciones2={objetosAudioFeatures2.length}
                 callbackCambiarEleccion1={eliminarEleccion1}
                 callbackCambiarEleccion2={eliminarEleccion2}
             />
             {!seleccionArtista1.id && busquedaArtista1}
             {seleccionArtista1.id && !seleccionArtista2.id && busquedaArtista2}
-            {seleccionArtista1.id && seleccionArtista2.id && !mostrarResultadoFinal && <CustomSpinner />}
-            {mostrarResultadoFinal && resultado}
+            {seleccionArtista1.id && seleccionArtista2.id && hayResultadoFinal && !mostrarResultadoFinal && <CustomSpinner textPreparando/>}
+
+            <FinalResult mostrarResultado={mostrarResultadoFinal}>
+                <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+
+                {resultadoFinal.length > 0
+                    &&
+                    <ul className="busqueda-lista">
+                        <div className="">
+                            <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
+                            {resultadoFinal.coincidencias.length === 0 &&
+                                <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
+                            {resultadoFinal.coincidencias.map((par, index) => {
+                                return (
+                                    <li key={index}>
+                                        <TarjetaCancionDoble
+                                            // key={index + '-' + par.cancion1.name + '-' + par.cancion2.name}
+                                            jsonData1={par.cancion1}
+                                            jsonData2={par.cancion2}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </div>
+                        {resultadoFinal.map((conjunto, index) => {
+                            return (
+                                <div key={index}>
+                                    <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
+                                    <div className="resultado-left">
+                                        {conjunto.canciones.cancionesDe1.map((cancion, index) => {
+                                            return (
+                                                <TarjetaCancion
+                                                    key={index}
+                                                    // key={index + Math.random() * 1000 + cancion.id}
+                                                    jsonData={cancion}
+                                                    reducirInformacion={true}
+                                                />
+
+                                            )
+                                        })}
+                                    </div>
+                                    <div className="resultado-right">
+                                        {conjunto.canciones.cancionesDe2.map((cancion, index) => {
+                                            return (
+                                                <TarjetaCancion
+                                                    key={index + Math.random() * 1000 + conjunto.titulo + '' + cancion.id}
+                                                    jsonData={cancion}
+                                                    reducirInformacion={true}
+                                                />
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </ul>
+                }
+            </FinalResult>
         </>
 
     )

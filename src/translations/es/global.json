@@ -47,10 +47,13 @@
     },
     "tools": {
         "loading": "Cargando...",
+        "loading-songs": "Obteniendo canciones...",
+        "preparing-result": "Preparando resultados...",
         "button-text": "Buscar",
         "artist-placeholder": "Introduce artista...",
         "artist": "Artista",
         "song": "Canción",
+        "scale": "Escala",
         "spotify-text":"Ver en Spotify",
         "results": "Resultados",
         "intro-artist": "Introduce un artista",
