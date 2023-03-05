@@ -9,7 +9,7 @@ import { IconAndText } from "../../containers/IconAndText";
 import { useTranslation } from "react-i18next";
 
 export default function (props) {
-    const { isClickable, selectionCallback, jsonData, reducirInformacion } = props;
+    const { isClickable, selectionCallback, jsonData, reducirInformacion, noFoto } = props;
     const [t, i18n] = useTranslation('global')
     //extraigo los datos que quiero mostrar del json
     const songKey = getStringFromNota(jsonData.key) || 'Sin definir';
@@ -40,9 +40,9 @@ export default function (props) {
 
     return (
         //si es clickable, le anado la clase clickable (efectos para el hover)
-        <div className={`tarjeta_res tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable ? handleEleccionTarjeta : undefined}>
+        <li className={`tarjeta_res tarjeta ${isClickable ? "clickable" : ""}`} onClick={isClickable && handleEleccionTarjeta}>
             <div className="--tarjeta-left">
-                <Image src={imgCancion} alt='Carátula del album' size='M' />
+                {!noFoto && <Image src={imgCancion} alt='Carátula del album' size='M' />}
 
                 <div className="--tarjeta-datos">
                     <IconAndText>
@@ -71,6 +71,6 @@ export default function (props) {
                     {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
                 </div>
             </div>
-        </div>
+        </li>
     )
 }

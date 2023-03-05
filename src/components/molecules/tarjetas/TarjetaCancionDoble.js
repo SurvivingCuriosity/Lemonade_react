@@ -50,14 +50,15 @@ export default function (props) {
 
     duracionCancion1 = milisegundosAString(duracionCancion1);
     duracionCancion2 = milisegundosAString(duracionCancion2);
-
-
+    
+    
     return (
         //si es clickable, le anado la clase clickable (efectos para el hover)
         <div className={`--tarjetaDoble`} >
             <div className="--tarjetaDoble-canciones">
                 <div className="--tarjeta-left2" >
                     <div className="--tarjeta-datos --datos1">
+                        {imgCancion1 && <img src={imgCancion1} className="--tarjetaDoble-img2" style={{ width: tamanoImagen + 'px', zIndex: 1 }} />}
                         {nombreCancion1 &&
                             <IconAndText reverse>
                                 <Image src={icon_song} size='icon' alt='icono cancion' />
@@ -82,18 +83,15 @@ export default function (props) {
                 </div>
 
                 <div className="--tarjeta-center">
-                    {imgCancion2 && 
-                        <img src={imgCancion2} className="--tarjetaDoble-img1" style={{ width: tamanoImagen + 'px', zIndex: 1 }} />
-                    }
                     <div className="--bpm-scale-doble">
                         {songBPM && <p>{Math.round(songBPM)} BPM</p>}
                         {songKey && <p>{`${songKey}${songMode}`}</p>}
                     </div>
-                    {imgCancion1 && <img src={imgCancion1} className="--tarjetaDoble-img2" style={{ width: tamanoImagen + 'px', zIndex: 1 }} />}
                 </div>
 
-                <div className="--tarjeta-right" style={{ backgroundImage: `url:(${imgCancion2})` }}>
+                <div className="--tarjeta-right">
                     <div className="--tarjeta-datos --datos2">
+                        {imgCancion2 && <img src={imgCancion2} className="--tarjetaDoble-img1" style={{ width: tamanoImagen + 'px', zIndex: 1 }} /> }
                         {nombreCancion2 &&
                             <IconAndText>
                                 <Image src={icon_song} size='icon' alt='icono canción' />
@@ -114,6 +112,7 @@ export default function (props) {
                     </div>
                 </div>
             </div>
+            
             {mostrarReproductor1 == true ?
                 <Reproductor
                     jsonData={jsonData1}

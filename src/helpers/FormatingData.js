@@ -82,7 +82,7 @@ export function milisegundosAString(ms) {
 //[Hola, Adios, Buenas] -> 'Hola • Adios • Buenas'
 export function getCadenaArtistas(listaArtistas, mostrarSoloUno = false) {
     let cadenaArtistas = "";
-    listaArtistas.map((artista, index) => {
+    listaArtistas?.map((artista, index) => {
         cadenaArtistas += artista.name;
         if (index + 1 !== listaArtistas.length) {
             cadenaArtistas += " • "

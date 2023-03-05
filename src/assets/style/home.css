@@ -1,0 +1,48 @@
+/*EN ESTA HOJA SE ENCUENTRAN LOS ESTILOS DE ELEMENTOS PRESENTES EN LA PANTALLA HOME*/
+
+
+/*LANDING PAGE (Lo que se ve al abrir la app y ocupa toda la pantalla)*/
+
+.landing-page-container {
+    height: 100vh;
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr 6fr;
+    margin: auto;
+    justify-items: center;
+    align-items: start;
+    padding: 0 2em;
+  }
+  /*1/2 hijo de landing-page-container*/
+  header{
+    margin: 2em 0em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .logo-limon-header {
+    width: 80px;
+    left: calc(50% - 75px);
+    top: 3em;
+    filter: drop-shadow(5px 5px 15px #000000);
+    -webkit-filter: drop-shadow(5px 5px 15px #000000);
+    -moz-filter: drop-shadow(5px 5px 15px #000000);
+  }
+
+  h1.titulo-main {
+    font-size: 4em;
+    margin-top: 0.5em;
+  }
+
+  /*2/2 hijo de landing-page-container*/
+  .landing-page-bottom-container{
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4em;
+    
+  }

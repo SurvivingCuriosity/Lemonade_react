@@ -9,7 +9,7 @@ import { BusquedaArtista } from "../../organisms/busqueda/BusquedaArtista";
 import { getResultadoFinalArtistMatchFinder } from "../../../helpers/Tools";
 import { useTranslation } from 'react-i18next'
 import { FinalResult } from "../../containers/FinalResult";
-
+import { ContainerResultadoArtistMatchFinder } from '../../containers/ContainerResultadoArtistMatchFinder'
 export function ArtistMatchFinder() {
     const { t } = useTranslation('global')
     //====ESTADO
@@ -75,7 +75,7 @@ export function ArtistMatchFinder() {
                 setMostrarResultadoFinal(() => { return true });
             }, 2000);
 
-            return (()=>{
+            return (() => {
                 clearTimeout(timeout);
             })
         } else {
@@ -146,63 +146,67 @@ export function ArtistMatchFinder() {
             />
             {!seleccionArtista1.id && busquedaArtista1}
             {seleccionArtista1.id && !seleccionArtista2.id && busquedaArtista2}
-            {seleccionArtista1.id && seleccionArtista2.id && hayResultadoFinal && !mostrarResultadoFinal && <CustomSpinner textPreparando/>}
+            {seleccionArtista1.id && seleccionArtista2.id && hayResultadoFinal && !mostrarResultadoFinal && <CustomSpinner textPreparando />}
 
             <FinalResult mostrarResultado={mostrarResultadoFinal}>
-                <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+                <ContainerResultadoArtistMatchFinder 
+                    resultado = {resultadoFinal}
+                />
 
-                {resultadoFinal.length > 0
-                    &&
-                    <ul className="busqueda-lista">
-                        <div className="">
-                            <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
-                            {resultadoFinal.coincidencias.length === 0 &&
-                                <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
-                            {resultadoFinal.coincidencias.map((par, index) => {
+                    {/* <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
+
+                    {resultadoFinal.length > 0
+                        &&
+                        <ul className="busqueda-lista">
+                            <div className="">
+                                <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
+                                {resultadoFinal.coincidencias.length === 0 &&
+                                    <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
+                                {resultadoFinal.coincidencias.map((par, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <TarjetaCancionDoble
+                                                // key={index + '-' + par.cancion1.name + '-' + par.cancion2.name}
+                                                jsonData1={par.cancion1}
+                                                jsonData2={par.cancion2}
+                                            />
+                                        </li>
+                                    )
+                                })}
+                            </div>
+                            {resultadoFinal.map((conjunto, index) => {
                                 return (
-                                    <li key={index}>
-                                        <TarjetaCancionDoble
-                                            // key={index + '-' + par.cancion1.name + '-' + par.cancion2.name}
-                                            jsonData1={par.cancion1}
-                                            jsonData2={par.cancion2}
-                                        />
-                                    </li>
+                                    <div key={index}>
+                                        <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
+                                        <div className="resultado-left">
+                                            {conjunto.canciones.cancionesDe1.map((cancion, index) => {
+                                                return (
+                                                    <TarjetaCancion
+                                                        key={index}
+                                                        // key={index + Math.random() * 1000 + cancion.id}
+                                                        jsonData={cancion}
+                                                        reducirInformacion={true}
+                                                    />
+
+                                                )
+                                            })}
+                                        </div>
+                                        <div className="resultado-right">
+                                            {conjunto.canciones.cancionesDe2.map((cancion, index) => {
+                                                return (
+                                                    <TarjetaCancion
+                                                        key={index + Math.random() * 1000 + conjunto.titulo + '' + cancion.id}
+                                                        jsonData={cancion}
+                                                        reducirInformacion={true}
+                                                    />
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
                                 )
                             })}
-                        </div>
-                        {resultadoFinal.map((conjunto, index) => {
-                            return (
-                                <div key={index}>
-                                    <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
-                                    <div className="resultado-left">
-                                        {conjunto.canciones.cancionesDe1.map((cancion, index) => {
-                                            return (
-                                                <TarjetaCancion
-                                                    key={index}
-                                                    // key={index + Math.random() * 1000 + cancion.id}
-                                                    jsonData={cancion}
-                                                    reducirInformacion={true}
-                                                />
-
-                                            )
-                                        })}
-                                    </div>
-                                    <div className="resultado-right">
-                                        {conjunto.canciones.cancionesDe2.map((cancion, index) => {
-                                            return (
-                                                <TarjetaCancion
-                                                    key={index + Math.random() * 1000 + conjunto.titulo + '' + cancion.id}
-                                                    jsonData={cancion}
-                                                    reducirInformacion={true}
-                                                />
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </ul>
-                }
+                        </ul>
+                    } */}
             </FinalResult>
         </>
 

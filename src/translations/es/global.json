@@ -1,10 +1,11 @@
 {
     "header": {
-        "welcome-message": "Por productores, para productores...",
+        "welcome-message": "Buscador de tonalidad de canciones y más.Por productores, para productores...",
         "home-btn": "Ir a inicio",
+        "tools-btn" : "Ver herramientas avanzadas",
         "bottom-menu": {
             "tutorial": "Tutorial",
-            "proyecto": "Proyecto",
+            "about": "Proyecto",
             "contacto": "Contacto"
         },
         "tutorial": {

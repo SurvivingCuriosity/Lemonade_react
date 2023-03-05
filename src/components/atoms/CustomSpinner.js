@@ -19,7 +19,7 @@ export function CustomSpinner({ size, textCanciones, textPreparando }) {
     return (
         <div className="loading-spinner">
             <img src={lemon} style={{ width: tamanoSpinner + 'px', margin: '0' }} />
-            <p>{text}</p>
+            {textCanciones && <p>{text}</p>}
         </div>
     )
 

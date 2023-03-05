@@ -43,6 +43,14 @@
     position: relative;
 }
 
+.--tarjeta-right .--tarjeta-datos {
+    align-items: flex-end;
+}
+
+.--tarjeta-right .flex-row-start {
+    flex-flow: row-reverse nowrap;
+}
+
 .--tarjeta-datos {
     display: flex;
     flex-flow: column nowrap;
@@ -91,23 +99,30 @@
 .preview-choices-div .tarjeta {
     width: 50%;
 }
-.tarjeta-preview-scale{
+
+.tarjeta-preview-scale {
     font-size: 2.5em;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color);
 }
-.tarjetas-container-header{
+
+.tarjetas-container-header {
     display: flex;
     flex-flow: row-reverse nowrap;
     align-items: center;
     justify-content: space-between;
     min-height: 4em;
 }
+
 /*FIN TARJETAS PREVIEW CHOICE*/
 
-
+.container-tarjetas {
+    background-color: var(--negro2);
+    padding: 1em;
+    border-radius: 14px;
+}
 
 /*================================TARJETAS DOBLE*/
 .--tarjetaDoble .--tarjeta-left2 button {
@@ -123,6 +138,7 @@
     flex-flow: row nowrap;
     align-items: stretch;
     justify-content: space-between;
+    width: 100%;
 }
 
 .--tarjetaDoble-reproductores {
@@ -133,12 +149,13 @@
 }
 
 .--tarjetaDoble {
-    margin: 2em 1em;
+    margin-right: 2em;
     position: relative;
     border-radius: 10px;
     border: 2px solid var(--gris);
     box-shadow: 0px 0px 10px var(--gris);
     overflow: hidden;
+    width: 30em;
 }
 
 .--tarjetaDoble .--tarjeta-left2 .--tarjeta-datos {
@@ -164,41 +181,20 @@
 
 /*FIN TARJETAS DOBLE*/
 
-.resultado-left {
-    width: 50%;
-    float: left;
-    font-size: 0.8em;
-}
-
-.resultado-right {
-    width: 50%;
-    float: right;
-    font-size: 0.8em;
-}
-
-.resultado-left,
-.resultado-right {
-    max-height: 10em;
-    overflow-y: scroll;
-}
-
 
 
 /*================================ Chrome, Edge, and Safari */
-.resultado-left::-webkit-scrollbar,
-.resultado-right::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 0.7em;
 }
 
-.resultado-right::-webkit-scrollbar-track,
-.resultado-left::-webkit-scrollbar-track {
-    background: #808080;
+*::-webkit-scrollbar-track {
+    background: var(--fondo3);
 
 }
 
-.resultado-left::-webkit-scrollbar-thumb,
-.resultado-right::-webkit-scrollbar-thumb {
-    background-color: var(--colorTextoColor);
+*::-webkit-scrollbar-thumb {
+    background-color: var(--color);
     border-radius: 42px;
     border: 3px none #400040;
     height: 10px;
@@ -273,7 +269,7 @@
     padding: 0.5em;
     display: flex;
     flex-flow: column;
-    top: 2.5em;
+    top: 0.5em;
     align-items: center;
     border-radius: 11px;
     font-weight: 500;
@@ -281,23 +277,7 @@
     box-shadow: 0px 0px 30px 15px var(--negro);
 }
 
-.--tarjetaDoble-img1 {
-    width: 17em !important;
-    position: absolute;
-    top: -1em;
-    left: 0;
-    opacity: 0.5 !important;
-    bottom: auto;
-}
 
-.--tarjetaDoble-img2 {
-    width: 17em !important;
-    position: absolute;
-    top: -1em;
-    right: 0;
-    opacity: 0.5 !important;
-    bottom: auto;
-}
 
 
 
@@ -310,7 +290,7 @@
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px black;
     font-size: 0.8em;
-    border: 1px solid var(--colorTextoColor);
+    border: 1px solid var(--color);
     width: 100%;
 }
 
@@ -400,12 +380,6 @@
     margin-bottom: 2em;
 }
 
-.btn_borrar_todo {
-    position: absolute;
-    bottom: 0;
-    margin: 1em;
-}
-
 .icono_tarjeta {
     width: 1.5em;
     background-color: var(--negro2);
@@ -413,3 +387,75 @@
 }
 
 /*FIN TARJETAS */
+
+
+/* SLIDER */
+.horizontal-slider-container {
+    scroll-snap-type: x mandatory;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-flow: row nowrap;
+}
+
+.slider-item {
+    scroll-snap-align: start;
+}
+
+.coincidencias-nota-container {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 4em;
+}
+.conjunto-coincidencias-nota .resultado-left,
+.conjunto-coincidencias-nota .resultado-right{
+    max-height: 10em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 50%;
+}
+
+.conjunto-coincidencias-nota {
+    width: 100%;
+}
+.slider-item-center{
+    scroll-snap-align: center;
+    margin: auto 1em;
+}
+.conjunto-tarjetas{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.tarjeta-artista-grande{
+    position: relative;
+    width: 25em;
+    height: 35em;
+    background-color: var(--fondo3);
+    list-style-type: none;
+    margin: 2em;
+    padding: 2em;
+    display: grid;
+    grid-template-rows: 10fr 1fr;
+    justify-items: center;
+    gap: 1em;
+    border-radius: 15px;
+}
+.boton-circulo-next{
+    border-radius: 20px;
+    padding: 0.5em 1em;
+    background-color: var(--gris);
+}
+
+.tarjeta-artista-grande img{
+    width: 20em;
+}
+
+.tarjeta-artista-grande .--tarjeta-info-bpm-scale{
+    height: 100%;
+    margin: auto;
+    text-align: center;
+}
+.tarjeta-artista-grande .--tarjeta-info-bpm-scale p{
+    font-weight: 800;
+}

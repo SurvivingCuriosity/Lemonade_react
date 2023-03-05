@@ -25,7 +25,7 @@ export default function (props) {
 
 
     return (
-        <div className={`tarjeta_res tarjeta ${isClickable && "clickable"}`} onClick={isClickable && handleEleccionTarjeta}>
+        <li className={`tarjeta_res tarjeta ${isClickable && "clickable"}`} onClick={isClickable && handleEleccionTarjeta}>
             <div className="--tarjeta-left">
 
                 <Image src={imgArtista} alt='Imagen del artista' size='M' />
@@ -47,6 +47,6 @@ export default function (props) {
             <div className="--tarjeta-right">
                 <a href={link} target='_blank'>{t('tools.spotify-text')}</a>
             </div>
-        </div>
+        </li>
     )
 }

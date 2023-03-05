@@ -8,9 +8,10 @@ import { PreviewChoices } from "../../molecules/tarjetas/PreviewChoices";
 import { useTranslation } from "react-i18next";
 import { eliminaElementosConNameRepetido } from "../../../helpers/FilteringArrays";
 import { FinalResult } from "../../containers/FinalResult";
+import { ContainerResultadoFinal } from "../../containers/ContainerResultadoFinal";
 
 export function ArtistKeyFinder() {
-    const [t, i18n] = useTranslation('global');
+    const {t} = useTranslation('global')
     //====ESTADO 
     const [msgResultado, setMsgResultado] = React.useState("");
     const [msgResultadoClass, setMsgResultadoClass] = React.useState("success");
@@ -163,17 +164,16 @@ export function ArtistKeyFinder() {
 
                 {hayResultadoFinal
                     &&
-                    <ul className="busqueda-lista">
-                        <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
-                        {resultadoFinal.map((item) => {
-                            return (
-                                <TarjetaCancion
-                                    key={item.id}
-                                    jsonData={item}
-                                />
-                            );
-                        })}
-                    </ul>
+                    <ContainerResultadoFinal headerText={msgResultado} className={msgResultadoClass}> 
+                            {resultadoFinal?.map((item) => {
+                                return (
+                                    <TarjetaCancion
+                                        key={item.id}
+                                        jsonData={item}
+                                    />
+                                );
+                            })}
+                    </ContainerResultadoFinal>
                 
                 }
             </FinalResult>

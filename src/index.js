@@ -6,6 +6,7 @@ import './assets/style/style.css';
 import './assets/style/tarjetas.css';
 import './assets/style/reproductor.css';
 import './assets/style/progressBar.css';
+import './assets/style/home.css';
 import App from './App';
 import { I18nextProvider } from 'react-i18next'
 import i18next from 'i18next'

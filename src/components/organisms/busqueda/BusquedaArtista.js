@@ -3,8 +3,8 @@ import TarjetaArtista from "./TarjetaArtista";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { buscarArtista } from "../../../api/apiCalls";
 import { getPaginaSiguienteOAnterior } from "../../../api/apiCalls";
-import { TmpMessage } from "../../atoms/TmpMessage";
-import {useTranslation} from 'react-i18next'
+import { ContainerResultadoBusqueda } from "../../containers/ContainerResultadoBusqueda";
+import { useTranslation } from 'react-i18next'
 
 export function BusquedaArtista(props) {
     const [t, i18n] = useTranslation('global');
@@ -46,56 +46,14 @@ export function BusquedaArtista(props) {
         //si resultadoBusqueda.artists significa que se ha realizado una busqueda
         if (resultadoBusqueda.artists) {
             if (listaResultados.length > 0) {
-                setLinkNext(resultadoBusqueda.artists.next)
-                setLinkPrev(resultadoBusqueda.artists.previous)
+                setLinkNext(() => { return resultadoBusqueda.artists.next })
+                setLinkPrev(() => { return resultadoBusqueda.artists.previous })
             } else {
                 setTemporalMsgConfig(() => { return { msg: 'No hay resultados', type: 'error' } })
             }
         }
     }, [resultadoBusqueda, listaResultados])
 
-    const renderButtonsPrevNext = (
-        <div>
-            {linkNext != null
-                ?
-                <button
-                    className="boton_link botonPaginaSiguiente"
-                    onClick={getPaginaSiguiente}
-                >{t('tools.next-page')}
-                </button>
-                :
-                ""
-            }
-            {linkPrev != null
-                ?
-                <button
-                    className="boton_link botonPaginaAnterior"
-                    onClick={getPaginaAnterior}
-                >{t('tools.prev-page')}
-                </button>
-                :
-                ""
-            }
-        </div>
-    )
-
-    const renderListaResultados = (
-        <ul className="grow-in busqueda-lista">
-            {listaResultados.length > 1 && !haySeleccion ? renderButtonsPrevNext : ""}
-            {/* hay mas resultados */}
-            {listaResultados.map((item) => {
-                return (
-                    <TarjetaArtista
-                        key={item.id}
-                        isClickable={(listaResultados.length > 0 && !haySeleccion) ? true : false}
-                        selectionCallback={handleEleccion}
-                        jsonData={item}
-                    />
-                );
-            })
-            }
-        </ul>
-    )
 
 
 
@@ -108,7 +66,7 @@ export function BusquedaArtista(props) {
     //funcion que se ejecuta cuando llegan los resultados
     function miCallback(resultado) {
         if (resultado.err?.message) {
-            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error', remain:true } })
+            setTemporalMsgConfig(() => { return { msg: 'Error de red', type: 'error', remain: true } })
             setIsLoading(false)
             return;
         }
@@ -170,8 +128,26 @@ export function BusquedaArtista(props) {
                 </span>
             </form>
 
-            {isLoading && <CustomSpinner />}
-            {(listaResultados.length > 0 && !haySeleccion) ? renderListaResultados : <TmpMessage config={temporalMsgConfig} />}
+            {listaResultados.length > 0 && !haySeleccion &&
+                <ContainerResultadoBusqueda
+                    cantidad={listaResultados?.length}
+                    linkNext={linkNext}
+                    linkPrev={linkPrev}
+                    isLoading={isLoading}
+                    callbackGetSiguiente={getPaginaSiguiente}
+                    callbackGetAnterior={getPaginaAnterior}
+                >{
+                        listaResultados?.map((item) => {
+                            return (
+                                <TarjetaArtista
+                                    key={item.id}
+                                    isClickable={listaResultados?.length > 0 && !haySeleccion ? true : false}
+                                    selectionCallback={handleEleccion}
+                                    jsonData={item}
+                                />
+                            );
+                        })}
+                </ContainerResultadoBusqueda>}
 
         </div>
     )

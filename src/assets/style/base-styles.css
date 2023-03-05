@@ -23,6 +23,7 @@ html {
     --blanco3: #AAA;
 
     --color: #FFCC4D;
+    --verde: #77B255;
 
     --error: rgb(255, 75, 75);
     --fondoError: rgba(179, 43, 43, 0.9);
@@ -79,8 +80,7 @@ h1 {
 }
 
 h1.titulo-main {
-    background-color: var(--color);
-    color: var(--fondo);
+    color: var(--color);
 }
 
 h1.tool-titulo {
@@ -133,11 +133,11 @@ hr {
 button,
 input[type=submit],
 input[type=button] {
-    color: var(--color);
-    background-color: var(--fondo);
+    color: var(--negro);
+    background-color: var(--color);
     padding: 0.2em 0.9em;
-    border: 2px solid var(--color);
     border-radius: 5px;
+    border: none;
 }
 
 button:hover,
@@ -149,9 +149,8 @@ input[type=button]:hover {
 button:disabled,
 input[type=submit]:disabled,
 input[type=button]:disabled {
-    color: var(--gris);
-    background-color: var(--fondo);
-    border: 2px solid var(--gris);
+    color: var(--negro);
+    background-color: var(--gris);
 }
 
 button:disabled:hover,
@@ -163,6 +162,7 @@ input[type=button]:disabled:hover {
 .boton_link {
     border: none;
     background-color: transparent;
+    color: var(--color);
 }
 
 /*FIN BOTONES*/
@@ -174,10 +174,9 @@ input[type="password"],
 input[type="email"] {
     width: 100%;
     padding: 0.6em;
-    border: 2px solid var(--gris);
-    border-radius: 4px;
+    border: none;
+    border-radius: 8px;
     font-weight: 500;
-    background-color: var(--fondo);
     color: var(--gris);
 
 }

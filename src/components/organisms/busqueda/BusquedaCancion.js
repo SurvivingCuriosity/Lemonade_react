@@ -4,8 +4,9 @@ import { buscarCancion, getPaginaSiguienteOAnterior } from "../../../api/apiCall
 import { getAllAudioFeatures } from "../../../api/apiCustomMethods";
 import { CustomSpinner } from "../../atoms/CustomSpinner";
 import { TmpMessage } from "../../atoms/TmpMessage";
-import {useTranslation} from 'react-i18next'
-
+import { useTranslation } from 'react-i18next'
+import { mergeAudioFeaturesWithSongObject, getMapWithIdAsKey } from '../../../helpers/Tools'
+import { ContainerResultadoBusqueda } from "../../containers/ContainerResultadoBusqueda";
 export function BusquedaCancion(props) {
     const [t, i18n] = useTranslation('global');
     const { titulo, isSongKeyFinder, haySeleccion, callbackEleccion, getRandomOnInit } = props;
@@ -57,36 +58,27 @@ export function BusquedaCancion(props) {
             }
             //llega uno
             //control next prev
-            if(resultadoBusqueda?.tracks.previous===null){
-                setLinkPrev(null)
-            }else{
-                setLinkPrev(resultadoBusqueda.tracks.previous)
-            }
+            setLinkPrev(resultadoBusqueda?.tracks.previous)
+
+            // if (resultadoBusqueda?.tracks.previous === null) {
+            //     setLinkPrev(null)
+            // } else {
+            //     setLinkPrev(resultadoBusqueda.tracks.previous)
+            // }
         } else if (resultadoBusqueda.id) {
             getAllAudioFeatures(resultadoBusqueda, lleganAudioFeatures);
         }
 
-        
+
     }, [resultadoBusqueda])
 
 
     //se ejecuta cada vez que audioFeatures cambia
     React.useEffect(() => {
         if (objetosAudioFeatures.length > 0 && !resultadoBusqueda.id) {
-            let audioFeatures_conKey = new Map();
-            objetosAudioFeatures.map((audioF) => {
-                audioFeatures_conKey.set(`${audioF.id}`, audioF);
-            })
-            //anado a las canciones la informacion que necesito de las audioFeatures y las anado a su categoria
-            resultadoBusqueda.tracks.items.map((cancion) => {
-                if ((audioFeatures_conKey).get(cancion.id)) {
-                    cancion.key = (audioFeatures_conKey).get(cancion.id).key;
-                    cancion.bpm = (audioFeatures_conKey).get(cancion.id).tempo;
-                    cancion.mode = (audioFeatures_conKey).get(cancion.id).mode;
-                }
-            })
-
-            setListaResultados(resultadoBusqueda.tracks.items);
+            let audioFeaturesMap = getMapWithIdAsKey(objetosAudioFeatures);
+            let resultado = mergeAudioFeaturesWithSongObject(resultadoBusqueda.tracks.items, audioFeaturesMap);
+            setListaResultados(resultado);
         } else {
             if (resultadoBusqueda.id) {
                 resultadoBusqueda.key = objetosAudioFeatures[0].key;
@@ -99,28 +91,28 @@ export function BusquedaCancion(props) {
         //control enlaces next prev
         if (resultadoBusqueda.tracks?.items.length < 5) {
             setLinkNext(null)
-        }else{
+        } else {
             setLinkNext(resultadoBusqueda.tracks?.next)
         }
-        
+
         setIsLoading(false);
     }, [objetosAudioFeatures])
 
     const renderButtonsPrevNext = (
         <div className="tarjetas-container-header">
-            {linkNext !== null 
-            ?
+            {linkNext !== null
+                ?
                 <button
                     className="boton_link botonPaginaSiguiente"
                     onClick={getPaginaSiguiente}
                 >{t('tools.next-page')}
                 </button>
-            :
+                :
                 <div></div>
             }
-            {isLoading && <CustomSpinner size='s' textCanciones/>}
-            {linkPrev !== null 
-            ?
+            {isLoading && <CustomSpinner size='s' textCanciones />}
+            {linkPrev !== null
+                ?
                 <button
                     className="boton_link botonPaginaAnterior"
                     onClick={getPaginaAnterior}
@@ -131,32 +123,17 @@ export function BusquedaCancion(props) {
             }
         </div>
     )
+    function getPaginaSiguiente() {
+        setIsLoading(true);
+        let url = resultadoBusqueda.tracks.next;
+        getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
+    }
 
-    const renderListaResultados = (
-        <ul className="grow-in busqueda-lista">
-            {listaResultados.length > 1 && !haySeleccion ? renderButtonsPrevNext : ""}
-            {/* hay mas resultados */}
-            {listaResultados.id ?
-                < TarjetaCancion
-                    key={listaResultados.id}
-                    isClickable={(!isSongKeyFinder && !haySeleccion) ? true : false}
-                    selectionCallback={mandarEleccionAlPadre}
-                    jsonData={listaResultados}
-                />
-                :
-                listaResultados.map((item) => {
-                    return (
-                        <TarjetaCancion
-                            key={item.id}
-                            isClickable={(!isSongKeyFinder && !haySeleccion) ? true : false}
-                            selectionCallback={mandarEleccionAlPadre}
-                            jsonData={item}
-                        />
-                    );
-                })}
-        </ul>
-    )
-
+    function getPaginaAnterior() {
+        setIsLoading(true);
+        let url = resultadoBusqueda.tracks.previous;
+        getPaginaSiguienteOAnterior(url, lleganResultadosDeBusqueda)
+    }
 
     //funcion que se ejecuta cuando el usuario selecciona una cancion o artista
     function mandarEleccionAlPadre(userSelection) {
@@ -172,7 +149,7 @@ export function BusquedaCancion(props) {
             return;
         }
         setTemporalMsgConfig(() => { return {} }) //para borrar mensaje anterior
-        setResultadoBusqueda(()=>{return resultados});
+        setResultadoBusqueda(() => { return resultados });
     }
 
     function lleganAudioFeatures(audio) {
@@ -193,33 +170,52 @@ export function BusquedaCancion(props) {
 
     return (
         <div className="fade-in enter-zoom-in busqueda-container">
-            <h2 className="busqueda-titulo">{titulo}</h2>
+            <h2 className="busqueda-titulo">{isSongKeyFinder ? 'Song key finder' : titulo}</h2>
 
             <form onSubmit={handleSubmit} className="linea-flex-start">
-                <span className="input_and_button">
-                    <input
-                        id="input_artista"
-                        autoFocus
-                        type="search"
-                        value={text}
-                        placeholder={t('tools.intro-song')}
-                        onChange={(e) => setText(e.target.value)}
-                    />
-                    <button
-                        id="submit_artista"
-                        type="submit"
-                        className="busqueda-boton-buscar boton zoom-on-click"
-                        disabled={text === "" ? true : false}
-                    >{t('tools.button-text')}
-                    </button>
-                </span>
-            </form>
-
-            {/* {isLoading && <CustomSpinner size='s' textCanciones/>} */}
+                        <span className="input_and_button">
+                            <input
+                                id="input_artista"
+                                autoFocus
+                                type="search"
+                                value={text}
+                                placeholder={t('tools.intro-song')}
+                                onChange={(e) => setText(e.target.value)}
+                            />
+                            <button
+                                id="submit_artista"
+                                type="submit"
+                                className="busqueda-boton-buscar boton zoom-on-click"
+                                disabled={text === "" ? true : false}
+                            >{t('tools.button-text')}
+                            </button>
+                        </span>
+                    </form>
 
             <TmpMessage config={temporalMsgConfig} />
 
-            {listaResultados.length > 0 && !haySeleccion ? renderListaResultados : ''}
+            {listaResultados.length > 0 && !haySeleccion &&
+                <ContainerResultadoBusqueda
+                    cantidad={listaResultados?.length}
+                    linkNext
+                    linkPrev
+                    isLoading={isLoading}
+                    callbackGetSiguiente={getPaginaSiguiente}
+                    callbackGetAnterior={getPaginaAnterior}
+                >
+                    
+                    {
+                        listaResultados?.map((item) => {
+                            return (
+                                <TarjetaCancion
+                                    key={item.id}
+                                    isClickable={(!isSongKeyFinder && !haySeleccion) ? true : false}
+                                    selectionCallback={mandarEleccionAlPadre}
+                                    jsonData={item}
+                                />
+                            );
+                        })}
+                </ContainerResultadoBusqueda>}
         </div>
     )
 }

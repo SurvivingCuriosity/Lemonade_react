@@ -209,7 +209,7 @@ export const getResultadoFinalArtistMatchFinder = (can1, can2, obj1, obj2) => {
 
 
 
-const getMapWithIdAsKey = (array) => {
+export const getMapWithIdAsKey = (array) => {
     let map = new Map();
     array.map((element) => {
         map.set(`${element.id}`, element);
@@ -217,13 +217,13 @@ const getMapWithIdAsKey = (array) => {
     return map;
 }
 
-const mergeAudioFeaturesWithSongObject = (can, obj) => {
+export const mergeAudioFeaturesWithSongObject = (listaCanciones, listaAudioFeatures) => {
     let mergedArray = [];
-    can.map((cancion) => {
-        if (obj.get(cancion.id)) {
-            let nota = obj.get(cancion.id).key;
-            let escala = obj.get(cancion.id).mode;
-            let bpm = obj.get(cancion.id).tempo;
+    listaCanciones.map((cancion) => {
+        if (listaAudioFeatures.get(cancion.id)) {
+            let nota = listaAudioFeatures.get(cancion.id).key;
+            let escala = listaAudioFeatures.get(cancion.id).mode;
+            let bpm = listaAudioFeatures.get(cancion.id).tempo;
 
             cancion.key = nota
             cancion.bpm = Math.round(bpm)

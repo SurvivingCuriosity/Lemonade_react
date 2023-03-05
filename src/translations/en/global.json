@@ -1,10 +1,11 @@
 {
     "header": {
-        "welcome-message": "For producers, by producers...",
+        "welcome-message": "Key finder & more. For producers, by producers...",
         "home-btn": "Go home",
+        "tools-btn" : "See advanced tools",
         "bottom-menu": {
             "tutorial": "Tutorial",
-            "proyecto": "Project",
+            "about": "About",
             "contacto": "Contact"
         },
         "tutorial": {

@@ -1,12 +1,12 @@
 import React from 'react'
-import {Header} from './Header'
+import {LandingPage} from './LandingPage'
 import {Main} from './Main'
 import { ScrollToTop } from '../../atoms/ScrollToTop'
 
 export function HomePage(){
     return (
         <>
-            <Header />
+            <LandingPage />
             <Main />
             <ScrollToTop />
         </>

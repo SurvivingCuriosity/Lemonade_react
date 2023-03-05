@@ -3,12 +3,6 @@
 
 /* FIN ELEMENTOS SUELTOS */
 /* HEADER MAIN FOOTER */
-header {
-  background-color: var(--fondo3);
-  position: relative;
-  height: 100vh;
-  z-index: 4;
-}
 
 .header-main-nav ul {
   color: var(--colorSobreFondo);
@@ -41,16 +35,13 @@ header a {
   flex-flow: row nowrap;
 }
 
-header .linea-flex-start {
-  flex-flow: column nowrap;
-}
 
-header div {
+/* header div {
   display: flex;
   flex-flow: column nowrap;
   gap: 2em;
   align-items: center;
-}
+} */
 
 /* MAIN */
 main {
@@ -104,7 +95,7 @@ footer {
 /* PAGINAS HERRAMIENTAS */
 .limon_lemonade_enlace {
   padding: 1em;
-  width: 100%;
+  margin-right: auto;
 }
 
 .tool-page {
@@ -123,6 +114,9 @@ footer {
   width: 95vw;
   margin: 1em auto;
   align-items: center;
+  background-color: var(--negro3);
+  padding: 1em;
+  border-radius: 20px;
 }
 
 .tool-description {
@@ -201,28 +195,29 @@ footer {
   text-align: center;
 }
 
-.logo-limon-header {
-  width: 150px;
-  position: absolute;
-  left: calc(50% - 75px);
-  top: 3em;
-  filter: drop-shadow(5px 5px 15px #000000);
-  -webkit-filter: drop-shadow(5px 5px 15px #000000);
-  -moz-filter: drop-shadow(5px 5px 15px #000000);
-}
+
 
 .header-bottom-nav {
-  font-size: 0.75em;
+  font-size: 1.25em;
   width: 90%;
-  position: absolute;
-  bottom: 7em;
+  margin-bottom: 3em;
+}
+.btn-herramientas-landing{
+  background-color: var(--color);
+  color: var(--fondo);
+  display: block;
+  text-align: center;
+  border-radius: 7px;
+  font-size: 1.7em;
+  padding: 0.5em 1em;
+  font-weight: 600;
+  margin: 1em;
 }
 
 .header-bottom-nav ul {
   display: flex;
   flex-flow: row nowrap;
-  width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .header-bottom-nav ul a {
@@ -401,27 +396,9 @@ footer {
   gap: 1em;
 }
 
-.container_centro {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  position: relative;
-  height: 100%;
-  margin: auto;
-}
 
-.container_centro_header {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  position: relative;
-  height: 100vh;
-  width: 90vw;
-  margin: auto;
+.landing-page-bottom-container{
+
 }
 
 .container_start {
@@ -469,14 +446,14 @@ footer {
   width: 100vw;
   height: 100vh;
   position: absolute;
+  top: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  top: 0;
-  left: 0;
+  z-index: 5;
 }
 
 .modal-container {
@@ -518,8 +495,8 @@ footer {
 }
 
 .modal-titulo {
-  position: absolute;
   width: 95%;
+  position: absolute;
   top: 2em;
   left: 50%;
   transform: translate(-50%, 0);
@@ -620,6 +597,8 @@ footer {
   transition: all 0.5s ease-in-out;
   min-height: 100px;
   margin: 2em auto;
+  padding: 2em;
+  border-radius: 10px;
 }
 
 .containerSinResultado {
@@ -634,7 +613,6 @@ footer {
   flex-flow: column nowrap;
   gap: 0.5em;
   padding: 0.5em;
-  background-color: var(--fondo);
   opacity: 0.7;
   border-radius: 10px;
   margin: auto;
@@ -730,7 +708,6 @@ footer {
 
   .logo-limon-header {
     width: 150px;
-    position: absolute;
     left: calc(50% - 75px);
     top: 3em;
   }
@@ -762,7 +739,7 @@ footer {
     width: 70vw;
   }
 
-  header .container_centro {
+  header .landing-page-container {
     width: 50%;
   }
 
@@ -811,11 +788,11 @@ footer {
     align-items: baseline;
   }
 
-  .container_centro_header {
+  .landing-page-container_header {
     justify-content: start;
   }
 
-  header .container_centro {
+  header .landing-page-container {
     width: 50%;
   }
 
@@ -875,11 +852,11 @@ footer {
     align-items: baseline;
   }
 
-  .container_centro_header {
+  .landing-page-container_header {
     justify-content: start;
   }
 
-  header .container_centro {
+  header .landing-page-container {
     width: 50%;
   }
 
@@ -916,6 +893,19 @@ footer {
     flex-flow: row nowrap;
   }
 
+  .logo-limon-header {
+    width: 200px;
+    left: calc(50% - 75px);
+    top: 3em;
+  }
+
+  .landing-page-container {
+
+  }
+h1.titulo-main {
+  font-size: 5em;
+}
+
 }
 
 @media only screen and (min-width: 1400px) {
@@ -934,13 +924,14 @@ footer {
   header div {
     gap: 1em;
     align-items: baseline;
+    margin-top: 1.5em;
   }
 
-  .container_centro_header {
+  .landing-page-container_header {
     justify-content: start;
   }
 
-  header .container_centro {
+  header .landing-page-container {
     width: 50%;
   }
 
@@ -1061,4 +1052,5 @@ footer {
 }
 #final-result-container{
   margin: 3em auto;
+  width: 100%;
 }

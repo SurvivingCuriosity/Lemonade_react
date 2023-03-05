@@ -25,6 +25,9 @@ export const Image = ({ src, alt, size, className = '', onClick}) => {
             case 'L':
                 setTam(70);
                 break;
+            case 'XL':
+                setTam(190);
+                break;
             default:
             // tam=20;
         }
