@@ -4,45 +4,103 @@
 /*LANDING PAGE (Lo que se ve al abrir la app y ocupa toda la pantalla)*/
 
 .landing-page-container {
-    height: 100vh;
-    position: relative;
-    display: grid;
-    grid-template-rows: 1fr 6fr;
-    margin: auto;
-    justify-items: center;
-    align-items: start;
-    padding: 0 2em;
-  }
-  /*1/2 hijo de landing-page-container*/
-  header{
-    margin: 2em 0em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1em;
-  }
+  background-color: var(--fondo2);
+  padding: 1.25em;
+  height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 6fr;
+  z-index: 4;
+  margin: a;
+}
+.landing-page-container .content {
+  width: 90%;
+}
+/*1/2 hijo de landing-page-container*/
+header {
+  margin: 2em 0em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
+  gap: 1em;
+}
 
-  .logo-limon-header {
-    width: 80px;
-    left: calc(50% - 75px);
-    top: 3em;
-    filter: drop-shadow(5px 5px 15px #000000);
-    -webkit-filter: drop-shadow(5px 5px 15px #000000);
-    -moz-filter: drop-shadow(5px 5px 15px #000000);
-  }
+/*Texto descriptivo acplicación*/
+header p {
+  font-size: 0.9em;
+  text-align: center;
+}
 
-  h1.titulo-main {
-    font-size: 4em;
-    margin-top: 0.5em;
-  }
+/*Contenedor de logo + texto Lemonade*/
+.landing-page-container header div {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 
-  /*2/2 hijo de landing-page-container*/
-  .landing-page-bottom-container{
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4em;
-    
-  }
+
+
+.columna-centro {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.logo-limon-header {
+  width: 5em;
+  margin-right: 2em;
+  filter: drop-shadow(5px 5px 15px #000000);
+  -webkit-filter: drop-shadow(5px 5px 15px #000000);
+  -moz-filter: drop-shadow(5px 5px 15px #000000);
+}
+
+h1.titulo-main {
+  font-size: 4em;
+  margin-top: 0.5em;
+}
+
+/*2/2 hijo de landing-page-container*/
+.landing-page-bottom-container {
+  padding: 1em;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+
+
+/*Boton  herramientas avanzadas*/
+.btn-herramientas-landing {
+  background-color: var(--color);
+  color: var(--fondo);
+  display: block;
+  text-align: center;
+  border-radius: 7px;
+  font-size: 1.7em;
+  padding: 0.75em 1.5em;
+  font-weight: 600;
+  margin: 1em auto;
+  width: fit-content;
+}
+
+/*menu de navegacion*/
+.header-bottom-nav {
+  font-size: 1.5em;
+  width: 90%;
+  margin: 3em auto;
+}
+
+.header-bottom-nav ul {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.header-bottom-nav ul a {
+  color: var(--blanco);
+}

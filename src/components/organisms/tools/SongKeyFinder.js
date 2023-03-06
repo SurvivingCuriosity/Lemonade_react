@@ -96,7 +96,7 @@ export function SongKeyFinder({ getRandomOnInit }) {
         setIndexItemVisible(prev => prev - 1)
     }
     return (
-        <>
+        <div className="columna-centro">
             <form onSubmit={handleSubmit} className="linea-flex-start">
                 <span className="input_and_button">
                     <input
@@ -116,6 +116,7 @@ export function SongKeyFinder({ getRandomOnInit }) {
                     </button>
                 </span>
             </form>
+
             {itemVisible &&
                 <ContainerResultadoIndividual item={itemVisible} reducirInformacion={false}>
                     <div className="linea-flex-between" style={{
@@ -135,6 +136,6 @@ export function SongKeyFinder({ getRandomOnInit }) {
                 </ContainerResultadoIndividual>
             }
             {indexItemVisible == 4 && <p className="error">Prueba a escribir el nombre del artista seguido del titulo de la canción. Si aún así no aparece, es probable que la canción que buscas no esté en Spotify y por eso no podemos ofrecer la información.</p>}
-        </>
+        </div>
     )
 }

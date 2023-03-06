@@ -430,16 +430,16 @@
 .tarjeta-artista-grande{
     position: relative;
     width: 25em;
-    height: 35em;
+    height: 28em;
     background-color: var(--fondo3);
-    list-style-type: none;
-    margin: 2em;
-    padding: 2em;
-    display: grid;
-    grid-template-rows: 10fr 1fr;
-    justify-items: center;
+    margin: 2.5em auto;
+    padding: 1.5em 1em;
+    display: flex;
     gap: 1em;
     border-radius: 15px;
+    box-shadow: 0px 0px 34px 7px var(--fondo);
+    flex-direction: column;
+    align-items: center;
 }
 .boton-circulo-next{
     border-radius: 20px;
@@ -448,11 +448,10 @@
 }
 
 .tarjeta-artista-grande img{
-    width: 20em;
+    width: 17em;
 }
 
 .tarjeta-artista-grande .--tarjeta-info-bpm-scale{
-    height: 100%;
     margin: auto;
     text-align: center;
 }

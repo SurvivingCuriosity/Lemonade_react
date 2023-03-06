@@ -1,0 +1,313 @@
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    html {
+      font-size: 0.8em;
+    }
+  
+    .container {
+      width: 90vw;
+    }
+  
+    .header-main-nav ul {
+      flex-flow: column nowrap;
+      font-size: 1em;
+    }
+  
+    #tools .container {
+      min-height: 26vh;
+    }
+  
+    .flechaBottom {
+      visibility: hidden;
+    }
+  
+    .containerTarjetaBuscar {
+      width: 70%;
+    }
+  
+    .tool-container {
+      width: 70vw;
+    }
+  
+    .containerSinResultado {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 1em;
+    }
+  
+    .logo-limon-header {
+      width: 6em;
+      left: calc(50% - 75px);
+      top: 3em;
+    }
+  }
+  
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    html {
+      font-size: 0.9em;
+    }
+  
+    .container {
+      width: 80vw;
+    }
+  
+    header .linea-flex-start {
+      flex-flow: row nowrap;
+    }
+  
+    header div {
+      gap: 1em;
+      align-items: baseline;
+    }
+  
+    .header-main-nav ul {
+      font-size: 0.75em;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 70vw;
+    }
+  
+    header .landing-page-container header,
+    header .landing-page-container section{
+      width: 50%;
+    }
+  
+    #tools .container {
+      min-height: 26vh;
+    }
+  
+    main section#tutorial p {
+      width: 75vw;
+    }
+  
+    .flechaBottom {
+      visibility: hidden;
+    }
+  
+    .fixed-bottom-nav ul {
+      width: 70%;
+    }
+  
+    .containerTarjetaBuscar {
+      width: 80%;
+    }
+  
+    .containerSinResultado {
+      flex-flow: column nowrap;
+    }
+    .landing-page-container header,
+    .landing-page-container section{
+      width: 70%;
+      margin: auto;
+    }
+  }
+  
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    html {
+      font-size: 1em;
+    }
+  
+    .container {
+      width: 70vw;
+    }
+  
+    header .linea-flex-start {
+      flex-flow: row nowrap;
+    }
+  
+    header div {
+      margin: 0.25em;
+      align-items: baseline;
+    }
+  
+    .landing-page-container_header {
+      justify-content: start;
+    }
+  
+    header .landing-page-container header,
+    header .landing-page-container section{
+      width: 50%;
+    }
+  
+    .header-main-nav ul {
+      flex-flow: row nowrap;
+      gap: 1em;
+      font-size: 0.8em;
+      width: 65vw;
+    }
+  
+    #tools .container {
+      min-height: 26vh;
+    }
+  
+    main section#tutorial p {
+      width: 60vw;
+    }
+  
+    .flechaBottom {
+      visibility: hidden;
+    }
+  
+    .fixed-bottom-nav ul {
+      width: 50%;
+    }
+  
+    .containerTarjetaBuscar {
+      width: 80%;
+    }
+  
+    .tool-container {
+      width: 55vw;
+    }
+  
+    .containerSinResultado {
+      flex-flow: column nowrap;
+    }
+    .landing-page-container header,
+    .landing-page-container section{
+      width: 70%;
+      margin: auto;
+    }
+  }
+  
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    html {
+      font-size: 1em;
+    }
+  
+    .container {
+      width: 60vw;
+    }
+  
+    header .linea-flex-start {
+      flex-flow: row nowrap;
+    }
+  
+    header div {
+      gap: 1em;
+      align-items: baseline;
+    }
+  
+    .landing-page-container_header {
+      justify-content: start;
+    }
+  
+    header .landing-page-container header,
+    header .landing-page-container section{
+      width: 50%;
+    }
+  
+    .header-main-nav ul {
+      flex-flow: row nowrap;
+      width: 50vw;
+    }
+  
+    #tools .container {
+      min-height: 26vh;
+    }
+  
+  
+    .flechaBottom {
+      visibility: hidden;
+    }
+  
+    .fixed-bottom-nav ul {
+      width: 50%;
+      margin: auto;
+    }
+  
+    .containerTarjetaBuscar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 85%;
+    }
+  
+    .tool-container {
+      width: 50vw;
+    }
+  
+    .containerSinResultado {
+      flex-flow: row nowrap;
+    }
+  
+    .logo-limon-header {
+      width: 5em;
+      left: calc(50% - 75px);
+      top: 3em;
+    }
+  
+    .landing-page-container header,
+    .landing-page-container section{
+      width: 50%;
+      margin: auto;
+    }
+  h1.titulo-main {
+    font-size: 5em;
+  }
+  
+  }
+  
+  @media only screen and (min-width: 1400px) {
+    html {
+      font-size: 1em;
+    }
+  
+    .container {
+      width: 60vw;
+    }
+  
+    header .linea-flex-start {
+      flex-flow: row nowrap;
+    }
+  
+    header div {
+      gap: 1em;
+      align-items: baseline;
+      margin-top: 1.5em;
+    }
+  
+    .landing-page-container_header {
+      justify-content: start;
+    }
+  
+    header .landing-page-container header,
+    header .landing-page-container section{
+      width: 50%;
+    }
+  
+    .header-main-nav ul {
+      flex-flow: row nowrap;
+      width: 45vw;
+    }
+  
+    #tools .container {
+      min-height: 26vh;
+    }
+  
+  
+    .flechaBottom {
+      visibility: hidden;
+    }
+  
+    .fixed-bottom-nav ul {
+      width: 50%;
+    }
+  
+    .containerTarjetaBuscar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 80%;
+    }
+  
+    .tool-container {
+      width: 40vw;
+    }
+    .landing-page-container header,
+    .landing-page-container section{
+      width: 40%;
+      margin: auto;
+    }
+  }
