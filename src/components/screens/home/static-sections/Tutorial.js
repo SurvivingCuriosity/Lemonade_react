@@ -15,7 +15,7 @@ export function Tutorial() {
     }
 
     return (
-        <ScrollContainer snap='mandatory'>
+        <ScrollContainer snap='none'>
             <h2 id="tutorial" style={{ position: 'sticky', top: '1em' }}>{t('header.tutorial.encabezado')}</h2>
             
             <ScrollPage>
