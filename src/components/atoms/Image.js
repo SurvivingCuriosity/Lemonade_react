@@ -17,7 +17,7 @@ export const Image = ({ src, alt, size, className = '', onClick}) => {
             case 's':
                 setTam(30);
                 break;
-            case 'M':
+            case 'm':
             case 'M':
                 setTam(50);
                 break;

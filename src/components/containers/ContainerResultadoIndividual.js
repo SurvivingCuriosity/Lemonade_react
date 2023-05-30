@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 export const ContainerResultadoIndividual = ({ children, ...props }) => {
     const [t, i18n] = useTranslation('global')
     const { item, reducirInformacion } = props;
-
+    
     const songKey = getStringFromNota(item?.key) || 'Sin definir';
     const songMode = getStringFromEscala(item?.mode) || '';
 
@@ -32,7 +32,7 @@ export const ContainerResultadoIndividual = ({ children, ...props }) => {
         <div>
             <li className={`tarjeta-artista-grande`}>
                 {children}
-                {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='S' className={'--tarjeta-img-fuego'} />}
+                {popularity >= 85 && <Image src={icon_fuego} alt='icono fuego' size='M' className={'--tarjeta-img-fuego'} />}
                 <img src={imgCancion} alt='Carátula del album'></img>
                 <p>{nombreArtista} - {nombreCancion}</p>
 

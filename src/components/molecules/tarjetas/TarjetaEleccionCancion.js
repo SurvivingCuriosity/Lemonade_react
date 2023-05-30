@@ -28,25 +28,29 @@ export function TarjetaEleccionCancion(props) {
             <div className="--tarjeta-left">
                 <Image src={imgCancion} alt='Carátula del album' size='M' />
                 <div className="--tarjeta-datos">
-                    {nombreCancion &&
+                    {nombreCancion ?
                         <IconAndText>
                             <Image src={icon_song} alt='Icono canción' size='icon' />
                             <p>{truncaNombreLargo(nombreCancion, reducirInformacion)}</p>
                         </IconAndText>
+                        :
+                        <p className="skeleton-text"></p>
                     }
-                    {nombreArtista &&
+                    {nombreArtista ?
                         <IconAndText>
                             <Image src={icon_artist} alt='Icono artista' size='icon' />
                             <p>{truncaNombreLargo(nombreArtista, reducirInformacion)}</p>
                         </IconAndText>
+                        :
+                        <p className="skeleton-text"></p>
                     }
-                    {
-                        <p>{`${songKey}${songMode} ${songBPM}BPM`}</p>
-                    }
+                    
+                    {json ? <p>{`${songKey}${songMode} ${songBPM}BPM`}</p> : <p className="skeleton-text"></p>}
+                    
                 </div>
 
             </div>
-            <button className='botonCambiarPreview boton_link' onClick={callbackCambiarEleccion}>Cambiar canción</button>
+            {json && <button className='botonCambiarPreview boton_link' onClick={callbackCambiarEleccion}>Cambiar canción</button>}
         </div>
     )
 

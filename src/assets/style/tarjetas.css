@@ -28,6 +28,16 @@
     border: 2px solid transparent;
 }
 
+.tarjeta .skeleton-text{
+    background-color: var(--blanco2);
+    padding: 0.5em;
+    border-radius: 5px;
+    min-width: 5em;
+}
+.tarjeta .skeleton-text:nth-child(2){
+    min-width: 10em;
+}
+
 .--tarjeta-left {
     display: flex;
     flex-flow: row nowrap;
@@ -76,8 +86,8 @@
 
 .--tarjeta-img-fuego {
     position: absolute;
-    top: 50%;
-    left: -2.5em;
+    top: 25%;
+    right: -2.5em;
     transform: translate(0, -50%);
     filter: drop-shadow(5px 5px 15px #000000);
     -webkit-filter: drop-shadow(5px 5px 15px #000000);
@@ -98,6 +108,7 @@
 
 .preview-choices-div .tarjeta {
     width: 50%;
+    background-color: var(--negro2);
 }
 
 .tarjeta-preview-scale {
@@ -295,9 +306,11 @@
 }
 
 .botonCambiarPreview {
+    padding: 0.5em;
+    font-size: 1em;
     white-space: pre;
     position: absolute;
-    bottom: -2em;
+    bottom: -2.5em;
     left: 0;
     background: transparent;
 }
@@ -430,10 +443,10 @@
 .tarjeta-artista-grande{
     position: relative;
     width: 25em;
-    height: 28em;
+    height: 25em;
     background-color: var(--fondo3);
-    margin: 2.5em auto;
-    padding: 1.5em 1em;
+    margin: 2em auto;
+    padding: 1.25em 0.75em;
     display: flex;
     gap: 1em;
     border-radius: 15px;
@@ -448,7 +461,7 @@
 }
 
 .tarjeta-artista-grande img{
-    width: 17em;
+    width: 15em;
 }
 
 .tarjeta-artista-grande .--tarjeta-info-bpm-scale{

@@ -29,7 +29,7 @@ export const getToken = async () => {
 
 //funcion que devuelve resultados de buscar cancion
 export const buscarCancion = async (text, callback, offset = 0) => {
-    let limite = 5;
+    let limite = 20;
     if (esEnlaceDeSpotify(text)) {
         let id = getIDFromURL(text);
         getToken()

@@ -6,6 +6,7 @@ import { TarjetaEleccionNotaEscala } from "./TarjetaEleccionNotaEscala";
 export function PreviewChoices(props){
     const {json1, json2, canciones1, canciones2, notaEscala, callbackCambiarEleccion1, callbackCambiarEleccion2} = props;
 
+
     const tarjeta1 = (
         json1!==undefined && json1.type=='artist' ? 
             <TarjetaEleccionArtista 
@@ -29,8 +30,8 @@ export function PreviewChoices(props){
     
     return(
         <div className="preview-choices-div">
-            {json1!==undefined && json1.id ? tarjeta1 : ""}
-            {json2!==undefined && json2.id ? tarjeta2 : ""}
+            {json1!==undefined && json1.id ? tarjeta1 : <TarjetaEleccionCancion/>}
+            {json2!==undefined && json2.id ? tarjeta2 : <TarjetaEleccionCancion/>}
             {notaEscala!==undefined && notaEscala.nota>-1 ? <TarjetaEleccionNotaEscala data={notaEscala}/> : ""}
         </div>
     )

@@ -9,7 +9,7 @@
             "contacto": "Contacto"
         },
         "tutorial": {
-            "encabezado": "Tutorial",
+            "encabezado": "Herramientas avanzadas",
             "artistmatchfinder": {
                 "descripcion": "Introduce dos artistas y obtén una lista de parejas de canciones compuestas en la misma escala y al mismo tempo."
             },
@@ -25,7 +25,7 @@
             "prueba": "Prueba"
         },
         "proyecto": {
-            "encabezado": "About this project",
+            "encabezado": "Sobre el proyecto",
             "idea": {
                 "titulo": "Idea original",
                 "texto": "La idea de este proyecto surge tras descubrir las posibilidades que ofrece el API de Spotify y como un reto personal para mi.",
@@ -33,11 +33,11 @@
             },
             "desarrollo": {
                 "titulo": "Desarrollo",
-                "texto": "Esta aplicación ha sido desarrollada durante los meses de abril y mayo del 2022 durante mi estancia en Polonia, primero como proyecto personal y segundo como anexo a mi proyecto final del grado superior de Desarrollo de Aplicaciones Web"
+                "texto": "El desarrollo comenzó durante los meses de abril y mayo del 2022 durante mi estancia en Polonia, como un proyecto personal y como anexo a mi proyecto final del grado superior de Desarrollo de Aplicaciones Web. En el presente sigo realizando pequeñas mejoras y añadiendo nuevas funcionalidades."
             },
             "futuro": {
                 "titulo": "Líneas de desarrollo futuras",
-                "texto": "Se pretende implementar un backend que permita a los usuarios registrarse y poder guardar ciertas búsquedas."
+                "texto": "Se pretende codificar un backend que permita a los usuarios registrarse y poder guardar ciertas búsquedas, así como crear una base de datos con información sobre canciones que no se encuentran en Spotify."
             }
         },
         "contacto": {
@@ -63,7 +63,9 @@
         "next-page": "Siguiente página",
         "prev-page": "Pagina anterior",
         "first-artist": "Introduce el primer artista",
-        "second-artist": "Introduce segundo artista"
+        "second-artist": "Introduce segundo artista",
+        "texto-error-resultados-1":"Prueba a introducir más información como el nombre completo o el artista.",
+        "texto-error-resultados-2":"Si aún así no aparece, es probable que la canción que buscas no esté en Spotify y por eso no podemos ofrecer la información."
     },
     "footer": {
         "lemon-icon": "Icono del Limón en Iconscout",

@@ -17,7 +17,7 @@
     position: relative;
     box-shadow: 0px 0px 20px 1px var(--fondo);
     border: 3px solid var(--blanco3);
-    z-index: 1;
+    z-index: 2;
 }
 .progress-bar-titulo-step{
     top: -100%;
@@ -43,10 +43,9 @@
 }
 
 .progress-bar-barra{
-    background-color: var(--gris);
+    background-color: var(--blanco3);
     width: inherit;
     height: 1em;
-    z-index: -1;
     position: absolute;
     right: 0;
 }
@@ -62,6 +61,7 @@
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     transition: width 1s ease-in-out;
+    z-index: 1;
 }
 .progress-msg-condicion{
     position: absolute;

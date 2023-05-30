@@ -58,7 +58,6 @@ header p {
 
 h1.titulo-main {
   font-size: 4em;
-  margin-top: 0.5em;
 }
 
 /*2/2 hijo de landing-page-container*/
@@ -81,8 +80,8 @@ h1.titulo-main {
   display: block;
   text-align: center;
   border-radius: 7px;
-  font-size: 1.7em;
-  padding: 0.75em 1.5em;
+  font-size: 1.25em;
+  padding: 0.5em 1.25em;
   font-weight: 600;
   margin: 1em auto;
   width: fit-content;
@@ -99,6 +98,7 @@ h1.titulo-main {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  font-size: 0.7em;
 }
 
 .header-bottom-nav ul a {

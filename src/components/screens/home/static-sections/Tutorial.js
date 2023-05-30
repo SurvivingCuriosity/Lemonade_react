@@ -10,14 +10,16 @@ export function Tutorial() {
 
 
     const scrollToNextSection= () => {
+        console.log('scrolling');
         window.scrollBy(0, document.documentElement.clientHeight);
     }
 
     return (
-        <ScrollContainer snap='none'>
+        <ScrollContainer snap='mandatory'>
             <h2 id="tutorial" style={{ position: 'sticky', top: '1em' }}>{t('header.tutorial.encabezado')}</h2>
-            <ScrollPage page={0} key={0}>
-                <Animator animation={FadeUp} key={0}>
+            
+            <ScrollPage>
+                <Animator animation={FadeUp}>
                     <div className="subSection">
                         <h3 id="artist-match-finder">Artist Match Finder</h3>
                         <p>{t('header.tutorial.artistmatchfinder.descripcion')}</p>
@@ -27,8 +29,8 @@ export function Tutorial() {
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={1} key={1}>
-                <Animator  animation={FadeUp} key={1}>
+            <ScrollPage>
+                <Animator  animation={FadeUp}>
                     <div className="subSection">
                         <h3>Song Match Finder</h3>
                         <p>{t('header.tutorial.songmatchfinder.descripcion')}</p>
@@ -38,8 +40,8 @@ export function Tutorial() {
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={2} key={2}>
-                <Animator animation={FadeUp} key={2}>
+            <ScrollPage>
+                <Animator animation={FadeUp}>
                     <div className="subSection">
                         <h3>Artist Key Finder</h3>
                         <p>{t('header.tutorial.artistkeyfinder.descripcion')}</p>
@@ -49,50 +51,42 @@ export function Tutorial() {
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={3} key={3}>
-                <Animator animation={FadeUp} key={3}>
-                    <div className="subSection">
-                        <h3>Song Key Finder</h3>
-                        <p>{t('header.tutorial.songkeyfinder.descripcion')}</p>
-                        <p>{t('header.tutorial.prueba')} <Link to="/SongKeyFInder">Song Key Finder</Link></p>
-                        <div className='scroll-down-arrow' onClick={()=>{window.scrollBy(0, document.documentElement.clientHeight*2)}}></div>
-                    </div>
-                </Animator>
-            </ScrollPage>
 
-            <h2 id="proyecto" style={{ position: 'sticky', top: '1em', background: 'var(--fondo)' }}>{t('header.proyecto.encabezado')}</h2>
+            <h2 id="proyecto" style={{ position: 'sticky', top: '1em', background: 'var(--fondo)'}}>{t('header.proyecto.encabezado')}</h2>
 
-
-            <ScrollPage page={4} key={4}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={4}>
-                    <div className='subSection'>
+            <ScrollPage>
+                <Animator animation={FadeUp}>
+                    <div id="scroll" className='subSection'>
                         <h3>{t('header.proyecto.idea.titulo')}</h3>
                         <p>{t('header.proyecto.idea.texto')}</p>
                         <p>{t('header.proyecto.idea.texto2')}</p>
+                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={5} key={5}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={5}>
+            <ScrollPage>
+                <Animator animation={FadeUp}>
                     <div className='subSection'>
                         <h3>{t('header.proyecto.desarrollo.titulo')}</h3>
                         <p>{t('header.proyecto.desarrollo.texto')}</p>
+                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={6} key={6}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={6}>
+            <ScrollPage>
+                <Animator animation={FadeUp}>
                     <div className='subSection'>
                         <h3>{t('header.proyecto.futuro.titulo')}</h3>
                         <p>{t('header.proyecto.futuro.texto')}</p>
+                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
 
-            <ScrollPage page={7} key={7}>
-                <Animator animation={FadeUp} style={{ width: '100%' }} key={7}>
+            <ScrollPage>
+                <Animator animation={FadeUp}>
                 </Animator>
             </ScrollPage>
             

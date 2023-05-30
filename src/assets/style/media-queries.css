@@ -1,5 +1,5 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
+  @media only screen and (min-width: 600px) {
     html {
       font-size: 0.8em;
     }
@@ -39,6 +39,9 @@
       width: 6em;
       left: calc(50% - 75px);
       top: 3em;
+    }
+    .subSection {
+      width: 60vw;
     }
   }
   
@@ -170,6 +173,9 @@
       width: 70%;
       margin: auto;
     }
+    .subSection {
+      width: 55vw;
+    }
   }
   
   /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -247,7 +253,7 @@
   h1.titulo-main {
     font-size: 5em;
   }
-  
+
   }
   
   @media only screen and (min-width: 1400px) {
@@ -309,5 +315,9 @@
     .landing-page-container section{
       width: 40%;
       margin: auto;
+    }
+
+    .subSection {
+      width: 40vw;
     }
   }

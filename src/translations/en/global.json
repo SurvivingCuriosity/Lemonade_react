@@ -2,14 +2,14 @@
     "header": {
         "welcome-message": "Key finder & more. For producers, by producers...",
         "home-btn": "Go home",
-        "tools-btn" : "Advanced tools",
+        "tools-btn": "Advanced tools",
         "bottom-menu": {
             "tutorial": "Tutorial",
             "about": "About",
             "contacto": "Contact"
         },
         "tutorial": {
-            "encabezado": "Tutorial",
+            "encabezado": "Advanced tools",
             "artistmatchfinder": {
                 "descripcion": "Choose two artists and get a list of pairs of songs sharing scale and tempo."
             },
@@ -25,19 +25,19 @@
             "prueba": "Try"
         },
         "proyecto": {
-            "encabezado": "About this project",
+            "encabezado": "About the project",
             "idea": {
                 "titulo": "Original idea",
-                "texto": "Translation pending",
-                "texto2": "Translation pending"
+                "texto": "The idea for this project arose after discovering the possibilities offered by the Spotify API and as a personal challenge for me.",
+                "texto2": "I started developing Lemonade with pure JavaScript, but quickly realized that an application of this nature required some library or framework to make it viable and more sustainable. That's why I learned React and got to work."
             },
             "desarrollo": {
                 "titulo": "Development",
-                "texto": "Translation pending"
+                "texto": "Development began during the months of April and May 2022 while I was in Poland, as a personal project and as an annex to my final project for the higher degree in Web Application Development. Currently, I continue to make small improvements and add new functionalities."
             },
             "futuro": {
-                "titulo": "Future development plan",
-                "texto": "Translation pending"
+                "titulo": "Future development lines",
+                "texto": "The plan is to code a backend that allows users to register and save certain searches, as well as create a database with information about songs that are not available on Spotify."
             }
         },
         "contacto": {
@@ -63,7 +63,9 @@
         "next-page": "Next page",
         "prev-page": "Previous page",
         "first-artist": "Choose first artist",
-        "second-artist": "Choose second artist"
+        "second-artist": "Choose second artist",
+        "texto-error-resultados-1": "Try entering more information like the full name or the artist.",
+        "texto-error-resultados-2": "If it still doesn't appear, it's likely that the song you're looking for is not on Spotify, and that's why we can't provide the information."
     },
     "footer": {
         "lemon-icon": "Lemon icon on Iconscout",

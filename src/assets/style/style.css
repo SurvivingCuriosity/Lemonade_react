@@ -65,6 +65,11 @@ main section {
   color: var(--blanco);
   width: 80vw;
 }
+.subSection p{
+  margin: 1em;
+  line-height: 1.5em;
+  text-align: justify;
+}
 
 .container {
   position: relative;
@@ -294,7 +299,11 @@ footer {
   margin: 0.5em;
   border-radius: 18px;
   font-size: 1.5em;
-  min-width: 170px;
+  /* min-width: 170px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 10em;
 }
 
 
@@ -573,7 +582,6 @@ footer {
   transition: all 0.5s ease-in-out;
   min-height: 100px;
   margin: 2em auto;
-  padding: 2em;
   border-radius: 10px;
 }
 
@@ -648,20 +656,16 @@ footer {
 
 
 .skeleton {
-  animation: skeleton-loading 1s linear infinite alternate;
-}
-
-.skeleton:hover {
-  cursor: progress;
+  animation: skeleton-loading 0.7s linear infinite alternate;
 }
 
 @keyframes skeleton-loading {
   0% {
-    background-color: hsl(52, 63%, 67%);
+    background-color: hsl(0, 0%, 88%);
   }
 
   100% {
-    background-color: hsl(54, 32%, 74%);
+    background-color: hsl(0, 0%, 67%);
   }
 }
 

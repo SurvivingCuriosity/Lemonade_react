@@ -152,61 +152,6 @@ export function ArtistMatchFinder() {
                 <ContainerResultadoArtistMatchFinder 
                     resultado = {resultadoFinal}
                 />
-
-                    {/* <p className={`${msgResultadoClass} busqueda-texto-info`}>{msgResultado}</p>
-
-                    {resultadoFinal.length > 0
-                        &&
-                        <ul className="busqueda-lista">
-                            <div className="">
-                                <p className="texto-dif-padding text-center">Coincidencias Exactas</p>
-                                {resultadoFinal.coincidencias.length === 0 &&
-                                    <p className={`error busqueda-texto-info`}>Sin coincidencias exactas</p>}
-                                {resultadoFinal.coincidencias.map((par, index) => {
-                                    return (
-                                        <li key={index}>
-                                            <TarjetaCancionDoble
-                                                // key={index + '-' + par.cancion1.name + '-' + par.cancion2.name}
-                                                jsonData1={par.cancion1}
-                                                jsonData2={par.cancion2}
-                                            />
-                                        </li>
-                                    )
-                                })}
-                            </div>
-                            {resultadoFinal.map((conjunto, index) => {
-                                return (
-                                    <div key={index}>
-                                        <p className="text-center texto-dif-padding">{conjunto.titulo}</p>
-                                        <div className="resultado-left">
-                                            {conjunto.canciones.cancionesDe1.map((cancion, index) => {
-                                                return (
-                                                    <TarjetaCancion
-                                                        key={index}
-                                                        // key={index + Math.random() * 1000 + cancion.id}
-                                                        jsonData={cancion}
-                                                        reducirInformacion={true}
-                                                    />
-
-                                                )
-                                            })}
-                                        </div>
-                                        <div className="resultado-right">
-                                            {conjunto.canciones.cancionesDe2.map((cancion, index) => {
-                                                return (
-                                                    <TarjetaCancion
-                                                        key={index + Math.random() * 1000 + conjunto.titulo + '' + cancion.id}
-                                                        jsonData={cancion}
-                                                        reducirInformacion={true}
-                                                    />
-                                                )
-                                            })}
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </ul>
-                    } */}
             </FinalResult>
         </>
 
