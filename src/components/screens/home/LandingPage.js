@@ -1,6 +1,5 @@
 import React from 'react'
 import lemon from '../../../assets/images/lemon.svg'
-import { HeaderToolsNav } from '../../molecules/navs/HeaderToolsNav'
 import { HeaderBottomNav } from '../../molecules/navs/HeaderBottomNav'
 
 import { useTranslation } from 'react-i18next'

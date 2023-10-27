@@ -13,6 +13,7 @@ function App() {
   // Online state
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
+  
   useEffect(() => {
     // Update network status
     const handleStatusChange = () => { setIsOnline(navigator.onLine); };
@@ -27,6 +28,7 @@ function App() {
     };
   }, [isOnline]);
 
+
   return (
     <Router>
       {!isOnline && 
@@ -34,7 +36,6 @@ function App() {
         <p>Whoops... no tienes conexión a internet</p>
         <p>Necesitas internet para usar Lemonade</p>
       </div>}
-
       <div className="footerStickTop">
         <Routes>
           <Route index exact path="/" element={<HomePage />} />
