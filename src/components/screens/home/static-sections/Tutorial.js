@@ -15,8 +15,10 @@ export function Tutorial() {
     }
 
     return (
+        <>
+        
         <ScrollContainer snap='none'>
-            <h2 id="tutorial" style={{ position: 'sticky', top: '1em' }}>{t('header.tutorial.encabezado')}</h2>
+            <h2 id="tutorial" style={{ position: 'sticky', top: '1em', whiteSpace:'nowrap' }}>{t('header.tutorial.encabezado')}</h2>
             
             <ScrollPage>
                 <Animator animation={FadeUp}>
@@ -50,7 +52,7 @@ export function Tutorial() {
                     </div>
                 </Animator>
             </ScrollPage>
-
+            
 
             <h2 id="proyecto" style={{ position: 'sticky', top: '1em', background: 'var(--fondo)'}}>{t('header.proyecto.encabezado')}</h2>
 
@@ -60,17 +62,15 @@ export function Tutorial() {
                         <h3>{t('header.proyecto.idea.titulo')}</h3>
                         <p>{t('header.proyecto.idea.texto')}</p>
                         <p>{t('header.proyecto.idea.texto2')}</p>
-                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
 
             <ScrollPage>
                 <Animator animation={FadeUp}>
-                    <div className='subSection'>
+                    <div className='subSection' id='a'>
                         <h3>{t('header.proyecto.desarrollo.titulo')}</h3>
                         <p>{t('header.proyecto.desarrollo.texto')}</p>
-                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
@@ -80,7 +80,6 @@ export function Tutorial() {
                     <div className='subSection'>
                         <h3>{t('header.proyecto.futuro.titulo')}</h3>
                         <p>{t('header.proyecto.futuro.texto')}</p>
-                        <div className='scroll-down-arrow' onClick={scrollToNextSection}></div>
                     </div>
                 </Animator>
             </ScrollPage>
@@ -91,5 +90,6 @@ export function Tutorial() {
             </ScrollPage>
             
         </ScrollContainer>
+        </>
     )
 }

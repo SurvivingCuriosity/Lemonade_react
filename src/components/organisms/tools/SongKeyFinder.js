@@ -118,7 +118,7 @@ export function SongKeyFinder({ getRandomOnInit }) {
     setIndexItemVisible((prev) => prev - 1);
   }
   return (
-    <div className="columna-centro">
+    <div className="w-full">
       <form onSubmit={handleSubmit} className="linea-flex-start">
         <span className="input_and_button">
           <input

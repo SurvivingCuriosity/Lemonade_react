@@ -68,7 +68,8 @@ main section {
 .subSection p{
   margin: 1em;
   line-height: 1.5em;
-  text-align: justify;
+  text-align: left;
+  text-wrap: pretty;
 }
 
 .container {

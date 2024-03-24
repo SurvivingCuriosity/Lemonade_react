@@ -1,7 +1,7 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 600px) {
     html {
-      font-size: 0.8em;
+      font-size: 0.7em;
     }
   
     .container {
@@ -26,7 +26,7 @@
     }
   
     .tool-container {
-      width: 70vw;
+      width: 85vw;
     }
   
     .containerSinResultado {

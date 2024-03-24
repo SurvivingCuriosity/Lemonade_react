@@ -5,13 +5,11 @@
 
 .landing-page-container {
   background-color: var(--fondo2);
-  padding: 1.25em;
   height: 100vh;
   position: relative;
   display: grid;
   grid-template-rows: 1fr 6fr;
   z-index: 4;
-  margin: a;
 }
 .landing-page-container .content {
   width: 90%;
@@ -69,6 +67,7 @@ h1.titulo-main {
   flex-flow: column nowrap;
   align-items: stretch;
   justify-content: space-between;
+  border:1px solid red;
 }
 
 
@@ -89,8 +88,7 @@ h1.titulo-main {
 
 /*menu de navegacion*/
 .header-bottom-nav {
-  font-size: 1.5em;
-  width: 90%;
+  width: 100%;
   margin: 3em auto;
 }
 
@@ -98,7 +96,8 @@ h1.titulo-main {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  font-size: 0.7em;
+  gap: 2em;
+  font-size: 1.5em;
 }
 
 .header-bottom-nav ul a {
